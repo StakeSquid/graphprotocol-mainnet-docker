@@ -34,14 +34,22 @@ This will definitely get you running, but not for long, assuming you want to ser
 
 
 - **Ethereum Archive Node** (not included)
--- 16 vcore CPU
--- 64 GB RAM
--- 7 TB SATA SSD storage at the very minimum -- will grow over time, HDDs won't work
+
+   - 16 vcore CPU
+
+   - 64 GB RAM
+
+   - 7 TB SATA SSD storage at the very minimum -- will grow over time, HDDs won't work
+   
 
 - **Graph Protocol Infrastructure** (this repository)
--- 16 vcore CPU
--- 32 GB RAM
--- 300 GB SATA SSD storage (HDDs may work, but NOT recommended)
+
+   - 16 vcore CPU
+   
+   - 32 GB RAM
+   
+   - 300 GB SATA SSD storage (HDDs may work, but NOT recommended)
+   
 
 
 
@@ -51,14 +59,22 @@ Your mileage may vary, so take this with a grain of salt and be ready to upgrade
 This is a good setup for those that want to dip more than their feet in the indexing waters. Can serve a decent number of subgraphs, but it's limited by the CPU if too many requests flow through.
 
 - **Ethereum Archive Node** (not included)
--- 32 vcore CPU
--- 128 GB RAM
--- 7 TB NVME
+
+   - 32 vcore CPU
+   
+   - 128 GB RAM
+   
+   - 7 TB NVME
+   
 
 - **Graph Protocol Infrastructure** (this repository)
--- 64 vcore CPU
--- 128 GB RAM
--- 2 TB NVME
+
+   - 64 vcore CPU
+   
+   - 128 GB RAM
+   
+   - 2 TB NVME
+   
 
 
 
@@ -68,35 +84,59 @@ Your mileage may vary, so take this with a grain of salt and be ready to upgrade
 This should be enough to serve data for all of the subgraphs in existence using one machine to rule them all.
 
 - **Ethereum Archive Node** (not included)
--- 32 vcore CPU
--- 128 GB RAM
--- 7 TB NVME RAID 10
+
+   - 32 vcore CPU
+   
+   - 128 GB RAM
+   
+   - 7 TB NVME RAID 10
+   
 
 - **Graph Protocol Infrastructure** (this repository)
--- 128 vcore CPU
--- 512 GB RAM
--- 4 TB NVME RAID 10
+
+   - 128 vcore CPU
+   
+   - 512 GB RAM
+   
+   - 4 TB NVME RAID 10
+   
 
 
 ## Archive node options
 
 ### Self hosted options:
 - **OpenEthereum 3.1**
--- Trace API support? -- yes ✔️
--- Stable? -- not quite ⚠️
--- EIP 1898 support -- yes ✔️
+
+   - Trace API support? -- yes ✔️
+   
+   - Stable? -- not quite ⚠️
+   
+   - EIP 1898 support -- yes ✔️
+   
 - **Parity 2.5.13**
--- Trace API support? -- yes ✔️
--- Stable? -- yes ✔️
--- EIP 1898 support -- no ☠️
+
+   - Trace API support? -- yes ✔️
+   
+   - Stable? -- yes ✔️
+   
+   - EIP 1898 support -- no ☠️
+   
 - **GETH**
--- Trace API support? -- no ⚠️
--- Stable? -- yes ✔️
--- EIP 1898 support -- yes ✔️
+
+   - Trace API support? -- no ⚠️
+   
+   - Stable? -- yes ✔️
+   
+   - EIP 1898 support -- yes ✔️
+   
 - **TurboGETH**
--- Trace API support? -- no ⚠️
--- Stable? -- relatively ⚠️
--- EIP 1898 support -- yes ✔️
+
+   - Trace API support? -- no ⚠️
+   
+   - Stable? -- relatively ⚠️
+   
+   - EIP 1898 support -- yes ✔️
+   
 
 
 
