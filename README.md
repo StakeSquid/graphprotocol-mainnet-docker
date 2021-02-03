@@ -58,7 +58,7 @@ The result is your public key and looks like this "ssh-rsa AAAA...KVQ==" and you
 Run the following commands to clone the repository and set everything up:
 
 ```bash
-git clone git@github.com:trader-payne/graphprotocol-infrastructure.git
+git clone git@github.com:StakeSquid/graphprotocol-mainnet-docker.git
 cd graphprotocol-infrastructure
 git submodule init
 git submodule update
