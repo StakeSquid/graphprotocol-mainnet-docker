@@ -1,14 +1,15 @@
+
 Graph Protocol Mainnet Docker Compose
 ========
 
 A monitoring solution for hosting a graph node on a single Docker host with [Prometheus](https://prometheus.io/), [Grafana](http://grafana.org/), [cAdvisor](https://github.com/google/cadvisor),
 [NodeExporter](https://github.com/prometheus/node_exporter) and alerting with [AlertManager](https://github.com/prometheus/alertmanager).
 
-The monitoring configuration adapted the template by the graph team in the [mission control repository](https://github.com/graphprotocol/mission-control-indexer) during the testnet, and later adapted for mainnet using [this configuration](https://github.com/graphprotocol/indexer/blob/main/docs/networks.md#mainnet-and-testnet-configuration).
+The monitoring configuration adapted the K8S template by the graph team in the [mission control repository](https://github.com/graphprotocol/mission-control-indexer) during the testnet, and later adapted for mainnet using [this configuration](https://github.com/graphprotocol/indexer/blob/main/docs/networks.md#mainnet-and-testnet-configuration).
 
-The advantage of using Docker, as opposed to systemd bare-metal setups, is that Docker is easy to manipulate around and scale up if needed. I personally ran the whole testnet infrastructure on the same machine, including a TurboGeth Archive Node (not included in this docker build). 
+The advantage of using Docker, as opposed to systemd bare-metal setups, is that Docker is easy to manipulate around and scale up if needed. We personally ran the whole testnet infrastructure on the same machine, including a TurboGeth Archive Node (not included in this docker build). 
 
-For those that consider running their infras like I did, here are my observations regarding the necessary hardware specs:
+For those that consider running their infras like we did, here are our observations regarding the necessary hardware specs:
 
 > From my experience during the testnet, the heaviest load was put onto
 > Postgres at all times, whilst the other infrastructure parts had
@@ -21,9 +22,94 @@ For those that consider running their infras like I did, here are my observation
 
 The good thing about Docker, is that the data is stored in named volumes on the docker host and can be exported / copied over to a bigger machine once more performance is needed.
 
-The minimum configuration I would assume to be the CPX51 VPS at Hetzner. Feel free to sign up using my [referral link](https://hetzner.cloud/?ref=x2opTk2fg2fM) -- you can save 20€ and we get 10€ bonus for setting up some testnet nodes to support the network growth. :)
-
 Note that you **need** access to an **Ethereum Archive Node that supports EIP-1898**. The setup for the archive node is **not included** in this docker setup.
+
+The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to sign up using our [referral link](https://hetzner.cloud/?ref=x2opTk2fg2fM) -- you can save 20€ and we get 10€ bonus for setting up some testnet nodes to support the network growth. :)
+
+
+## Minimum Specs
+The minimum specs/requirements listed here come from our own experience during the testnet.
+Your mileage may vary, so take this with a grain of salt and be ready to upgrade. :)
+This will definitely get you running, but not for long, assuming you want to serve data for more than a few heavy-weight subgraphs in the future. 
+
+
+- **Ethereum Archive Node** (not included)
+-- 16 vcore CPU
+-- 64 GB RAM
+-- 7 TB SATA SSD storage at the very minimum -- will grow over time, HDDs won't work
+
+- **Graph Protocol Infrastructure** (this repository)
+-- 16 vcore CPU
+-- 32 GB RAM
+-- 300 GB SATA SSD storage (HDDs may work, but NOT recommended)
+
+
+
+## Recommended Specs
+The recommended specs/requirements listed here come from our own experience during the testnet.
+Your mileage may vary, so take this with a grain of salt and be ready to upgrade. :)
+This is a good setup for those that want to dip more than their feet in the indexing waters. Can serve a decent number of subgraphs, but it's limited by the CPU if too many requests flow through.
+
+- **Ethereum Archive Node** (not included)
+-- 32 vcore CPU
+-- 128 GB RAM
+-- 7 TB NVME
+
+- **Graph Protocol Infrastructure** (this repository)
+-- 64 vcore CPU
+-- 128 GB RAM
+-- 2 TB NVME
+
+
+
+## Ideal Specs
+The ideal specs/requirements listed here come from our own experience during the testnet.
+Your mileage may vary, so take this with a grain of salt and be ready to upgrade. :)
+This should be enough to serve data for all of the subgraphs in existence using one machine to rule them all.
+
+- **Ethereum Archive Node** (not included)
+-- 32 vcore CPU
+-- 128 GB RAM
+-- 7 TB NVME RAID 10
+
+- **Graph Protocol Infrastructure** (this repository)
+-- 128 vcore CPU
+-- 512 GB RAM
+-- 4 TB NVME RAID 10
+
+
+## Archive node options
+
+### Self hosted options:
+- **OpenEthereum 3.1**
+-- Trace API support? -- yes ✔️
+-- Stable? -- not quite ⚠️
+-- EIP 1898 support -- yes ✔️
+- **Parity 2.5.13**
+-- Trace API support? -- yes ✔️
+-- Stable? -- yes ✔️
+-- EIP 1898 support -- no ☠️
+- **GETH**
+-- Trace API support? -- no ⚠️
+-- Stable? -- yes ✔️
+-- EIP 1898 support -- yes ✔️
+- **TurboGETH**
+-- Trace API support? -- no ⚠️
+-- Stable? -- relatively ⚠️
+-- EIP 1898 support -- yes ✔️
+
+
+
+### Hosting providers options (WIP):
+- **Infura**
+- **Alchemy**
+- **Ankr**
+- **ChainStack**
+- **Quiknode**
+
+
+
+
 
 ## Prerequisites
 
