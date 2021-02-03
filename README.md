@@ -4,7 +4,7 @@ Graph Protocol Mainnet Docker Compose
 A monitoring solution for hosting a graph node on a single Docker host with [Prometheus](https://prometheus.io/), [Grafana](http://grafana.org/), [cAdvisor](https://github.com/google/cadvisor),
 [NodeExporter](https://github.com/prometheus/node_exporter) and alerting with [AlertManager](https://github.com/prometheus/alertmanager).
 
-The monitoring configuration adapted the template by the graph team in the [mission control repository](https://github.com/graphprotocol/mission-control-indexer) during the testnet, and later adapted for mainnet.
+The monitoring configuration adapted the template by the graph team in the [mission control repository](https://github.com/graphprotocol/mission-control-indexer) during the testnet, and later adapted for mainnet using [this configuration](https://github.com/graphprotocol/indexer/blob/main/docs/networks.md#mainnet-and-testnet-configuration).
 
 The advantage of using Docker, as opposed to systemd bare-metal setups, is that Docker is easy to manipulate around and scale up if needed. I personally ran the whole testnet infrastructure on the same machine, including a TurboGeth Archive Node (not included in this docker build). 
 
