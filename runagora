@@ -1,0 +1,10 @@
+#!/bin/bash
+
+DIR=$PWD
+
+FILE=$DIR/agora/target/release/agora
+if [ ! -f "$FILE" ]; then
+    docker run --rm --name agora -it -v $DIR/agora:/code rust:latest bash -c '(cd /code/agora; cargo build --release)'
+fi
+
+$DIR/agora/target/release/agora "$@"

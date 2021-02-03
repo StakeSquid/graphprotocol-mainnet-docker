@@ -1,0 +1,528 @@
+version: '2.1'
+
+x-logging:
+  &default-logging
+  options:
+    max-file: '1'
+    compress: 'false'
+  driver: local
+
+networks:
+  monitor-net:
+    driver: bridge
+
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
+    postgres_data: {}
+    postgres2_data: {}
+    nginx_certs: {}
+    nginx_vhost: {}
+    nginx_html: {}
+
+services:
+
+######################################################################################
+#####################            CLI CONTAINER                 #######################
+######################################################################################
+
+  cli:
+    build:
+      context: ./cli
+    container_name: cli
+    restart: unless-stopped
+    environment:
+      GEO_COORDINATES: ${GEO_COORDINATES:-69.42069 69.42069}
+    tty: true
+    networks:
+      - monitor-net
+    logging: *default-logging
+    volumes:
+      - ./cli/scripts:/home/graph/scripts
+
+
+######################################################################################
+#####################         INDEXER SERVICE CONTAINER        #######################
+######################################################################################
+
+  indexer-service:
+    image: ghcr.io/graphprotocol/indexer-service:v0.9.5
+    container_name: indexer-service
+    depends_on:
+      - index-node
+      - query-node
+      - indexer-agent
+    environment:
+      INDEXER_SERVICE_MNEMONIC: ${OPERATOR_SEED_PHRASE}
+      INDEXER_SERVICE_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
+      INDEXER_SERVICE_PORT: 7600
+      INDEXER_SERVICE_ETHEREUM_NETWORK: mainnet
+      INDEXER_SERVICE_ETHEREUM: ${ETHEREUM_RPC}
+      INDEXER_SERVICE_GRAPH_NODE_QUERY_ENDPOINT: http://query-node:8000
+      INDEXER_SERVICE_GRAPH_NODE_STATUS_ENDPOINT: http://index-node:8030/graphql
+      INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT: ${SUBGRAPH_ENDPOINT:-https://gateway.network.thegraph.com/network}
+      INDEXER_SERVICE_POSTGRES_HOST: postgres2
+      INDEXER_SERVICE_POSTGRES_USERNAME: ${DB_USER:-graph-node}
+      INDEXER_SERVICE_POSTGRES_PASSWORD: ${DB_PASS:-db-password}
+      INDEXER_SERVICE_POSTGRES_DATABASE: ${AGENT_DB_NAME:-indexer-agent}
+      INDEXER_SERVICE_WALLET_WORKER_THREADS: ${WORKER_THREADS_PER_INDEXER_SERVICE:-8}
+      SKIP_EVM_VALIDATION: "true"
+      SERVER_HOST: ${AGENT_DB_HOST:-postgres2}
+      SERVER_PORT: 5432
+      SERVER_DB_USER: ${DB_USER:-graph-node}
+      SERVER_DB_PASSWORD: ${DB_PASS:-db-password}
+      SERVER_DB_NAME: ${AGENT_DB_NAME:-indexer-agent}
+      VIRTUAL_HOST: ${INDEX_HOST}
+      VIRTUAL_PORT: 7600
+      LETSENCRYPT_HOST: ${INDEX_HOST}
+    expose:
+      - 7600
+      - 7300
+    networks:
+      - monitor-net
+    restart: unless-stopped
+    logging: *default-logging
+
+
+######################################################################################
+#####################        INDEXER AGENT CONTAINER           #######################
+######################################################################################
+
+  indexer-agent:
+    image: ghcr.io/graphprotocol/indexer-agent:v0.9.5
+    container_name: indexer-agent
+    depends_on:
+      - index-node
+      - query-node
+    expose:
+      - 8000
+      - 7300
+    environment:
+      INDEXER_AGENT_MNEMONIC: ${OPERATOR_SEED_PHRASE}
+      INDEXER_AGENT_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
+      INDEXER_AGENT_INDEX_NODE_IDS: "index_node_0,index_node_1"
+      INDEXER_AGENT_INJECT_DAI: "true"
+      INDEXER_AGENT_ETHEREUM: ${ETHEREUM_RPC}
+      INDEXER_AGENT_GRAPH_NODE_QUERY_ENDPOINT: http://query-node:8000
+      INDEXER_AGENT_GRAPH_NODE_STATUS_ENDPOINT: http://index-node:8030/graphql
+      INDEXER_AGENT_GRAPH_NODE_ADMIN_ENDPOINT: http://index-node:8020
+      INDEXER_AGENT_PUBLIC_INDEXER_URL: 'https://${INDEX_HOST}/'
+      INDEXER_AGENT_INDEXER_GEO_COORDINATES: ${GEO_COORDINATES:-60.16952 24.93545}
+      INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT: https://gateway.network.thegraph.com/network
+      INDEXER_AGENT_POSTGRES_HOST: ${AGENT_DB_HOST:-postgres2}
+      INDEXER_AGENT_POSTGRES_USERNAME: ${DB_USER:-graph-node}
+      INDEXER_AGENT_POSTGRES_PASSWORD: ${DB_PASS:-db-password}
+      INDEXER_AGENT_POSTGRES_DATABASE: ${AGENT_DB_NAME:-indexer-agent}
+    networks:
+      - monitor-net
+    restart: unless-stopped
+    logging: *default-logging
+
+
+######################################################################################
+#####################           INDEX NODE CONTAINER 0         #######################
+######################################################################################
+
+
+  index-node:
+    image: graphprotocol/graph-node:v0.21.1
+    container_name: index-node-0
+    environment:
+      postgres_host: ${DB_HOST:-postgres}
+      postgres_user: ${DB_USER:-graph-node}
+      postgres_pass: ${DB_PASS:-db-password}
+      postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
+      ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com}'
+      ethereum: '${ETHEREUM_RPC}'
+      node_role: index-node
+      node_id: index_node_0
+      BLOCK_INGESTOR: index_node_0
+      ETHEREUM_START_BLOCK: ${ETHEREUM_START_BLOCK:-7710671}
+      RUST_LOG: INFO
+      GRAPH_LOG: DEBUG
+      STORE_CONNECTION_POOL_SIZE: 25
+      ETHEREUM_BLOCK_BATCH_SIZE: 200
+      ETHEREUM_RPC_MAX_PARALLEL_REQUESTS: 64
+      GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE: 200
+      EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
+      GRAPH_KILL_IF_UNRESPONSIVE: "true"
+    restart: unless-stopped
+    expose:
+      - 8001
+      - 8000
+      - 8030
+      - 8040
+    networks:
+      - monitor-net
+    logging: *default-logging
+
+
+######################################################################################
+#####################           INDEX NODE CONTAINER 1         #######################
+######################################################################################
+
+
+
+  index-node-1:
+    image: graphprotocol/graph-node:v0.21.1
+    container_name: index-node-1
+    environment:
+      postgres_host: ${DB_HOST:-postgres}
+      postgres_user: ${DB_USER:-graph-node}
+      postgres_pass: ${DB_PASS:-db-password}
+      postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
+      ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com}'
+      ethereum: '${ETHEREUM_RPC}'
+      node_role: index-node
+      node_id: index_node_1
+      BLOCK_INGESTOR: index_node_0
+      ETHEREUM_START_BLOCK: ${ETHEREUM_START_BLOCK:-7710671}
+      RUST_LOG: INFO
+      STORE_CONNECTION_POOL_SIZE: 25
+      ETHEREUM_BLOCK_BATCH_SIZE: 200
+      ETHEREUM_RPC_MAX_PARALLEL_REQUESTS: 64
+      GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE: 200
+      EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
+      GRAPH_KILL_IF_UNRESPONSIVE: "true"
+    restart: unless-stopped
+    expose:
+      - 8001
+      - 8000
+      - 8030
+      - 8040
+    networks:
+      - monitor-net
+
+
+######################################################################################
+#####################           QUERY NODE CONTAINER 0         #######################
+######################################################################################
+
+
+  query-node:
+    image: graphprotocol/graph-node:v0.21.1
+    container_name: query-node-0
+    environment:
+      postgres_host: ${DB_HOST:-postgres}
+      postgres_user: ${DB_USER:-graph-node}
+      postgres_pass: ${DB_PASS:-db-password}
+      postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
+      ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com}'
+      ethereum: '${ETHEREUM_RPC}'
+      node_role: query-node
+      node_id: query_node_0
+      RUST_LOG: INFO
+      STORE_CONNECTION_POOL_SIZE: 25
+      GRAPH_LOG_QUERY_TIMING: gql
+      EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
+      GRAPH_KILL_IF_UNRESPONSIVE: "true"
+      VIRTUAL_HOST: ${QUERY_HOST}
+      VIRTUAL_PORT: 8000
+      LETSENCRYPT_HOST: ${QUERY_HOST}
+      GRAPH_LOG_QUERY_TIMING: ${GRAPH_LOG_QUERY_TIMING:-gql}
+    restart: unless-stopped
+    logging:
+        driver: "journald"
+    expose:
+      - 8001
+      - 8000
+      - 8020
+      - 8030
+      - 8040
+    networks:
+      - monitor-net
+
+
+######################################################################################
+#####################          NGINX PROXY CONTAINER           #######################
+######################################################################################
+
+
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - nginx_certs:/etc/nginx/certs
+      - nginx_vhost:/etc/nginx/vhost.d
+      - nginx_html:/usr/share/nginx/html
+      - ./nginx-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - monitor-net
+    restart: unless-stopped
+    logging: *default-logging
+
+
+######################################################################################
+#####################            NGINX SSL CONTAINER           #######################
+######################################################################################
+
+
+  nginx-ssl:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-ssl
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - nginx_certs:/etc/nginx/certs
+      - nginx_vhost:/etc/nginx/vhost.d
+      - nginx_html:/usr/share/nginx/html
+    restart: unless-stopped
+    networks:
+      - monitor-net
+    restart: unless-stopped
+    environment:
+      NGINX_PROXY_CONTAINER: nginx-proxy
+      DEFAULT_EMAIL: ${EMAIL}
+    logging: *default-logging
+
+
+
+######################################################################################
+#####################            POSTGRES CONTAINER            #######################
+######################################################################################
+
+
+
+  postgres:
+    image: postgres:13.1
+    container_name: postgres
+    command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-graph-node}
+      POSTGRES_PASSWORD: ${DB_PASS:-db-password}
+      POSTGRES_DB: ${GRAPH_NODE_DB_NAME:-graph-node}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - monitor-net
+    expose:
+      - 5432
+    logging: *default-logging
+
+
+
+######################################################################################
+#####################          POSTGRES 2 CONTAINER            #######################
+######################################################################################
+
+
+
+  postgres2:
+    image: postgres:13.1
+    container_name: postgres2
+    command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-graph-node}
+      POSTGRES_PASSWORD: ${DB_PASS:-db-password}
+      POSTGRES_DB: ${AGENT_DB_NAME:-indexer-agent}
+    volumes:
+      - postgres2_data:/var/lib/postgresql/data
+    networks:
+      - monitor-net
+    expose:
+      - 5432
+    logging: *default-logging
+
+
+
+######################################################################################
+#####################          PROMETHEUS CONTAINER            #######################
+######################################################################################
+
+
+
+  prometheus:
+    image: prom/prometheus:v2.24.1
+    container_name: prometheus
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    expose:
+      - 9090
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+    logging: *default-logging
+
+
+
+######################################################################################
+#####################          ALERT MANAGER CONTAINER         #######################
+######################################################################################
+
+
+
+  alertmanager:
+    image: prom/alertmanager:v0.21.0
+    container_name: alertmanager
+    volumes:
+      - ./alertmanager:/etc/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+    restart: unless-stopped
+    expose:
+      - 9093
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+    logging: *default-logging
+
+
+
+######################################################################################
+#####################         NODE EXPORTER CONTAINER          #######################
+######################################################################################
+
+
+
+  nodeexporter:
+    image: prom/node-exporter:v1.0.1
+    container_name: nodeexporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    expose:
+      - 9100
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+    logging: *default-logging
+
+
+
+######################################################################################
+#####################             CADVISOR CONTAINER           #######################
+######################################################################################
+
+
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.38.0
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /cgroup:/cgroup:ro #doesn't work on MacOS only for Linux
+    restart: unless-stopped
+    expose:
+      - 8080
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+    logging: *default-logging
+
+
+
+######################################################################################
+#####################           GRAFANA CONTAINER              #######################
+######################################################################################
+
+
+
+  grafana:
+    image: grafana/grafana:7.3.7
+    container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SECURITY_DISABLE_BRUTE_FORCE_LOGIN_PROTECTION=true
+      - postgres_host=${DB_HOST:-postgres}
+      - postgres_user=${DB_USER:-graph-node}
+      - postgres_pass=${DB_PASS:-db-password}
+      - postgres_db=${GRAPH_NODE_DB_NAME:-graph-node}
+      - VIRTUAL_HOST=${GRAFANA_HOST}
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST=${GRAFANA_HOST}
+    restart: unless-stopped
+    expose:
+      - 3000
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+    logging: *default-logging
+
+
+
+######################################################################################
+#####################          PUSHGATEWAY CONTAINER           #######################
+######################################################################################
+
+
+
+  pushgateway:
+    image: prom/pushgateway:v1.3.0
+    container_name: pushgateway
+    restart: unless-stopped
+    expose:
+      - 9091
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+    logging: *default-logging
+
+
+
+######################################################################################
+#####################              CADDY CONTAINER             #######################
+######################################################################################
+
+
+
+  caddy:
+    image: stefanprodan/caddy
+    container_name: caddy
+    ports:
+      - "3000:3000"
+      #- "8000:8000"
+      #- "8001:8001"
+      - "9090:9090"
+      - "9093:9093"
+      - "9091:9091"
+    volumes:
+      - ./caddy:/etc/caddy
+    environment:
+      - ADMIN_USER=${ADMIN_USER:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+    restart: unless-stopped
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+    logging: *default-logging
+
+
+

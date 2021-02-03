@@ -1,0 +1,14 @@
+#!/bin/bash
+
+DIR=$PWD
+
+FILE=$DIR/query-logs
+if [ ! -f "$FILE" ]; then
+    mkdir -p $DIR/query-logs
+fi
+
+FILENAME=$DIR/query-logs/$(date +"%Y_%m_%d_%I_%M_%p").jsonl
+
+journalctl CONTAINER_NAME=query-node --since="$1" --no-pager | grep 'Query timing' | $DIR/runqlog process --text --output /dev/stdout | sed 's/\\\\\\/\\/g' |  sed 's/time/effort/g' > $FILENAME
+
+echo "Saved the output as $FILENAME"

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -eEuo pipefail
+
+cd "$(dirname "${0}")/.."
+# shellcheck source=/dev/null
+# source ./.env.local
+docker exec -it "${1}" "${2:-/bin/bash}" || true

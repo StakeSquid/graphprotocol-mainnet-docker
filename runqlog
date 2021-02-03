@@ -1,0 +1,10 @@
+#!/bin/bash
+
+DIR=$PWD
+
+FILE=$DIR/qlog/target/release/qlog
+if [ ! -f "$FILE" ]; then
+    docker run --rm --name qlog -v $DIR/qlog:/code rust:latest bash -c '(cd /code; cargo install --bins --path .)'
+fi
+
+$DIR/qlog/target/release/qlog "$@"
