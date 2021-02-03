@@ -1,4 +1,4 @@
-graphprotocol-infrastructure
+Graph Protocol Mainnet Docker Compose
 ========
 
 A monitoring solution for hosting a graph node on a single Docker host with [Prometheus](https://prometheus.io/), [Grafana](http://grafana.org/), [cAdvisor](https://github.com/google/cadvisor),
