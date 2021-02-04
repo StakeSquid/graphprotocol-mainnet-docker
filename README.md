@@ -26,80 +26,34 @@ Note that you **need** access to an **Ethereum Archive Node that supports EIP-18
 
 The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to sign up using our [referral link](https://hetzner.cloud/?ref=x2opTk2fg2fM) -- you can save 20€ and we get 10€ bonus for setting up some testnet nodes to support the network growth. :)
 
+### Ethereum Archive Node Specs
+|                       | Minimum Specs    | Recommended Specs | Maxed out Specs   |
+|-----------------------|------------------|-------------------|-------------------|
+| CPUs                  | 16 vcore         | 32 vcore          | 64 vcore          |
+| RAM                   | 32 GB            | 64 GB             | 128 GB            |
+| Storage               | 1.5 TB SATA SSD  | 7 TB NVME         | 7 TB NVME RAID 10 |
 
-## Minimum Specs
-The minimum specs/requirements listed here come from our own experience during the testnet.
-Your mileage may vary, so take this with a grain of salt and be ready to upgrade. :)
-This will definitely get you running, but not for long, assuming you want to serve data for more than a few heavy-weight subgraphs in the future. 
-
-
-- **Ethereum Archive Node** (not included)
-
-   - 16 vcore CPU
-
-   - 64 GB RAM
-
-   - 7 TB SATA SSD storage at the very minimum -- will grow over time, HDDs won't work
-   
-
-- **Graph Protocol Infrastructure** (this repository)
-
-   - 16 vcore CPU
-   
-   - 32 GB RAM
-   
-   - 300 GB SATA SSD storage (HDDs may work, but NOT recommended)
-   
+*Note: The 1.5 TB requirement for storage is the absolute minimum, it needs to be at least SATA SSD as it doesn't work with spinning disks. Also, only TurboGETH has that little space required. OE, Parity and GETH all take 7 TB at the very minimum, and expanding pretty fast.*
 
 
+### Graph Protocol Infrastructure Specs
 
-## Recommended Specs
-The recommended specs/requirements listed here come from our own experience during the testnet.
-Your mileage may vary, so take this with a grain of salt and be ready to upgrade. :)
-This is a good setup for those that want to dip more than their feet in the indexing waters. Can serve a decent number of subgraphs, but it's limited by the CPU if too many requests flow through.
+|         | Minimum Specs   | Recommended Specs | Maxed out Specs   |
+|---------|-----------------|-------------------|-------------------|
+| CPU     | 16 vcore        | 64 vcore          | 128 vcore         |
+| RAM     | 32 GB           | 128 GB            | 256/512 GB        |
+| Storage | 300 GB SATA SSD | 2 TB NVME         | 4 TB NVME RAID 10 |
 
-- **Ethereum Archive Node** (not included)
+*The specs/requirements listed here come from our own experience during the testnet.*
 
-   - 32 vcore CPU
-   
-   - 128 GB RAM
-   
-   - 7 TB NVME
-   
+*Your mileage may vary, so take this with a grain of salt and be ready to upgrade.* :)
 
-- **Graph Protocol Infrastructure** (this repository)
+- The minimum specs will definitely get you running, but not for long, assuming you want to serve data for more than a few heavy-weight subgraphs in the future. 
 
-   - 64 vcore CPU
-   
-   - 128 GB RAM
-   
-   - 2 TB NVME
-   
+- The recommended specs are a good setup for those that want to dip more than their feet in the indexing waters. Can serve a decent number of subgraphs, but it's limited by the CPU if too many requests flow through.
 
+- The ideal specs should be enough to serve data for all of the subgraphs in existence using one machine to rule them all.
 
-
-## Ideal Specs
-The ideal specs/requirements listed here come from our own experience during the testnet.
-Your mileage may vary, so take this with a grain of salt and be ready to upgrade. :)
-This should be enough to serve data for all of the subgraphs in existence using one machine to rule them all.
-
-- **Ethereum Archive Node** (not included)
-
-   - 32 vcore CPU
-   
-   - 128 GB RAM
-   
-   - 7 TB NVME RAID 10
-   
-
-- **Graph Protocol Infrastructure** (this repository)
-
-   - 128 vcore CPU
-   
-   - 512 GB RAM
-   
-   - 4 TB NVME RAID 10
-   
 
 
 ## Archive node options
