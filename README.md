@@ -36,6 +36,27 @@ The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to si
 *Note: The 1.5 TB requirement for storage is the absolute minimum, it needs to be at least SATA SSD as it doesn't work with spinning disks. Also, only TurboGETH has that little space required. OE, Parity and GETH all take 7 TB at the very minimum, and expanding pretty fast.*
 
 
+### Archive node options
+
+| Self-hosted         | Trace API | Stable | EIP-1898 | Min Disk Size |
+|---------------------|-----------|--------|----------|---------------|
+| OpenEthereum 3.0.x  | yes ✔️    | no ⚠️  | no ☠️    | 7 TB          |
+| OpenEthereum 3.1    | yes ✔️    | no ⚠️  | yes ✔️   | 7 TB          |
+| Parity 2.5.13       | yes ✔️    | yes ✔️ | no ☠️    | 7 TB          |
+| GETH                | no ⚠️     | yes ✔️ | yes ✔️   | 7 TB          |
+| TurboGETH           | no ⚠️     | no ⚠️  | yes ✔️   | 1.5 TB        |
+
+
+| Service Providers (WIP)  |
+|--------------------------|
+| Infura                   |
+| Alchemy                  |
+| ChainStack               |
+| Quiknode                 |
+| Ankr                     |
+
+
+
 ### Graph Protocol Infrastructure Specs
 
 |         | Minimum Specs   | Recommended Specs | Maxed out Specs   |
@@ -54,52 +75,6 @@ The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to si
 
 - The ideal specs should be enough to serve data for all of the subgraphs in existence using one machine to rule them all.
 
-
-
-## Archive node options
-
-### Self hosted options:
-- **OpenEthereum 3.1**
-
-   - Trace API support? -- yes ✔️
-   
-   - Stable? -- not quite ⚠️
-   
-   - EIP 1898 support -- yes ✔️
-   
-- **Parity 2.5.13**
-
-   - Trace API support? -- yes ✔️
-   
-   - Stable? -- yes ✔️
-   
-   - EIP 1898 support -- no ☠️
-   
-- **GETH**
-
-   - Trace API support? -- no ⚠️
-   
-   - Stable? -- yes ✔️
-   
-   - EIP 1898 support -- yes ✔️
-   
-- **TurboGETH**
-
-   - Trace API support? -- no ⚠️
-   
-   - Stable? -- relatively ⚠️
-   
-   - EIP 1898 support -- yes ✔️
-   
-
-
-
-### Hosting providers options (WIP):
-- **Infura**
-- **Alchemy**
-- **Ankr**
-- **ChainStack**
-- **Quiknode**
 
 
 
