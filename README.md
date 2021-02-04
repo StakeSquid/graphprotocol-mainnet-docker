@@ -114,7 +114,7 @@ Run the following commands to clone the repository and set everything up:
 
 ```bash
 git clone git@github.com:StakeSquid/graphprotocol-mainnet-docker.git
-cd graphprotocol-infrastructure
+cd graphprotocol-mainnet-docker
 git submodule init
 git submodule update
 git config user.email "you@example.com"
