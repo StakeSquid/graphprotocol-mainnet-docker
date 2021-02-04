@@ -73,9 +73,9 @@ The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to si
 
 - The recommended specs are a good setup for those that want to dip more than their feet in the indexing waters. Can serve a decent number of subgraphs, but it's limited by the CPU if too many requests flow through.
 
-- The ideal specs rule of thumb is basically more is better. More CPUs, more RAM, faster disks. There is never enough. IT...NEEDS....MORE!!!!11
+- The maxed out specs rule of thumb is basically more is better. More CPUs, more RAM, faster disks. There is never enough. IT...NEEDS....MORE!!!!11
 
-
+Closing note, regarding the specs mentioned above: ideally, they need to scale up proportional with your stake in the protocol. 
 
 
 
