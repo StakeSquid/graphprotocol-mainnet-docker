@@ -94,19 +94,6 @@ apt install docker.io docker-compose httpie git
 
 ```
 
-## Setting up GitHub with SSH keys
-
-To use this repository you should add a ssh key to your account that you generate on the server. Follow instruction for this [here](https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account).
-
-Basically what you have to enter on the server is the following and press enter every time to use defaults. The email address can be fake.
-
-```bash
-ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
-cat ~/.ssh/id_rsa.pub
-
-```
-
-The result is your public key and looks like this "ssh-rsa AAAA...KVQ==" and you have to copy this to the [Github settings](https://github.com/settings/ssh/new) to create a new ssh key. Enter any title you like.
 
 ## Install from scratch
 
@@ -122,6 +109,9 @@ git config user.name "Example User"
 git branch --set-upstream-to=origin/master
 
 ```
+
+
+
 
 ## Install or Update the Agora and Qlog modules
 
@@ -142,6 +132,8 @@ To use qlog or agora execute the `runqlog` or `runagora` scripts in the root of 
 
 ```
 
+
+
 This will use the compiled qlog tool and extract queries since yesterday or 5 hours ago and store them to the query-logs folder.
 
 ```bash
@@ -149,6 +141,8 @@ This will use the compiled qlog tool and extract queries since yesterday or 5 ho
 ./extract_queries_since "5 hours ago"
 
 ```
+
+
 
 To make journald logs persistent across restarts you need to create a folder for the logs to store in like this:
 ```
