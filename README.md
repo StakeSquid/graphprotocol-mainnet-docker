@@ -184,7 +184,7 @@ You need a wallet with a seed phrase that is registered as your operator wallet.
 
 *You need a 12-word, or 15-word mnemonic phrase in order for it to work.*
 
-To make yourself a mnemonic eth wallet you can go to this [website](https://iancoleman.io/bip39/) and just press generate. You get a see phrase in the input field labeled BIP39 Mnemonic. Scroll down a bit and find the select field labeled Coin. Select ETH as network in the dropdown and you find your address, public key and private key in the first row of the table if you scroll down the page in the section with the heading "Derived Addresses". You can import the wallet using the private key into Metamask.
+To make yourself a mnemonic eth wallet you can go to this [website](https://iancoleman.io/bip39/) and just press generate. You get a seed phrase in the input field labeled BIP39 Mnemonic. Scroll down a bit and find the select field labeled Coin. Select ETH as network in the dropdown and you find your address, public key and private key in the first row of the table if you scroll down the page in the section with the heading "Derived Addresses". You can import the wallet using the private key into Metamask.
 
 
 ## Run
