@@ -134,7 +134,7 @@ services:
       postgres_pass: ${DB_PASS:-db-password}
       postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com}'
-      ethereum: '${ETHEREUM_RPC}'
+      ethereum: 'mainnet:${ETHEREUM_RPC}'
       node_role: index-node
       node_id: index_node_0
       BLOCK_INGESTOR: index_node_0
@@ -173,7 +173,7 @@ services:
       postgres_pass: ${DB_PASS:-db-password}
       postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com}'
-      ethereum: '${ETHEREUM_RPC}'
+      ethereum: 'mainnet:${ETHEREUM_RPC}'
       node_role: index-node
       node_id: index_node_1
       BLOCK_INGESTOR: index_node_0
@@ -209,7 +209,7 @@ services:
       postgres_pass: ${DB_PASS:-db-password}
       postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com}'
-      ethereum: '${ETHEREUM_RPC}'
+      ethereum: 'mainnet:${ETHEREUM_RPC}'
       node_role: query-node
       node_id: query_node_0
       RUST_LOG: INFO
@@ -217,9 +217,6 @@ services:
       GRAPH_LOG_QUERY_TIMING: gql
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
-      VIRTUAL_HOST: ${QUERY_HOST}
-      VIRTUAL_PORT: 8000
-      LETSENCRYPT_HOST: ${QUERY_HOST}
       GRAPH_LOG_QUERY_TIMING: ${GRAPH_LOG_QUERY_TIMING:-gql}
     restart: unless-stopped
     logging:
@@ -503,27 +500,27 @@ services:
 
 
 
-  caddy:
-    image: stefanprodan/caddy
-    container_name: caddy
-    ports:
-      - "3000:3000"
-      #- "8000:8000"
-      #- "8001:8001"
-      - "9090:9090"
-      - "9093:9093"
-      - "9091:9091"
-    volumes:
-      - ./caddy:/etc/caddy
-    environment:
-      - ADMIN_USER=${ADMIN_USER:-admin}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
-    restart: unless-stopped
-    networks:
-      - monitor-net
-    labels:
-      org.label-schema.group: "monitoring"
-    logging: *default-logging
+#  caddy:
+#    image: stefanprodan/caddy
+#    container_name: caddy
+#    ports:
+#      - "3000:3000"
+#      #- "8000:8000"
+#      #- "8001:8001"
+#      - "9090:9090"
+#      - "9093:9093"
+#      - "9091:9091"
+#    volumes:
+#      - ./caddy:/etc/caddy
+#    environment:
+#      - ADMIN_USER=${ADMIN_USER:-admin}
+#      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+#    restart: unless-stopped
+#    networks:
+#      - monitor-net
+#    labels:
+#      org.label-schema.group: "monitoring"
+#    logging: *default-logging
 
 
 
