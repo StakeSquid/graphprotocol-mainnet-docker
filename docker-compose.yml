@@ -202,7 +202,7 @@ services:
 ######################################################################################
 
 
-  query-node:
+  query-node-0:
     image: graphprotocol/graph-node:v0.21.1
     container_name: query-node-0
     environment:
