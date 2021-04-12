@@ -49,8 +49,9 @@ services:
     image: ghcr.io/graphprotocol/indexer-service:v0.10.0
     container_name: indexer-service
     depends_on:
-      - index-node
-      - query-node
+      - index-node-0
+      - index-node-1
+      - query-node-0
       - indexer-agent
     environment:
       INDEXER_SERVICE_MNEMONIC: ${OPERATOR_SEED_PHRASE}
@@ -58,8 +59,8 @@ services:
       INDEXER_SERVICE_PORT: 7600
       INDEXER_SERVICE_ETHEREUM_NETWORK: mainnet
       INDEXER_SERVICE_ETHEREUM: ${ETHEREUM_RPC}
-      INDEXER_SERVICE_GRAPH_NODE_QUERY_ENDPOINT: http://query-node:8000
-      INDEXER_SERVICE_GRAPH_NODE_STATUS_ENDPOINT: http://index-node:8030/graphql
+      INDEXER_SERVICE_GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
+      INDEXER_SERVICE_GRAPH_NODE_STATUS_ENDPOINT: http://index-node-0:8030/graphql
       INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT: ${SUBGRAPH_ENDPOINT:-https://gateway.network.thegraph.com/network}
       INDEXER_SERVICE_POSTGRES_HOST: postgres2
       INDEXER_SERVICE_POSTGRES_USERNAME: ${DB_USER:-graph-node}
@@ -92,8 +93,9 @@ services:
     image: ghcr.io/graphprotocol/indexer-agent:v0.10.0
     container_name: indexer-agent
     depends_on:
-      - index-node
-      - query-node
+      - index-node-0
+      - index-node-1
+      - query-node-0
     expose:
       - 8000
       - 7300
@@ -104,9 +106,9 @@ services:
       INDEXER_AGENT_INJECT_DAI: "true"
       INDEXER_AGENT_ETHEREUM_NETWORK: mainnet
       INDEXER_AGENT_ETHEREUM: ${ETHEREUM_RPC}
-      INDEXER_AGENT_GRAPH_NODE_QUERY_ENDPOINT: http://query-node:8000
-      INDEXER_AGENT_GRAPH_NODE_STATUS_ENDPOINT: http://index-node:8030/graphql
-      INDEXER_AGENT_GRAPH_NODE_ADMIN_ENDPOINT: http://index-node:8020
+      INDEXER_AGENT_GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
+      INDEXER_AGENT_GRAPH_NODE_STATUS_ENDPOINT: http://index-node-0:8030/graphql
+      INDEXER_AGENT_GRAPH_NODE_ADMIN_ENDPOINT: http://index-node-0:8020
       INDEXER_AGENT_PUBLIC_INDEXER_URL: 'https://${INDEX_HOST}/'
       INDEXER_AGENT_INDEXER_GEO_COORDINATES: ${GEO_COORDINATES:-60.16952 24.93545}
       INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT: https://gateway.network.thegraph.com/network
@@ -125,7 +127,7 @@ services:
 ######################################################################################
 
 
-  index-node:
+  index-node-0:
     image: graphprotocol/graph-node:v0.21.1
     container_name: index-node-0
     environment:
