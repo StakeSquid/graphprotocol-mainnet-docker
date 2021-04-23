@@ -5,8 +5,9 @@ In case of errors you will have to understand roughly what happens in the script
 
 ***There is no customer support available.***
 
-Note: The scripts assume you are running ubuntu.
-IMPORTANT: If you have a custom ssh port, change it in `2_configure.sh`
+*Note:* The scripts assume you are running ubuntu.
+
+***IMPORTANT:*** If you have a custom ssh port, change it in `2_configure.sh`
 
 ```
 ./1_compile.sh
