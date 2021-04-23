@@ -2,8 +2,9 @@
 
 apt install -y ufw
 ufw allow ssh
-ufw allow from 172.0.0.0/8 to any port 5432
-ufw allow from 192.168.0.0/16 to any port 5432
+ufw allow from 172.0.0.0/8
+ufw allow from 192.168.0.0/16
+ufw allow from 127.0.0.0./8
 
 echo "important: enabled a firewall"
 ufw enable
