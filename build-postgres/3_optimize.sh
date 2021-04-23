@@ -4,73 +4,89 @@ apt install tuned
 
 SYSCTL=/sbin/sysctl
 
-echo "# add the output of this script to /etc/sysctl.conf,"
-echo "# and then, as root, run"
+echo -e "\e[1;31m ################################################################################ \e[0m"
+echo -e "\e[1;31m ################################################################################ \e[0m"
+echo -e "\e[1;31m ################################################################################ \e[0m"
 echo
-echo "# sysctl -p /etc/sysctl.conf"
 echo
-echo "# to load change the kernel settings for these parameters."
+
+echo -e "# add the output of this script to \e[1;31m /etc/sysctl.conf, \e[0m"
+echo -e "# and then, as root, run the following command:"
+echo     
+echo -e "\e[1;33m  sysctl -p /etc/sysctl.conf \e[0m"
+echo
+echo -e "# to load change the kernel settings for these parameters."
+
+echo
+echo
+echo -e "\e[1;31m ################################################################################ \e[0m"
+echo -e "\e[1;31m ################################################################################ \e[0m"
+echo -e "\e[1;31m ################################################################################ \e[0m"
+echo
 echo
 
 PAGE_SIZE=`getconf PAGE_SIZE`
 
-echo "# page size is: $PAGE_SIZE"
+echo -e "# page size is: \e[1;31m $PAGE_SIZE \e[0m"
 
 NUM_PHYS_PAGES=`getconf _PHYS_PAGES`
 
-echo "# number of physical pages on this box: $NUM_PHYS_PAGES"
+echo -e "# number of physical pages on this box: \e[1;31m $NUM_PHYS_PAGES \e[0m"
+
 
 CURR_SHMALL=`$SYSCTL -n kernel.shmall`
 PREF_SHMALL=`expr $NUM_PHYS_PAGES / 2`
 
-echo "# kernel.shmall should be half of the number of pages. Current kernel.shmall, in pages, is: $CURR_SHMALL"
+echo 
+echo -e "# kernel.shmall should be half of the number of pages. Current kernel.shmall, in pages, is: \e[1;31m $CURR_SHMALL \e[0m"
 echo "# kernel.shmall should be:"
+echo -e "\e[1;33m kernel.shmall = $PREF_SHMALL \e[0m"
 echo
-echo "kernel.shmall = $PREF_SHMALL"
+echo
 echo
 
 CURR_SHMMAX=`$SYSCTL -n kernel.shmmax`
 PREF_SHMMAX=`expr $PREF_SHMALL \* $PAGE_SIZE`
 
-echo "# kernel.shmmax should be half of available RAM, in kB. Current kernel.shmmax, in kB, is: $CURR_SHMMAX"
+echo -e "# kernel.shmmax should be half of available RAM, in kB. Current kernel.shmmax, in kB, is: \e[1;31m $CURR_SHMMAX \e[0m"
 echo "# kernel.shmmax should be:"
+echo -e "\e[1;33m kernel.shmmax = $PREF_SHMMAX \e[0m"
 echo
-echo "kernel.shmmax = $PREF_SHMMAX"
+echo
 echo
 
-# CURR_SHMMIN=`$SYSCTL -n kernel.shmmin`  # XXX: does not exist on linux
-# CURR_SHMSEG=`$SYSCTL -n kernel.shmseg`  # XXX: does not exist on linux
 
-CURR_SHMMNI=`$SYSCTL -n kernel.shmmni`
+echo "# add these too:"
+echo -e "\e[1;33m net.core.rmem_max = 4194304 \e[0m"
+echo -e "\e[1;33m net.core.wmem_max = 4194304 \e[0m"
+echo
+echo
+echo
 
-echo "# kernel.shmmni is usually set to a sane amount on Linux. Currently, it is: $CURR_SHMMNI"
+ 
+echo "# the following multiplied by the size of hugepages (on AMD EPYC = 2 MB) should be slightly bigger" 
+echo "# than your shared_buffers setting in postgresql.conf (8 GB on systems with 32 GB memory in total)."
+echo -e "\e[1;33m vm.nr_hugepages = 5000 \e[0m"
 
-# CURR_SEMMNI=`$SYSCTL -n kernel.semmni`  # XXX: does not exist on linux
-# CURR_SHMMNI=`$SYSCTL -n kernel.semmns`  # XXX: does not exist on linux
-# CURR_SHMMSL=`$SYSCTL -n kernel.semmsl`  # XXX: does not exist on linux
-# CURR_SHMMSL=`$SYSCTL -n kernel.semmap`  # XXX: does not exist on linux
-# CURR_SHMMSL=`$SYSCTL -n kernel.semmvx`  # XXX: does not exist on linux
+echo
+echo
+echo -e "\e[1;31m ################################################################################ \e[0m"
+echo -e "\e[1;31m ################################################################################ \e[0m"
+echo -e "\e[1;31m ################################################################################ \e[0m"
+echo
+echo
 
-CURR_SEM=`$SYSCTL -n kernel.sem`
+echo -e "# add the following lines to \e[1;31m /etc/security/limits.conf \e[0m"
 
-echo "# kernel.sem usually has sane defauls. They are currently: $CURR_SEM"
+echo -e "\e[1;33m  postgres soft memlock 10000000 \e[0m"
+echo -e "\e[1;33m  postgres hard memlock 10000000 \e[0m"
 
-echo "net.core.rmem_max = 4194304"
-echo "net.core.wmem_max = 4194304"
-
-echo "the following multiplied by the size of hugepages (on AMD EPYC = 2 MB) should be slightly bigger" 
-echo "than your shared_buffers setting in postgresql.conf (8 GB on systems with 32 GB memory in total)."
-echo "vm.nr_hugepages = 5000"
-
-
-echo "add the following lines to /etc/security/limits.conf"
-
-echo "postgres soft memlock 10000000"
-echo "postgres hard memlock 10000000"
+echo
+echo
 
 # tune cpu parameters
-echo "on bare metal machines set the cpu performance profile as follows:"
-echo "tuned-adm profile throughput-performance"
+echo -e "# on bare metal machines set the cpu performance profile as follows:"
+echo -e "\e[1;33m  tuned-adm profile throughput-performance \e[0m"
 
 # reduce swappiness
 echo 0 > /proc/sys/vm/swappiness
