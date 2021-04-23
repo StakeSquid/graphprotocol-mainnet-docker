@@ -42,6 +42,7 @@ The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to si
 |---------------------|-----------|--------|----------|---------------|
 | OpenEthereum 3.0.x  | yes ✔️    | no ⚠️  | yes ✔️   | 7 TB          |
 | OpenEthereum 3.1    | yes ✔️    | no ⚠️  | no ☠️    | 7 TB          |
+| OpenEthereum 3.2    | yes ✔️    | TBD ⚠️ | yes ✔️   | 7 TB          |
 | Parity 2.5.13       | yes ✔️    | yes ✔️ | no ☠️    | 7 TB          |
 | GETH                | no ⚠️     | yes ✔️ | yes ✔️   | 7 TB          |
 | TurboGETH           | no ⚠️     | no ⚠️  | yes ✔️   | 1.5 TB        |
