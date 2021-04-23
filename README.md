@@ -167,9 +167,8 @@ Under "Service > My Domains > Manage Domain > Manage Freenom DNS" you can add mo
 
 Create 3 subdomains, named as follows:
 ```
-index.domain.whatever
-query.domain.whatever
-dashboard.domain.whatever
+index.sld.tld
+dashboard.sld.tld
 ```
 
 ## Create a mnemonic
@@ -183,40 +182,35 @@ To make yourself a mnemonic eth wallet you can go to this [website](https://ianc
 
 ## Run
 
-In the root of the repo, create a file called `start.sh` and insert the following lines in it:
+In the root of the repo, edit the file called `start` and add your values to the following envs:
 
 ```bash
-EMAIL=my@email \
-INDEX_HOST=index.domain.whatever \
-QUERY_HOST=query.domain.whatever \
-GRAFANA_HOST=dashboard.domain.whatever \
-ADMIN_USER=admin \
-ADMIN_PASSWORD=change_me \
-DB_HOST=postgres \
-AGENT_DB_HOST=postgres2 \
-DB_USER=user \
-DB_PASS=db-password \
-AGENT_DB_NAME=indexer-agent \
-GRAPH_NODE_DB_NAME=graph-node \
-ETHEREUM_RPC="<ETH_RPC_URL>" \
-OPERATOR_SEED_PHRASE="<12 or 15 word private key seed phrase>" \
-STAKING_WALLET_ADDRESS=<0x...> \
-GEO_COORDINATES="<longitude latitude>" \
+EMAIL=email@domain.com \
+INDEX_HOST=index.sld.tld \
+GRAFANA_HOST=grafana.sld.tld \
+ADMIN_USER=your_user \
+ADMIN_PASSWORD=your_password \
+DB_USER=your_db_user \
+DB_PASS=your_db_password \
+AGENT_DB_NAME=your_agent_db_name \
+GRAPH_NODE_DB_NAME=your_graphnode_db_name \
+ETHEREUM_RPC_0="http://ip:port" \
+ETHEREUM_RPC_1="http://ip:port" \
+TXN_RPC="http://ip:port" \
+OPERATOR_SEED_PHRASE="12 or 15 word mnemonic" \
+STAKING_WALLET_ADDRESS=0xAdDreSs \
+GEO_COORDINATES="69.420 69.420" \
+#QUERY_FEE_REBATE_CLAIM_THRESHOLD=0 \
 docker-compose up -d --remove-orphans --build $@
-
 ```
 
 **To start the software, just do `bash start.sh`**
 
 `EMAIL` is only used as contact to create SSL certificates. Usually it doesn't receive any emails but is required by the certificate issuer.
 
-`QUERY_HOST`, `INDEX_HOST` and `GRAFANA_HOST` should point to the subdomains created earlier.
+`INDEX_HOST` and `GRAFANA_HOST` should point to the subdomains created earlier.
 
 `ADMIN_USER` and `ADMIN_PASSWORD` will be used by Grafana, Prometheus and AlertManager.
-
-`DB_HOST` - do not modify this unless you're running native (non-dockerized) PostgreSQL.
-
-`AGENT_DB_HOST` - do not modify this unless you're running native (non-dockerized) PostgreSQL.
 
 `DB_USER` and `DB_PASS` will be used for initializing the PostgreSQL Databases (both index/query DB and indexer agent/service DB).
 
@@ -224,7 +218,9 @@ docker-compose up -d --remove-orphans --build $@
 
 `GRAPH_NODE_DB_NAME` is the name of the database used by the Index/Query nodes.
 
-`ETHEREUM_RPC` should be your Ethereum Archive node endpoint. This will be used both for the index node ingestor, as well as the indexer agent/service.
+`ETHEREUM_RPC_0` and `ETHEREUM_RPC_1` should be your Ethereum Archive node endpoint. `RPC_0` will be used by `index-node-0` and `query-node-0` and `RPC_1` will be used by `index-node-1`
+
+`TXN_RPC` is your ETH RPC used by Indexer agent/service nodes. This can be a full or fast node, or archive, up to you.
 
 `OPERATOR_SEED_PHRASE` should belong to the operator wallet mnemonic phrase.
 
@@ -232,12 +228,16 @@ docker-compose up -d --remove-orphans --build $@
 
 To find out the `GEO_COORDINATES` you can search for an ip location website and check your server exact coordinates.
 
-In case something goes wrong try to add `--force-recreate` at the end of the command, eg.: `bash start.sh --force-recreate`.
+Uncomment and edit `QUERY_FEE_REBATE_CLAIM_THRESHOLD` if you want to stop your agent from automatically claiming query fee rebates below a certain GRT threshold.
+
+***YOU MUST SET ALL THE ENVS ABOVE EVEN IF SOME OF THEM WILL HAVE THE SAME VALUES (eg. RPC_0 RPC_1 and TXN_RPC)***
+
+In case something goes wrong try to add `--force-recreate` at the end of the command, eg.: `bash start --force-recreate <container_name>`.
 
 Containers:
 
-* Graph Node (query node) `https://query.mydomain.tk`
-* Graph Node (index node) `https://index.mydomain.tk`
+* Graph Node (query node)
+* Graph Node (index node)
 * Indexer Agent
 * Indexer Service
 * Indexer CLI
