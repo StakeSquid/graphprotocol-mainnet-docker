@@ -1,0 +1,15 @@
+EMAIL=email@domain.com \
+INDEX_HOST=index.sld.tld \
+GRAFANA_HOST=grafana.sld.tld \
+ADMIN_USER=your_user \
+ADMIN_PASSWORD=your_password \
+DB_USER=your_db_user \
+DB_PASS=your_db_password \
+AGENT_DB_NAME=your_agent_db_name \
+GRAPH_NODE_DB_NAME=your_graphnode_db_name \
+ETHEREUM_RPC="http://ip:port" \
+OPERATOR_SEED_PHRASE="12 or 15 word mnemonic" \
+STAKING_WALLET_ADDRESS=0xAdDreSs \
+GEO_COORDINATES="69.420 69.420" \
+#QUERY_FEE_REBATE_CLAIM_THRESHOLD=0 \
+docker-compose up -d --remove-orphans --build $@
