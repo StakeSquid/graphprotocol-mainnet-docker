@@ -78,8 +78,8 @@ echo
 
 echo -e "# add the following lines to \e[1;31m /etc/security/limits.conf \e[0m"
 
-echo -e "\e[1;33m  postgres soft memlock 10000000 \e[0m"
-echo -e "\e[1;33m  postgres hard memlock 10000000 \e[0m"
+echo -e "\e[1;33m  postgres soft memlock <number equal or more than shared mem in bytes> \e[0m"
+echo -e "\e[1;33m  postgres hard memlock <number equal or more than shared mem in bytes> \e[0m"
 
 echo
 echo
