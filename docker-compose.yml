@@ -129,7 +129,7 @@ services:
 
 
   index-node-0:
-    image: graphprotocol/graph-node:v0.21.1
+    image: graphprotocol/graph-node:v0.22.0
     container_name: index-node-0
     environment:
       postgres_host: ${DB_HOST:-postgres}
@@ -149,6 +149,7 @@ services:
       GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE: 200
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
+      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-"true"}
     restart: unless-stopped
     expose:
       - 8001
@@ -167,7 +168,7 @@ services:
 
 
   index-node-1:
-    image: graphprotocol/graph-node:v0.21.1
+    image: graphprotocol/graph-node:v0.22.0
     container_name: index-node-1
     environment:
       postgres_host: ${DB_HOST:-postgres}
@@ -187,6 +188,7 @@ services:
       GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE: 200
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
+      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-"true"}
     restart: unless-stopped
     expose:
       - 8001
@@ -204,7 +206,7 @@ services:
 
 
   query-node-0:
-    image: graphprotocol/graph-node:v0.21.1
+    image: graphprotocol/graph-node:v0.22.0
     container_name: query-node-0
     environment:
       postgres_host: ${DB_HOST:-postgres}
@@ -221,6 +223,7 @@ services:
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
       GRAPH_LOG_QUERY_TIMING: ${GRAPH_LOG_QUERY_TIMING:-gql}
+      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-"true"}
     restart: unless-stopped
     expose:
       - 8001
