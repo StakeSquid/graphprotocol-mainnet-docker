@@ -180,6 +180,7 @@ services:
       node_id: index_node_1
       BLOCK_INGESTOR: index_node_0
       RUST_LOG: INFO
+      GRAPH_LOG: DEBUG
       STORE_CONNECTION_POOL_SIZE: 25
       ETHEREUM_BLOCK_BATCH_SIZE: 200
       ETHEREUM_RPC_MAX_PARALLEL_REQUESTS: 64
@@ -194,6 +195,7 @@ services:
       - 8040
     networks:
       - monitor-net
+    logging: *default-logging
 
 
 ######################################################################################
@@ -220,8 +222,6 @@ services:
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
       GRAPH_LOG_QUERY_TIMING: ${GRAPH_LOG_QUERY_TIMING:-gql}
     restart: unless-stopped
-    logging:
-        driver: "journald"
     expose:
       - 8001
       - 8000
@@ -230,7 +230,8 @@ services:
       - 8040
     networks:
       - monitor-net
-
+    logging:
+        driver: "journald"
 
 ######################################################################################
 #####################          NGINX PROXY CONTAINER           #######################
