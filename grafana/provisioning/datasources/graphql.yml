@@ -1,0 +1,11 @@
+---
+apiVersion: 1
+datasources:
+  - access: proxy
+    editable: true
+    name: graphql
+    orgId: 1
+    type: fifemon-graphql-datasource
+    url: $subgraph_endpoint
+    version: 1
+

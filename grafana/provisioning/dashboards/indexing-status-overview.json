@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 11,
-  "iteration": 1604946143849,
+  "id": 1,
+  "iteration": 1617657839108,
   "links": [],
   "panels": [
     {
@@ -1188,6 +1188,7 @@
     "list": [
       {
         "datasource": "Elasticsearch",
+        "error": null,
         "filters": [],
         "hide": 0,
         "label": "",
@@ -1226,7 +1227,7 @@
     ]
   },
   "timezone": "",
-  "title": "Indexing Status Split",
-  "uid": "7rkuDImZk",
-  "version": 53
+  "title": "Indexing Status Overview",
+  "uid": "indexing-status-overview",
+  "version": 2
 }

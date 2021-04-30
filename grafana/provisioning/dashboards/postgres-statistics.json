@@ -21,6 +21,12 @@
     {
       "columns": [],
       "datasource": "postgres",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 8,
@@ -94,11 +100,17 @@
       "timeShift": null,
       "title": "Active Queries",
       "transform": "table",
-      "type": "table"
+      "type": "table-old"
     },
     {
       "columns": [],
       "datasource": "postgres",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 5,
@@ -192,11 +204,17 @@
       "timeShift": null,
       "title": "Transactions until wraparound vacuum",
       "transform": "table",
-      "type": "table"
+      "type": "table-old"
     },
     {
       "columns": [],
       "datasource": "postgres",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 3,
@@ -294,11 +312,17 @@
       "timeShift": null,
       "title": "Autovacuum pressure",
       "transform": "table",
-      "type": "table"
+      "type": "table-old"
     },
     {
       "columns": [],
       "datasource": "postgres",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 9,
@@ -389,11 +413,17 @@
       "timeShift": null,
       "title": "Active locks",
       "transform": "table",
-      "type": "table"
+      "type": "table-old"
     },
     {
       "columns": [],
       "datasource": "postgres",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 8,
@@ -467,10 +497,10 @@
       "timeShift": null,
       "title": "Idle transactions",
       "transform": "table",
-      "type": "table"
+      "type": "table-old"
     }
   ],
-  "schemaVersion": 22,
+  "schemaVersion": 26,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -507,9 +537,6 @@
   },
   "timezone": "",
   "title": "Postgres Statistics",
-  "uid": "Mo6FxoiWz",
-  "variables": {
-    "list": []
-  },
-  "version": 4
+  "uid": "pgstats",
+  "version": 2
 }
