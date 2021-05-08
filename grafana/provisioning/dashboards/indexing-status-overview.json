@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
-  "iteration": 1617657839108,
+  "id": 12,
+  "iteration": 1620446705765,
   "links": [],
   "panels": [
     {
@@ -28,9 +28,9 @@
         },
         "overrides": []
       },
-      "fontSize": "80%",
+      "fontSize": "100%",
       "gridPos": {
-        "h": 12,
+        "h": 13,
         "w": 24,
         "x": 0,
         "y": 0
@@ -239,12 +239,12 @@
         },
         "overrides": []
       },
-      "fontSize": "80%",
+      "fontSize": "100%",
       "gridPos": {
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 13
       },
       "id": 34,
       "links": [],
@@ -439,111 +439,219 @@
       "type": "table-old"
     },
     {
-      "columns": [],
       "datasource": "postgres",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vid"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 28
+              },
+              {
+                "id": "displayName",
+                "value": "No."
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "block_hash"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 303
+              },
+              {
+                "id": "displayName",
+                "value": "Block Hash"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "subgraph_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 380
+              },
+              {
+                "id": "displayName",
+                "value": "Subgraph ID"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "deterministic"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              },
+              {
+                "id": "displayName",
+                "value": "Deterministic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "message"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "json-view"
+              },
+              {
+                "id": "displayName",
+                "value": "Error Message"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "handler"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Handler"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "created_at"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsUS"
+              },
+              {
+                "id": "displayName",
+                "value": "Date"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Error Message"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 533
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Handler"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 250
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Date"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 183
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Block Hash"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 215
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Subgraph ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 407
+              }
+            ]
+          }
+        ]
       },
-      "fontSize": "80%",
       "gridPos": {
-        "h": 8,
+        "h": 11,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 18
       },
       "id": 36,
-      "pageSize": null,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": true
+      "options": {
+        "showHeader": true,
+        "sortBy": []
       },
-      "styles": [
-        {
-          "alias": "Error message",
-          "align": "right",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": false,
-          "mappingType": 1,
-          "pattern": "message",
-          "preserveFormat": false,
-          "sanitize": false,
-          "thresholds": [],
-          "type": "string",
-          "unit": "short",
-          "valueMaps": []
-        },
-        {
-          "alias": "Subgraph ID",
-          "align": "center",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "subgraph_id",
-          "preserveFormat": false,
-          "thresholds": [],
-          "type": "string",
-          "unit": "none"
-        },
-        {
-          "alias": "No.",
-          "align": "left",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "vid",
-          "preserveFormat": false,
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Block number",
-          "align": "center",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "block_number",
-          "thresholds": [],
-          "type": "number",
-          "unit": "locale"
-        }
-      ],
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  vid, block_number, subgraph_id, message, handler\nFROM subgraphs.subgraph_error\nORDER BY vid DESC",
+          "rawSql": "SELECT\n  vid, encode(block_hash, 'hex') as Block_hash, subgraph_id, message, handler, deterministic, created_at\nFROM subgraphs.subgraph_error\nORDER BY vid DESC",
           "refId": "A",
           "select": [
             [
@@ -563,241 +671,341 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Fatal errors",
-      "transform": "table",
+      "transformations": [],
       "transparent": true,
-      "type": "table-old"
+      "type": "table"
     },
     {
-      "columns": [],
       "datasource": "postgres",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-blue",
+                "value": null
+              },
+              {
+                "color": "dark-green",
+                "value": 0
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "locale"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Schema"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 72
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Deployment Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 191
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Deployment ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 402
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Repository"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 127
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Node ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 106
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Health"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              },
+              {
+                "id": "unit",
+                "value": "string"
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "from": "",
+                    "id": 1,
+                    "text": "",
+                    "to": "",
+                    "type": 1,
+                    "value": "healthy"
+                  }
+                ]
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Failed"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 78
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "rgb(116, 117, 116)",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 0
+                    },
+                    {
+                      "color": "semi-dark-red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sync"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 43
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Last Block"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 91
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Entities"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 92
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Size"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 101
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Bytes"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 117
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Start Block"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 103
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Start Hash"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Last Hash"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reorg Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 93
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Curr Reorg Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 126
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max Reorg"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 88
+              }
+            ]
+          }
+        ]
       },
-      "fontSize": "80%",
       "gridPos": {
-        "h": 9,
+        "h": 14,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 29
       },
       "id": 37,
-      "pageSize": null,
-      "showHeader": true,
-      "sort": {
-        "col": 7,
-        "desc": true
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Bytes"
+          }
+        ]
       },
-      "styles": [
-        {
-          "alias": "No.",
-          "align": "left",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "vid",
-          "thresholds": [],
-          "type": "number",
-          "unit": "none"
-        },
-        {
-          "alias": "Deployment ID",
-          "align": "left",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "id",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Network",
-          "align": "center",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "network",
-          "preserveFormat": false,
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Health",
-          "align": "center",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "health",
-          "rangeMaps": [
-            {
-              "from": "",
-              "text": "",
-              "to": ""
-            }
-          ],
-          "thresholds": [],
-          "type": "string",
-          "unit": "short",
-          "valueMaps": []
-        },
-        {
-          "alias": "Node ID",
-          "align": "center",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "node_id",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "State",
-          "align": "center",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "failed",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short",
-          "valueMaps": [
-            {
-              "text": "working",
-              "value": "0"
-            },
-            {
-              "text": "stopped",
-              "value": "1"
-            }
-          ]
-        },
-        {
-          "alias": "Sync",
-          "align": "center",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "synced",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short",
-          "valueMaps": [
-            {
-              "text": "✔",
-              "value": "1"
-            },
-            {
-              "text": "✗",
-              "value": "0"
-            }
-          ]
-        },
-        {
-          "alias": "Entity count",
-          "align": "center",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "entity_count",
-          "thresholds": [],
-          "type": "number",
-          "unit": "locale"
-        },
-        {
-          "alias": "Last block number",
-          "align": "center",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "latest_ethereum_block_number",
-          "thresholds": [],
-          "type": "number",
-          "unit": "locale"
-        },
-        {
-          "alias": "Head block number",
-          "align": "center",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "ethereum_head_block_number",
-          "thresholds": [],
-          "type": "number",
-          "unit": "locale"
-        }
-      ],
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT sd.vid,sd.id,sd.network,sd.health,sd.node_id,sd.failed,sd.synced,sd.entity_count,sd.latest_ethereum_block_number,sd.ethereum_head_block_number FROM subgraphs.\"subgraph_deployment_detail\" as sd left join subgraphs.\"subgraph_manifest\" sm on (sm.id = sd.manifest) order by sd.vid",
+          "rawSql": "SELECT \r\n\tds.name as deployment_schema,\r\n\tsg.name as deployment_name,\r\n\tsd.vid as num,\r\n\tsd.id as deployment_id,\r\n\tsubstring(sm.repository,20,31) as git_repo,\r\n\tsda.node_id as node_id,\r\n\tsd.health as sub_health,\r\n\tsd.failed as sub_failed,\r\n\tsd.synced as sub_sync,\r\n\tsd.latest_ethereum_block_number as last_block,\r\n\tsd.entity_count as sub_entity,\r\n\tsize.total_bytes as size_total, \r\n\tsize.total_bytes as size_total_bytes, \r\n\tsd.earliest_ethereum_block_number as start_block, \r\n\tencode(sd.earliest_ethereum_block_hash, 'hex') as start_hash, \r\n\tencode(sd.latest_ethereum_block_hash, 'hex') as last_hash,\r\n\tsd.reorg_count as reorg_count, \r\n\tsd.current_reorg_depth as curr_reorg_count, \r\n\tsd.max_reorg_depth as max_reorg\r\nFROM \r\n\tsubgraphs.\"subgraph_deployment\" as sd\r\n\r\nleft join subgraphs.\"subgraph_manifest\" as sm on (sm.vid = sd.vid)\r\nleft join subgraphs.\"subgraph_deployment_assignment\" as sda on (sda.vid = sd.vid)\r\nleft join subgraphs.\"subgraph_version\" as sv on (sv.vid = sd.vid)\r\nleft join subgraphs.\"subgraph\" as sg on (sg.vid = sd.vid)\r\nleft join public.\"deployment_schemas\" as ds on (ds.subgraph = sd.id)\r\n\r\nleft join (\r\n\tSELECT *, total_bytes-index_bytes-coalesce(toast_bytes,0) AS table_bytes FROM (\r\n\t\tSELECT nspname AS table_schema\r\n            , ds.subgraph\r\n            , sum(pg_total_relation_size(c.oid)) AS total_bytes\r\n            , sum(pg_indexes_size(c.oid)) AS index_bytes\r\n            , sum(pg_total_relation_size(reltoastrelid)) AS toast_bytes\r\n\t\tFROM pg_class c\r\n\t\tLEFT JOIN pg_namespace n ON n.oid = c.relnamespace\r\n\t\t\tINNER JOIN deployment_schemas ds ON ds.name = n.nspname\r\n\t\tWHERE relkind = 'r'\r\n\t\t\tGROUP BY ds.subgraph,table_schema\r\n  ) a\r\n) as size on (sd.id = size.subgraph) order by sd.vid",
           "refId": "A",
           "select": [
             [
@@ -817,140 +1025,39 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Subgraph Health",
-      "transform": "table",
-      "transparent": true,
-      "type": "table-old"
-    },
-    {
-      "columns": [],
-      "datasource": "postgres",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fontSize": "80%",
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 34
-      },
-      "id": 39,
-      "links": [],
-      "pageSize": null,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 2,
-        "desc": true
-      },
-      "styles": [
+      "transformations": [
         {
-          "alias": "Schema",
-          "align": "left",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "table_schema",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Deployment ID",
-          "align": "left",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "subgraph",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Total (bytes)",
-          "align": "left",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "total_bytes",
-          "thresholds": [],
-          "type": "number",
-          "unit": "locale"
-        },
-        {
-          "alias": "Size on disk",
-          "align": "left",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "total",
-          "sanitize": false,
-          "thresholds": [],
-          "type": "string",
-          "unit": "locale"
-        }
-      ],
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT table_schema,subgraph,total_bytes, pg_size_pretty(total_bytes) AS total\r\n  FROM (\r\n  SELECT *, total_bytes-index_bytes-coalesce(toast_bytes,0) AS table_bytes FROM (\r\n      SELECT nspname AS table_schema\r\n                , ds.subgraph\r\n              , sum(pg_total_relation_size(c.oid)) AS total_bytes\r\n              , sum(pg_indexes_size(c.oid)) AS index_bytes\r\n              , sum(pg_total_relation_size(reltoastrelid)) AS toast_bytes\r\n          FROM pg_class c\r\n          LEFT JOIN pg_namespace n ON n.oid = c.relnamespace\r\n            INNER JOIN deployment_schemas ds ON ds.name = n.nspname\r\n          WHERE relkind = 'r'\r\n            GROUP BY ds.subgraph,table_schema\r\n          \r\n  ) a\r\n) a ORDER BY total_bytes DESC;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "num": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "curr_reorg_count": "Curr Reorg Count",
+              "deployment_id": "Deployment ID",
+              "deployment_name": "Deployment Name",
+              "deployment_schema": "Schema",
+              "git_repo": "Repository",
+              "last_block": "Last Block",
+              "last_hash": "Last Hash",
+              "max_reorg": "Max Reorg",
+              "node_id": "Node ID",
+              "reorg_count": "Reorg Count",
+              "size_total": "Size",
+              "size_total_bytes": "Bytes",
+              "start_block": "Start Block",
+              "start_hash": "Start Hash",
+              "sub_entity": "Entities",
+              "sub_failed": "Failed",
+              "sub_health": "Health",
+              "sub_sync": "Sync"
             }
-          ]
+          }
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Deployment schema size",
-      "transform": "table",
       "transparent": true,
-      "type": "table-old"
+      "type": "table"
     },
     {
       "columns": [],
@@ -964,9 +1071,9 @@
       "fontSize": "80%",
       "gridPos": {
         "h": 4,
-        "w": 10,
+        "w": 12,
         "x": 0,
-        "y": 41
+        "y": 43
       },
       "id": 6,
       "links": [],
@@ -1078,9 +1185,9 @@
       "fontSize": "80%",
       "gridPos": {
         "h": 4,
-        "w": 10,
-        "x": 14,
-        "y": 41
+        "w": 12,
+        "x": 12,
+        "y": 43
       },
       "id": 38,
       "links": [],
@@ -1180,7 +1287,7 @@
       "type": "table-old"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 26,
   "style": "dark",
   "tags": [],
@@ -1199,7 +1306,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -1229,5 +1336,5 @@
   "timezone": "",
   "title": "Indexing Status Overview",
   "uid": "indexing-status-overview",
-  "version": 2
+  "version": 25
 }
