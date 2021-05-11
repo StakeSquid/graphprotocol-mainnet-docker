@@ -527,6 +527,13 @@ journalctl -fu indexer-agent -n 10 -f | pino-pretty -c -t
 
 ```
 
+**Check POI**
+
+```bash
+#run inside cli container. This script provides POI for last 10 closed allocation on subgraph that you provided.
+python3 check_poi.py --subgraph_ipfs_hash QmRhYzT8HEZ9LziQhP6JfNfd4co9A7muUYQhPMJsMUojSF
+```
+
 ## Troubleshooting scenarios	
 -   **Indexer-agent and Indexer-service containers are loop crashing**
     

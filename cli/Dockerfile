@@ -18,7 +18,8 @@ RUN apt-get -q update \
     clang \
     cmake \
     wget \
-    build-essential
+    build-essential\
+    python3-pip
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 
@@ -31,6 +32,11 @@ ARG GRAPH_USER=graph
 ARG GRAPH_HOME=/home/graph
 
 RUN useradd -m -d "${GRAPH_HOME}" -s /bin/bash "${GRAPH_USER}"
+
+RUN pip3 install requests base58
+ADD ./scripts/check_poi.py "${GRAPH_HOME}/check_poi.py"
+RUN chmod +x "${GRAPH_HOME}/check_poi.py"
+RUN chown $GRAPH_USER:$GRAPH_USER "${GRAPH_HOME}/check_poi.py"
 
 USER $GRAPH_USER
 WORKDIR $GRAPH_HOME
