@@ -81,6 +81,7 @@ services:
       - index-node-1
       - query-node-0
       - indexer-agent
+      - vector-node              
     environment:
       INDEXER_SERVICE_MNEMONIC: ${OPERATOR_SEED_PHRASE}
       INDEXER_SERVICE_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
@@ -89,12 +90,15 @@ services:
       INDEXER_SERVICE_ETHEREUM: ${TXN_RPC}
       INDEXER_SERVICE_GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
       INDEXER_SERVICE_GRAPH_NODE_STATUS_ENDPOINT: http://index-node-0:8030/graphql
-      INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT: ${SUBGRAPH_ENDPOINT:-https://gateway.network.thegraph.com/network}
+      INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT: ${INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT:-https://gateway.network.thegraph.com/network}
       INDEXER_SERVICE_POSTGRES_HOST: postgres2
       INDEXER_SERVICE_POSTGRES_USERNAME: ${DB_USER:-graph-node}
       INDEXER_SERVICE_POSTGRES_PASSWORD: ${DB_PASS:-db-password}
       INDEXER_SERVICE_POSTGRES_DATABASE: ${AGENT_DB_NAME:-indexer-agent}
       INDEXER_SERVICE_WALLET_WORKER_THREADS: ${WORKER_THREADS_PER_INDEXER_SERVICE:-8}
+      #INDEXER_SERVICE_VECTOR_NODE: "http://vector-node:8000"
+      #INDEXER_SERVICE_VECTOR_ROUTER: "vector8BSZxfkr62As6KZX2so4yXuex5XcpPXQ2tYZrBqpub94dAobu7"                                                             
+      INDEXER_SERVICE_CLIENT_SIGNER_ADDRESS: "0x982D10c56b8BBbD6e09048F5c5f01b43C65D5aE0"                                                                                          
       SKIP_EVM_VALIDATION: "true"
       SERVER_HOST: ${AGENT_DB_HOST:-postgres2}
       SERVER_PORT: 5432
