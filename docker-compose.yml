@@ -41,6 +41,34 @@ services:
       - ./cli/scripts:/home/graph/scripts
 
 
+
+######################################################################################
+#####################            VECTOR NODE                   #######################
+######################################################################################
+
+#  vector-node:
+#    image: connextproject/vector_node:a340c8a4
+#    container_name: vector-node
+#    depends_on:
+#      - postgres2
+#    environment:
+#      VECTOR_PROD: "true"
+#      VECTOR_MNEMONIC: ${OPERATOR_SEED_PHRASE}
+#      VECTOR_PG_HOST: postgres2
+#      VECTOR_PG_PORT: 5432
+#      VECTOR_PG_USERNAME: ${DB_USER:-graph-node}
+#      VECTOR_PG_PASSWORD: ${DB_PASS:-db-password}
+#      VECTOR_PG_DATABASE: vector
+#      VECTOR_CONFIG: $JSON_STRING
+#    expose:
+#      - 8000
+#      - 8001
+#    networks:
+#      - monitor-net
+#    restart: unless-stopped
+#    logging: *default-logging
+
+
 ######################################################################################
 #####################         INDEXER SERVICE CONTAINER        #######################
 ######################################################################################
