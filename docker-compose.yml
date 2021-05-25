@@ -109,8 +109,8 @@ services:
       VIRTUAL_PORT: 7600
       LETSENCRYPT_HOST: ${INDEX_HOST}
     expose:
-      - 7600
       - 7300
+      - 7600
     networks:
       - monitor-net
     restart: unless-stopped
