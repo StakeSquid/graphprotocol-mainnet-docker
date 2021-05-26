@@ -1,0 +1,108 @@
+#!/bin/bash
+
+set -e
+
+MAX_EPOCH=$3
+MIN_EPOCH=$2
+SUBGRAPH=$1
+EPOCH=$2
+SAFE_VERIFICATION_NUMBER=$4
+FILENAME=$5
+
+QUERY_NODE_STATUS_ENDPOINT=http://query-node-0:8030/graphql
+
+if [[ -z "$QUERY_NODE_STATUS_ENDPOINT" ]] || [[ -z "$MAX_EPOCH" ]] || [[ -z "$MIN_EPOCH" ]] ||  [[ -z "$SAFE_VERIFICATION_NUMBER" ]] || [[ -z "$FILENAME" ]] ||[[ -z "$SUBGRAPH" ]]; then
+  echo "Usage: $0 <subgraph-id> <min-epoch> <max-epoch> <max-acceptable-epoch-verification> <dump-filename>"
+  echo
+  echo "Example: $0 QmRhYzT8HEZ9LziQhP6JfNfd4co9A7muUYQhPMJsMUojSF 100 135 1 list.csv"
+  exit 1
+fi
+
+echo "Verified,Indexer ID,Allocation ID,Subgraph PoI,Verification PoI,Verification Try Number" >> $FILENAME
+
+while [[ $EPOCH -le $MAX_EPOCH ]]
+do
+  echo "Checking for epoch: $EPOCH"
+
+  echo "Generating block numbers and hashes for the amount of verifications required ($SAFE_VERIFICATION_NUMBER)"
+  HASHES=()
+  NON_HEX_NUMBERS=()
+  start_block_index=0
+  while [[ $start_block_index -lt $SAFE_VERIFICATION_NUMBER ]]
+  do
+    START_BLOCK=$(http -b post https://gateway.network.thegraph.com/network query='query epoch($epoch: ID!) { epoch(id: $epoch) { startBlock } }' variables:="{ \"epoch\": \"$((($EPOCH-$start_block_index)))\" }" | jq .data.epoch.startBlock)
+    START_BLOCK_HEX=$(printf '%x' $START_BLOCK)
+
+    BLOCK_DATA=$(http -b post https://mainnet.infura.io/v3/{project_id} jsonrpc="2.0" id="1" method="eth_getBlockByNumber" params:="[\"0x$START_BLOCK_HEX\", false]" | jq -c '.result | { number, hash }')
+
+    HASHES[$start_block_index]=$(echo $BLOCK_DATA | jq '.hash')
+    NON_HEX_NUMBERS[$start_block_index]=$(echo "$BLOCK_DATA" | jq '.number' | xargs printf '%d')
+
+  ((start_block_index=start_block_index+1))
+  done
+
+  DEPLOYMENT=$(echo "$SUBGRAPH" | base58 -d | hexdump -s 2 -v -e '/1 "%02X"' | sed -e 's/\(.*\)/\L\1/' | sed -e 's/^/0x/')
+  VARIABLES="{\"epoch\": $EPOCH, \"deployment\": \"$DEPLOYMENT\"}"
+
+  POIS=$(http -b post https://gateway.network.thegraph.com/network \
+       query='query pois($epoch: Int!, $deployment: String!) {allocations (where: {closedAtEpoch: $epoch, subgraphDeployment_contains: $deployment}) {indexer {id} id poi closedAtEpoch}}' \
+       variables:="$(echo $VARIABLES)")
+
+
+  ### Loop
+  length=$(echo $POIS | jq -r '.data.allocations' | jq length)
+  index=0
+
+  echo "Allocations found for epoch $EPOCH: $length"
+
+  while [[ $index -lt $length ]]
+  do
+    echo "Processing allocation $((($index+1))) for epoch $EPOCH"
+    echo "Generating verifications for allocation #$((($index+1)))"
+    verifications=0
+    verified=false
+    while [[ $verifications -lt $start_block_index ]]
+    do
+      NON_HEX_NUMBER="${NON_HEX_NUMBERS[$verifications]}"
+      HASH="${HASHES[$verifications]}"
+      echo "Number: $NON_HEX_NUMBER"
+      echo "Hash: $HASH"
+      VARIABLES="{\"number\": $NON_HEX_NUMBER, \"hash\": $HASH, \"indexer\": \"$(echo $POIS | jq -r ".data.allocations[$index].indexer.id")\", \"subgraph\": \"$SUBGRAPH\"}"
+
+      VERIFICATION=$(http -b post $QUERY_NODE_STATUS_ENDPOINT \
+      query='query poi($number: Int!, $hash: String!, $indexer: String!, $subgraph: String!) { proofOfIndexing(subgraph: $subgraph, blockNumber: $number, blockHash: $hash, indexer: $indexer) }' \
+      variables:="$(echo $VARIABLES)")
+
+      if [ "$(echo $POIS | jq -r ".data.allocations[$index].poi")" = "$(echo $VERIFICATION | jq -r '.data.proofOfIndexing')" ]; then
+          echo "POIs are equal. Amount of verifications done: $((($verifications+1)))"
+          indexer_id=$(echo $POIS | jq -r ".data.allocations[$index].indexer.id")
+          allocation_id=$(echo $POIS | jq -r ".data.allocations[$index].id")
+          subgraph_poi=$(echo $POIS | jq -r ".data.allocations[$index].poi")
+          verification_poi=$(echo $VERIFICATION | jq -r '.data.proofOfIndexing')
+          echo "true,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> $FILENAME
+          verified=true
+          break
+      fi
+    ((verifications=verifications+1))
+    done
+
+
+    if [ "$verified" = false ]; then
+        indexer_id=$(echo $POIS | jq -r ".data.allocations[$index].indexer.id")
+        allocation_id=$(echo $POIS | jq -r ".data.allocations[$index].id")
+        subgraph_poi=$(echo $POIS | jq -r ".data.allocations[$index].poi")
+        verification_poi=$(echo $VERIFICATION | jq -r '.data.proofOfIndexing')
+        echo "Indexer ID: $indexer_id"
+        echo "Allocation ID: $allocation_id"
+        echo "Subgraph PoI: $subgraph_poi"
+        echo "Verification PoI: $verification_poi"
+        echo "ALERT ALERT ALERT !!! POIs are not equal."
+        echo "false,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> $FILENAME
+    fi
+
+    echo "####"
+  ((index=index+1))
+  done
+
+((EPOCH=EPOCH+1))
+done
