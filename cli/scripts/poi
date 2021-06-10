@@ -7,18 +7,20 @@ MIN_EPOCH=$2
 SUBGRAPH=$1
 EPOCH=$2
 SAFE_VERIFICATION_NUMBER=$4
-FILENAME=$5
+
+timestamp=$(date +%s)
+FILENAME="${SUBGRAPH}-${timestamp}"
 
 QUERY_NODE_STATUS_ENDPOINT=http://query-node-0:8030/graphql
 
 if [[ -z "$QUERY_NODE_STATUS_ENDPOINT" ]] || [[ -z "$MAX_EPOCH" ]] || [[ -z "$MIN_EPOCH" ]] ||  [[ -z "$SAFE_VERIFICATION_NUMBER" ]] || [[ -z "$FILENAME" ]] ||[[ -z "$SUBGRAPH" ]]; then
-  echo "Usage: $0 <subgraph-id> <min-epoch> <max-epoch> <max-acceptable-epoch-verification> <dump-filename>"
+  echo "Usage: $0 <subgraph-id> <min-epoch> <max-epoch> <max-acceptable-epoch-verification>"
   echo
-  echo "Example: $0 QmRhYzT8HEZ9LziQhP6JfNfd4co9A7muUYQhPMJsMUojSF 100 135 1 list.csv"
+  echo "Example: $0 QmRhYzT8HEZ9LziQhP6JfNfd4co9A7muUYQhPMJsMUojSF 100 135 1"
   exit 1
 fi
 
-echo "Verified,Indexer ID,Allocation ID,Subgraph PoI,Verification PoI,Verification Try Number" >> $FILENAME
+echo "Epoch,Verified,Indexer ID,Allocation ID,Subgraph PoI,Verification PoI,Verification Try Number" >> $FILENAME
 
 while [[ $EPOCH -le $MAX_EPOCH ]]
 do
@@ -79,7 +81,7 @@ do
           allocation_id=$(echo $POIS | jq -r ".data.allocations[$index].id")
           subgraph_poi=$(echo $POIS | jq -r ".data.allocations[$index].poi")
           verification_poi=$(echo $VERIFICATION | jq -r '.data.proofOfIndexing')
-          echo "true,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> $FILENAME
+          echo "$EPOCH,true,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> $FILENAME
           verified=true
           break
       fi
@@ -97,7 +99,7 @@ do
         echo "Subgraph PoI: $subgraph_poi"
         echo "Verification PoI: $verification_poi"
         echo "ALERT ALERT ALERT !!! POIs are not equal."
-        echo "false,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> $FILENAME
+        echo "$EPOCH,false,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> $FILENAME
     fi
 
     echo "####"
