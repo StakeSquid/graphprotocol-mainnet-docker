@@ -12,6 +12,8 @@ timestamp=$(date +%s)
 FILENAME="${SUBGRAPH}-${timestamp}"
 
 QUERY_NODE_STATUS_ENDPOINT=http://query-node-0:8030/graphql
+SUCCESSFUL_VERIFICATIONS=0
+FAILED_VERIFICATIONS=0
 
 if [[ -z "$QUERY_NODE_STATUS_ENDPOINT" ]] || [[ -z "$MAX_EPOCH" ]] || [[ -z "$MIN_EPOCH" ]] ||  [[ -z "$SAFE_VERIFICATION_NUMBER" ]] || [[ -z "$FILENAME" ]] ||[[ -z "$SUBGRAPH" ]]; then
   echo "Usage: $0 <subgraph-id> <min-epoch> <max-epoch> <max-acceptable-epoch-verification>"
@@ -83,6 +85,7 @@ do
           verification_poi=$(echo $VERIFICATION | jq -r '.data.proofOfIndexing')
           echo "$EPOCH,true,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> $FILENAME
           verified=true
+          ((SUCCESSFUL_VERIFICATIONS=SUCCESSFUL_VERIFICATIONS+1))
           break
       fi
     ((verifications=verifications+1))
@@ -100,6 +103,7 @@ do
         echo "Verification PoI: $verification_poi"
         echo "ALERT ALERT ALERT !!! POIs are not equal."
         echo "$EPOCH,false,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> $FILENAME
+        ((FAILED_VERIFICATIONS=FAILED_VERIFICATIONS+1))
     fi
 
     echo "####"
@@ -108,3 +112,16 @@ do
 
 ((EPOCH=EPOCH+1))
 done
+
+TOTAL=$((SUCCESSFUL_VERIFICATIONS+FAILED_VERIFICATIONS))
+if command -v bc &> /dev/null; then
+  SUCCESS_RATE=$(bc -l <<< "scale=2; ${SUCCESSFUL_VERIFICATIONS}*100/${TOTAL}")
+  FAIL_RATE=$(bc -l <<< "scale=2; ${FAILED_VERIFICATIONS}*100/${TOTAL}")
+else
+  echo "bc not installed, falling back to integer based division for success and fail rate"
+  SUCCESS_RATE=$((SUCCESSFUL_VERIFICATIONS*100/TOTAL))
+  FAIL_RATE=$((FAILED_VERIFICATIONS*100/TOTAL))
+fi
+
+echo "Successes: ${SUCCESSFUL_VERIFICATIONS}, Fails: ${FAILED_VERIFICATIONS}, Total: ${TOTAL}"
+echo "Success rate: ${SUCCESS_RATE}%, Fail rate: ${FAIL_RATE}%"
