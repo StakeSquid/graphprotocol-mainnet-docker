@@ -15,19 +15,13 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 12,
-  "iteration": 1620453841153,
+  "id": 6,
+  "iteration": 1623471486022,
   "links": [],
   "panels": [
     {
       "columns": [],
       "datasource": "postgres",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fontSize": "100%",
       "gridPos": {
         "h": 13,
@@ -233,12 +227,6 @@
     {
       "columns": [],
       "datasource": "postgres",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fontSize": "100%",
       "gridPos": {
         "h": 5,
@@ -444,6 +432,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -644,7 +633,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "8.0.1",
       "targets": [
         {
           "format": "table",
@@ -790,21 +779,21 @@
                 "id": "mappings",
                 "value": [
                   {
-                    "from": "",
-                    "id": 1,
-                    "text": "",
-                    "to": "",
-                    "type": 1,
-                    "value": "healthy"
+                    "options": {
+                      "healthy": {
+                        "color": "dark-green",
+                        "index": 0,
+                        "text": "-"
+                      },
+                      "unhealthy": {
+                        "color": "dark-red",
+                        "index": 1,
+                        "text": "unhealthy"
+                      }
+                    },
+                    "type": "value"
                   }
                 ]
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
               }
             ]
           },
@@ -820,27 +809,34 @@
               },
               {
                 "id": "custom.displayMode",
-                "value": "color-text"
+                "value": "auto"
               },
               {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "rgb(116, 117, 116)",
-                      "value": null
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "match": "true",
+                      "result": {
+                        "color": "dark-red",
+                        "index": 0,
+                        "text": "FAILED"
+                      }
                     },
-                    {
-                      "color": "dark-green",
-                      "value": 0
+                    "type": "special"
+                  },
+                  {
+                    "options": {
+                      "match": "false",
+                      "result": {
+                        "color": "dark-green",
+                        "index": 1,
+                        "text": "-"
+                      }
                     },
-                    {
-                      "color": "semi-dark-red",
-                      "value": 1
-                    }
-                  ]
-                }
+                    "type": "special"
+                  }
+                ]
               }
             ]
           },
@@ -853,6 +849,33 @@
               {
                 "id": "custom.width",
                 "value": 43
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "match": "true",
+                      "result": {
+                        "color": "dark-green",
+                        "index": 0,
+                        "text": "✓"
+                      }
+                    },
+                    "type": "special"
+                  },
+                  {
+                    "options": {
+                      "match": "false",
+                      "result": {
+                        "color": "dark-red",
+                        "index": 1,
+                        "text": "✗"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ]
               }
             ]
           },
@@ -998,7 +1021,7 @@
           }
         ]
       },
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "8.0.1",
       "targets": [
         {
           "format": "table",
@@ -1062,12 +1085,6 @@
     {
       "columns": [],
       "datasource": "postgres",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fontSize": "80%",
       "gridPos": {
         "h": 4,
@@ -1176,12 +1193,6 @@
     {
       "columns": [],
       "datasource": "postgres",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fontSize": "80%",
       "gridPos": {
         "h": 4,
@@ -1287,14 +1298,15 @@
       "type": "table-old"
     }
   ],
-  "refresh": false,
-  "schemaVersion": 26,
+  "refresh": "",
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
         "datasource": "Elasticsearch",
+        "description": null,
         "error": null,
         "filters": [],
         "hide": 0,
@@ -1336,5 +1348,5 @@
   "timezone": "",
   "title": "Indexing Status Overview",
   "uid": "indexing-status-overview",
-  "version": 27
+  "version": 4
 }

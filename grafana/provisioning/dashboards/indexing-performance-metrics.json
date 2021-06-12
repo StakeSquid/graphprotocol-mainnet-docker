@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "id": 11,
-  "iteration": 1617657884662,
+  "id": 5,
+  "iteration": 1623471406704,
   "links": [],
   "panels": [
     {
@@ -25,12 +25,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 3,
       "gridPos": {
@@ -61,7 +55,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "8.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -102,7 +96,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:28577",
+          "format": "locale",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -110,12 +105,13 @@
           "show": true
         },
         {
+          "$$hashKey": "object:28578",
           "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
@@ -129,12 +125,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 2,
       "gridPos": {
@@ -163,7 +153,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "8.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -206,7 +196,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:28471",
+          "format": "locale",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -214,12 +205,13 @@
           "show": true
         },
         {
+          "$$hashKey": "object:28472",
           "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
@@ -233,28 +225,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -288,7 +258,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "8.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -328,7 +298,8 @@
       },
       "yaxes": [
         {
-          "format": "none",
+          "$$hashKey": "object:28418",
+          "format": "locale",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -336,12 +307,13 @@
           "show": true
         },
         {
+          "$$hashKey": "object:28419",
           "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
@@ -390,12 +362,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -422,7 +388,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "8.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -445,7 +411,8 @@
           "fill": true,
           "line": true,
           "op": "gt",
-          "value": 30
+          "value": 30,
+          "visible": true
         }
       ],
       "timeFrom": null,
@@ -468,7 +435,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:28366",
+          "format": "s",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -476,12 +444,13 @@
           "show": true
         },
         {
-          "format": "short",
+          "$$hashKey": "object:28367",
+          "format": "locale",
           "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
@@ -530,12 +499,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -562,7 +525,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "8.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -585,7 +548,8 @@
           "fill": true,
           "line": true,
           "op": "gt",
-          "value": 20
+          "value": 20,
+          "visible": true
         }
       ],
       "timeFrom": null,
@@ -635,28 +599,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 3,
       "gridPos": {
@@ -683,7 +625,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "8.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -728,7 +670,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:28524",
+          "format": "locale",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -736,12 +679,13 @@
           "show": true
         },
         {
+          "$$hashKey": "object:28525",
           "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
@@ -755,26 +699,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 3,
       "gridPos": {
@@ -805,7 +729,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "8.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -870,12 +794,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 3,
       "gridPos": {
@@ -904,7 +822,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.1",
+      "pluginVersion": "8.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -970,13 +888,14 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
         "datasource": "Elasticsearch",
+        "description": null,
         "error": null,
         "filters": [],
         "hide": 0,
@@ -988,7 +907,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -1018,5 +937,5 @@
   "timezone": "",
   "title": "Indexing Performance Metrics",
   "uid": "indexing-performance-metrics",
-  "version": 2
+  "version": 9
 }
