@@ -158,7 +158,8 @@ services:
       #INDEXER_AGENT_VECTOR_EVENT_SERVER: "http://indexer-agent:8001"
       #INDEXER_AGENT_VECTOR_EVENT_SERVER_PORT: 8001
       #INDEXER_AGENT_VECTOR_ROUTER: "vector8BSZxfkr62As6KZX2so4yXuex5XcpPXQ2tYZrBqpub94dAobu7"
-      INDEXER_AGENT_COLLECT_RECEIPTS_ENDPOINT: https://gateway.network.thegraph.com/collect-receipts                                                                              
+      INDEXER_AGENT_COLLECT_RECEIPTS_ENDPOINT: https://gateway.network.thegraph.com/collect-receipts
+      INDEXER_AGENT_OFFCHAIN_SUBGRAPHS: "QmTBxvMF6YnbT1eYeRx9XQpH4WvxTV53vdptCCZFiZSprg,QmZdsSbRwVD7VVVm5WGxZZC6HYvbjnFb4hcwvQ4fTs5bxA,QmRhYzT8HEZ9LziQhP6JfNfd4co9A7muUYQhPMJsMUojSF,QmbHg6vAJRD9ZWz5GTP9oMrfDyetnGTr5KWJBYAq59fm1W,Qmf3qbX2SF58ifUQfMvWJKe99g9DavSKtRxm3evvCHocwS,QmRDGLp6BHwiH9HAE2NYEE3f7LrKuRqziHBv76trT4etgU,QmUghXvKf5cVjtayNNRHCd3RbHEwfbGBQ95s9vheJjN5hH,QmTKXLEdMD6Vq7Nwxo8XAfnHpG6H1TzL1AGwiqLpoae3Pb,Qmaz1R8vcv9v3gUfksqiS9JUz7K9G8S5By3JYn8kTiiP5K,QmNRkaVUwUQAwPwWgdQHYvw53A5gh3CP3giWnWQZdA2BTE"
     networks:
       - monitor-net
     restart: unless-stopped
