@@ -37,76 +37,12 @@
               {
                 "color": "dark-purple",
                 "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 10
-              },
-              {
-                "color": "#EF843C",
-                "value": 20
-              },
-              {
-                "color": "#E24D42",
-                "value": 30
-              },
-              {
-                "color": "#1F78C1",
-                "value": 40
-              },
-              {
-                "color": "#BA43A9",
-                "value": 50
-              },
-              {
-                "color": "#705DA0",
-                "value": 60
-              },
-              {
-                "color": "#508642",
-                "value": 70
-              },
-              {
-                "color": "#CCA300",
-                "value": 80
-              },
-              {
-                "color": "#447EBC",
-                "value": 90
-              },
-              {
-                "color": "#C15C17",
-                "value": 100
               }
             ]
           },
           "unit": "string"
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Signal-to-Stake Ratio"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "color-background"
-              },
-              {
-                "id": "unit",
-                "value": "none"
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              }
-            ]
-          },
           {
             "matcher": {
               "id": "byName",
@@ -148,6 +84,10 @@
               {
                 "id": "custom.width",
                 "value": 466
+              },
+              {
+                "id": "displayName",
+                "value": "IPFS Hash"
               }
             ]
           },
@@ -160,6 +100,10 @@
               {
                 "id": "custom.width",
                 "value": 218
+              },
+              {
+                "id": "displayName",
+                "value": "Deployment Name"
               }
             ]
           },
@@ -296,5 +240,5 @@
   "timezone": "",
   "title": "GraphQL",
   "uid": "LAczYo6Mk",
-  "version": 6
+  "version": 8
 }
