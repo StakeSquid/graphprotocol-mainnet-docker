@@ -15,89 +15,186 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 4,
   "links": [],
   "panels": [
     {
       "datasource": "graphql",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
           "thresholds": {
-            "mode": "absolute",
+            "mode": "percentage",
             "steps": [
               {
-                "color": "green",
+                "color": "dark-purple",
                 "value": null
               },
               {
-                "color": "red",
+                "color": "#EAB839",
+                "value": 0
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 10
+              },
+              {
+                "color": "#EF843C",
+                "value": 20
+              },
+              {
+                "color": "#E24D42",
+                "value": 30
+              },
+              {
+                "color": "#1F78C1",
+                "value": 40
+              },
+              {
+                "color": "#BA43A9",
+                "value": 50
+              },
+              {
+                "color": "#705DA0",
+                "value": 60
+              },
+              {
+                "color": "#508642",
+                "value": 70
+              },
+              {
+                "color": "#CCA300",
                 "value": 80
+              },
+              {
+                "color": "#447EBC",
+                "value": 90
+              },
+              {
+                "color": "#C15C17",
+                "value": 100
               }
             ]
-          }
+          },
+          "unit": "string"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "id"
+              "options": "Signal-to-Stake Ratio"
             },
             "properties": [
               {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
                 "id": "unit",
-                "value": "string"
+                "value": "none"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "signalledTokens"
+              "options": "Signalled Tokens"
             },
             "properties": [
               {
                 "id": "unit",
-                "value": "string"
+                "value": "locale"
+              },
+              {
+                "id": "decimals",
+                "value": 0
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "unsignalledTokens"
+              "options": "Staked Tokens"
             },
             "properties": [
               {
                 "id": "unit",
-                "value": "string"
+                "value": "locale"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ipfsHash"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 466
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "originalName"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 218
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "STSR"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 361
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 10,
+        "h": 17,
         "w": 24,
         "x": 0,
         "y": 0
       },
       "id": 2,
       "options": {
-        "showHeader": true
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "STSR"
+          }
+        ]
       },
-      "pluginVersion": "7.3.7",
-      "scopedVars": {
-        "datasource": {
-          "selected": true,
-          "text": "graphql",
-          "value": "graphql"
-        }
-      },
+      "pluginVersion": "8.0.1",
       "targets": [
         {
           "aliasBy": "",
@@ -108,8 +205,9 @@
           "dataPath": "subgraphDeployments",
           "endTimePath": "endTime",
           "groupBy": "",
-          "queryText": "query MyQuery {\n  subgraphDeployments {\n    id\n    originalName\n    signalledTokens\n    unsignalledTokens\n  }\n}",
-          "refId": "A",
+          "hide": false,
+          "queryText": "query MyQuery {\n  subgraphDeployments(orderBy: signalledTokens, orderDirection: desc) {\n    ipfsHash\n    signalledTokens\n    stakedTokens\n    originalName\n  }\n}\n",
+          "refId": "B",
           "timeFormat": null,
           "timePath": ""
         }
@@ -119,15 +217,63 @@
       "title": "Avaliable subgraphs",
       "transformations": [
         {
+          "id": "calculateField",
+          "options": {
+            "alias": "STSR",
+            "binary": {
+              "left": "signalledTokens",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "stakedTokens"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Signalled Tokens",
+            "binary": {
+              "left": "signalledTokens",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000000000000000000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Staked Tokens",
+            "binary": {
+              "left": "stakedTokens",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000000000000000000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
           "id": "organize",
           "options": {
-            "excludeByName": {},
-            "indexByName": {
-              "id": 1,
-              "originalName": 0,
-              "signalledTokens": 2,
-              "unsignalledTokens": 3
+            "excludeByName": {
+              "STSR": false,
+              "Signalled Tokens": false,
+              "signalledTokens": true,
+              "stakedTokens": true
             },
+            "indexByName": {},
             "renameByName": {}
           }
         }
@@ -135,8 +281,8 @@
       "type": "table"
     }
   ],
-  "refresh": "5s",
-  "schemaVersion": 26,
+  "refresh": "",
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -149,6 +295,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "GraphQL",
-  "uid": null,
-  "version": 0
+  "uid": "LAczYo6Mk",
+  "version": 6
 }
