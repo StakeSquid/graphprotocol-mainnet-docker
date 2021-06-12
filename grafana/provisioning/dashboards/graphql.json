@@ -23,10 +23,10 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "fixed"
           },
           "custom": {
-            "align": null,
+            "align": "center",
             "displayMode": "auto",
             "filterable": false
           },
@@ -78,44 +78,48 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "ipfsHash"
+              "options": "Query Fees Rebates"
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 466
+                "id": "unit",
+                "value": "locale"
               },
               {
-                "id": "displayName",
-                "value": "IPFS Hash"
+                "id": "decimals",
+                "value": 0
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "originalName"
+              "options": "Query Fees Amount"
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 218
+                "id": "unit",
+                "value": "locale"
               },
               {
-                "id": "displayName",
-                "value": "Deployment Name"
+                "id": "decimals",
+                "value": 0
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "STSR"
+              "options": "Indexing Rewards"
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 361
+                "id": "unit",
+                "value": "locale"
+              },
+              {
+                "id": "decimals",
+                "value": 0
               }
             ]
           }
@@ -134,7 +138,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "STSR"
+            "displayName": "Indexing Rewards"
           }
         ]
       },
@@ -150,7 +154,7 @@
           "endTimePath": "endTime",
           "groupBy": "",
           "hide": false,
-          "queryText": "query MyQuery {\n  subgraphDeployments(orderBy: signalledTokens, orderDirection: desc) {\n    ipfsHash\n    signalledTokens\n    stakedTokens\n    originalName\n  }\n}\n",
+          "queryText": "query MyQuery {\n  subgraphDeployments(orderBy: signalledTokens, orderDirection: desc) {\n    ipfsHash\n    signalledTokens\n    stakedTokens\n    originalName\n    indexingRewardAmount\n    queryFeesAmount\n    queryFeeRebates\n  }\n}",
           "refId": "B",
           "timeFormat": null,
           "timePath": ""
@@ -163,17 +167,50 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "STSR",
+            "alias": "Indexing Rewards",
             "binary": {
-              "left": "signalledTokens",
+              "left": "indexingRewardAmount",
               "operator": "/",
               "reducer": "sum",
-              "right": "stakedTokens"
+              "right": "1000000000000000000"
             },
             "mode": "binary",
             "reduce": {
               "reducer": "sum"
             }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Query Fees Amount",
+            "binary": {
+              "left": "queryFeesAmount",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000000000000000000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Query Fee Rebates",
+            "binary": {
+              "left": "queryFeeRebates",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000000000000000000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
           }
         },
         {
@@ -209,16 +246,62 @@
           }
         },
         {
+          "id": "calculateField",
+          "options": {
+            "alias": "STSR",
+            "binary": {
+              "left": "signalledTokens",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "stakedTokens"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
           "id": "organize",
           "options": {
             "excludeByName": {
               "STSR": false,
               "Signalled Tokens": false,
+              "indexingRewardAmount": true,
+              "queryFeeRebates": true,
+              "queryFeesAmount": true,
               "signalledTokens": true,
               "stakedTokens": true
             },
-            "indexByName": {},
-            "renameByName": {}
+            "indexByName": {
+              "Indexing Rewards": 12,
+              "Query Fee Rebates": 10,
+              "Query Fees Amount": 11,
+              "STSR": 2,
+              "Signalled Tokens": 8,
+              "Staked Tokens": 9,
+              "indexingRewardAmount": 3,
+              "ipfsHash": 0,
+              "originalName": 1,
+              "queryFeeRebates": 4,
+              "queryFeesAmount": 5,
+              "signalledTokens": 6,
+              "stakedTokens": 7
+            },
+            "renameByName": {
+              "Query Fee Rebates": "Query Fees Rebates",
+              "Query Fees Amount": "Query Fees Amount",
+              "STSR": "",
+              "Signalled Tokens": "Signalled Tokens",
+              "Staked Tokens": "Staked Tokens",
+              "indexingRewardAmount": "",
+              "ipfsHash": "IPFS Hash",
+              "originalName": "Deployment Name",
+              "queryFeeRebates": "",
+              "queryFeesAmount": "",
+              "signalledTokens": "",
+              "stakedTokens": ""
+            }
           }
         }
       ],
@@ -240,5 +323,5 @@
   "timezone": "",
   "title": "GraphQL",
   "uid": "LAczYo6Mk",
-  "version": 9
+  "version": 11
 }
