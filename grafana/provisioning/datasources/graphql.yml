@@ -6,6 +6,6 @@ datasources:
     name: graphql
     orgId: 1
     type: fifemon-graphql-datasource
-    url: https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet
+    url: https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet-staging
     version: 1
 
