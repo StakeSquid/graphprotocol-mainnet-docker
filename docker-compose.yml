@@ -388,7 +388,7 @@ services:
 
 
   prometheus:
-    image: prom/prometheus:v2.24.1
+    image: prom/prometheus:v2.27.1
     container_name: prometheus
     volumes:
       - ./prometheus:/etc/prometheus
@@ -418,7 +418,7 @@ services:
 
 
   alertmanager:
-    image: prom/alertmanager:v0.21.0
+    image: prom/alertmanager:v0.22.2
     container_name: alertmanager
     volumes:
       - ./alertmanager:/etc/alertmanager
@@ -443,7 +443,7 @@ services:
 
 
   nodeexporter:
-    image: prom/node-exporter:v1.0.1
+    image: prom/node-exporter:v1.1.2
     container_name: nodeexporter
     volumes:
       - /proc:/host/proc:ro
@@ -472,7 +472,7 @@ services:
 
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.38.0
+    image: gcr.io/cadvisor/cadvisor:v0.39.2
     container_name: cadvisor
     volumes:
       - /:/rootfs:ro
@@ -498,7 +498,7 @@ services:
 
 
   grafana:
-    image: grafana/grafana:7.3.7
+    image: grafana/grafana:8.0.1
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
@@ -535,7 +535,7 @@ services:
 
 
   pushgateway:
-    image: prom/pushgateway:v1.3.0
+    image: prom/pushgateway:v1.4.1
     container_name: pushgateway
     restart: unless-stopped
     expose:
