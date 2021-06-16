@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 6,
-  "iteration": 1623471486022,
+  "id": 12,
+  "iteration": 1623845377321,
   "links": [],
   "panels": [
     {
@@ -229,7 +229,7 @@
       "datasource": "postgres",
       "fontSize": "100%",
       "gridPos": {
-        "h": 5,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 13
@@ -524,11 +524,18 @@
             "properties": [
               {
                 "id": "custom.displayMode",
-                "value": "json-view"
+                "value": "color-text"
               },
               {
                 "id": "displayName",
                 "value": "Error Message"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
               }
             ]
           },
@@ -623,10 +630,10 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 7,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 21
       },
       "id": 36,
       "options": {
@@ -769,7 +776,7 @@
               },
               {
                 "id": "unit",
-                "value": "string"
+                "value": "none"
               },
               {
                 "id": "custom.displayMode",
@@ -780,15 +787,15 @@
                 "value": [
                   {
                     "options": {
+                      "failed": {
+                        "color": "dark-red",
+                        "index": 1,
+                        "text": "FAILED"
+                      },
                       "healthy": {
                         "color": "dark-green",
                         "index": 0,
-                        "text": "-"
-                      },
-                      "unhealthy": {
-                        "color": "dark-red",
-                        "index": 1,
-                        "text": "unhealthy"
+                        "text": "healthy"
                       }
                     },
                     "type": "value"
@@ -816,22 +823,22 @@
                 "value": [
                   {
                     "options": {
-                      "match": "true",
+                      "match": "false",
                       "result": {
-                        "color": "dark-red",
+                        "color": "dark-green",
                         "index": 0,
-                        "text": "FAILED"
+                        "text": "-"
                       }
                     },
                     "type": "special"
                   },
                   {
                     "options": {
-                      "match": "false",
+                      "match": "true",
                       "result": {
-                        "color": "dark-green",
+                        "color": "dark-red",
                         "index": 1,
-                        "text": "-"
+                        "text": "FAILED"
                       }
                     },
                     "type": "special"
@@ -1009,7 +1016,7 @@
         "h": 14,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 28
       },
       "id": 37,
       "options": {
@@ -1090,7 +1097,7 @@
         "h": 4,
         "w": 12,
         "x": 0,
-        "y": 43
+        "y": 42
       },
       "id": 6,
       "links": [],
@@ -1198,7 +1205,7 @@
         "h": 4,
         "w": 12,
         "x": 12,
-        "y": 43
+        "y": 42
       },
       "id": 38,
       "links": [],
@@ -1348,5 +1355,5 @@
   "timezone": "",
   "title": "Indexing Status Overview",
   "uid": "indexing-status-overview",
-  "version": 4
+  "version": 33
 }
