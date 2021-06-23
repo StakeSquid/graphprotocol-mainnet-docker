@@ -81,7 +81,7 @@ services:
       - index-node-1
       - query-node-0
       - indexer-agent
-      #- vector-node              
+      #- vector-node
     environment:
       INDEXER_SERVICE_MNEMONIC: ${OPERATOR_SEED_PHRASE}
       INDEXER_SERVICE_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
@@ -97,8 +97,8 @@ services:
       INDEXER_SERVICE_POSTGRES_DATABASE: ${AGENT_DB_NAME:-indexer-agent}
       INDEXER_SERVICE_WALLET_WORKER_THREADS: ${WORKER_THREADS_PER_INDEXER_SERVICE:-8}
       #INDEXER_SERVICE_VECTOR_NODE: "http://vector-node:8000"
-      #INDEXER_SERVICE_VECTOR_ROUTER: "vector8BSZxfkr62As6KZX2so4yXuex5XcpPXQ2tYZrBqpub94dAobu7"                                                             
-      INDEXER_SERVICE_CLIENT_SIGNER_ADDRESS: "0x982D10c56b8BBbD6e09048F5c5f01b43C65D5aE0"                                                                                          
+      #INDEXER_SERVICE_VECTOR_ROUTER: "vector8BSZxfkr62As6KZX2so4yXuex5XcpPXQ2tYZrBqpub94dAobu7"
+      INDEXER_SERVICE_CLIENT_SIGNER_ADDRESS: "0x982D10c56b8BBbD6e09048F5c5f01b43C65D5aE0"
       SKIP_EVM_VALIDATION: "true"
       SERVER_HOST: ${AGENT_DB_HOST:-postgres2}
       SERVER_PORT: 5432
@@ -131,9 +131,9 @@ services:
       #- vector-node
     expose:
       - 7300
-      - 8000      
+      - 8000
       - 8001
-      - 8002            
+      - 8002
     environment:
       INDEXER_AGENT_MNEMONIC: ${OPERATOR_SEED_PHRASE}
       INDEXER_AGENT_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
@@ -148,7 +148,7 @@ services:
       INDEXER_AGENT_PUBLIC_INDEXER_URL: 'https://${INDEX_HOST}/'
       INDEXER_AGENT_INDEXER_GEO_COORDINATES: ${GEO_COORDINATES:-60.16952 24.93545}
       INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT: ${INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT:-https://gateway.thegraph.com/network}
-      INDEXER_AGENT_NETWORK_SUBGRAPH_DEPLOYMENT: ${INDEXER_AGENT_NETWORK_SUBGRAPH_DEPLOYMENT}                                                                                       
+      INDEXER_AGENT_NETWORK_SUBGRAPH_DEPLOYMENT: ${INDEXER_AGENT_NETWORK_SUBGRAPH_DEPLOYMENT}
       INDEXER_AGENT_POSTGRES_HOST: ${AGENT_DB_HOST:-postgres2}
       INDEXER_AGENT_POSTGRES_USERNAME: ${DB_USER:-graph-node}
       INDEXER_AGENT_POSTGRES_PASSWORD: ${DB_PASS:-db-password}
@@ -172,7 +172,7 @@ services:
 
 
   index-node-0:
-    image: graphprotocol/graph-node:v0.22.0
+    image: graphprotocol/graph-node:v0.23.1
     container_name: index-node-0
     environment:
       postgres_host: ${DB_HOST:-postgres}
@@ -213,7 +213,7 @@ services:
 
 
   index-node-1:
-    image: graphprotocol/graph-node:v0.22.0
+    image: graphprotocol/graph-node:v0.23.1
     container_name: index-node-1
     environment:
       postgres_host: ${DB_HOST:-postgres}
@@ -253,7 +253,7 @@ services:
 
 
   query-node-0:
-    image: graphprotocol/graph-node:v0.22.0
+    image: graphprotocol/graph-node:v0.23.1
     container_name: query-node-0
     environment:
       postgres_host: ${DB_HOST:-postgres}
@@ -575,6 +575,3 @@ services:
 #    labels:
 #      org.label-schema.group: "monitoring"
 #    logging: *default-logging
-
-
-
