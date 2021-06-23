@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 12,
-  "iteration": 1623845377321,
+  "id": 7,
+  "iteration": 1624466917985,
   "links": [],
   "panels": [
     {
@@ -195,7 +195,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "-- grafana ignore\nselect\n  g.name || (case\n        when g.pending_version = v.id then ' (P)'\n        when g.current_version = v.id then ' (C)'\n        else ' (U)' end) as subgraph_name,\n  d.id as deployment,\n  s.id as schema,\n  replace(a.node_id, '','') as nodeId,\n  d.synced::text,\n  n.name as network,\n  (n.head_block_number - d.latest_ethereum_block_number) as blocks_behind_network,\n  (case when n.name = 'mainnet' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\n        when n.name = 'rinkeby' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\n        when n.name = 'kovan' then ((n.head_block_number - d.latest_ethereum_block_number)/15)::text\n        when n.name = 'poa-core' then ((n.head_block_number - d.latest_ethereum_block_number)/12)::text\n        else 'ø' end) as lag\nfrom subgraphs.subgraph_deployment as d,\n     subgraphs.subgraph_deployment_assignment as a,\n     subgraphs.subgraph_version as v,\n     subgraphs.subgraph as g,\n     subgraphs.ethereum_contract_data_source as ds,\n     subgraphs.subgraph_manifest m,\n     ethereum_networks  as n,\n     deployment_schemas as s\nwhere g.id = v.subgraph\n  and v.id in (g.pending_version, g.current_version)\n  and a.id = d.id\n  and m.id = d.manifest \n  and ds.id = m.data_sources[1]\n  and s.subgraph = d.id\n  and v.deployment = d.id\n  and not d.failed\n  and n.name = ds.network\n  and not a.node_id = 'removed'\norder by blocks_behind_network desc, subgraph_name;",
+          "rawSql": "-- grafana ignore\r\nselect\r\n  g.name || (case\r\n        when g.pending_version = v.id then ' (P)'\r\n        when g.current_version = v.id then ' (C)'\r\n        else ' (U)' end) as subgraph_name,\r\n  d.deployment,\r\n  s.id as schema,\r\n  replace(a.node_id, '','') as nodeId,\r\n  d.synced::text,\r\n  n.name as network,\r\n  (n.head_block_number - d.latest_ethereum_block_number) as blocks_behind_network,\r\n  (case when n.name = 'mainnet' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'rinkeby' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'kovan' then ((n.head_block_number - d.latest_ethereum_block_number)/15)::text\r\n        when n.name = 'poa-core' then ((n.head_block_number - d.latest_ethereum_block_number)/12)::text\r\n        when n.name = 'ropsten' then ((n.head_block_number - d.latest_ethereum_block_number)/2)::text\r\n        else 'ø' end) as lag\r\nfrom subgraphs.subgraph_deployment as d,\r\n     subgraphs.subgraph_deployment_assignment as a,\r\n     subgraphs.subgraph_version as v,\r\n     subgraphs.subgraph as g,\r\n     ethereum_networks  as n,\r\n     deployment_schemas as s\r\nwhere g.id = v.subgraph\r\n  and v.id in (g.pending_version, g.current_version)\r\n  and a.id = s.id\r\n  and s.id = d.id\r\n  and v.deployment = d.deployment\r\n  and not d.failed\r\n  and n.name = s.network\r\n  and not a.node_id = 'removed'\r\norder by blocks_behind_network desc, subgraph_name;",
           "refId": "A",
           "select": [
             [
@@ -397,7 +397,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "-- grafana ignore\nselect\n  g.name || (case\n        when g.pending_version = v.id then ' (P)'\n        when g.current_version = v.id then ' (C)'\n        else ' (U)' end) as subgraph_name,\n  d.id as deployment,\n  s.id as schema,\n  replace(a.node_id,'','') as nodeid,\n  d.synced::text,\n  n.name as network,\n  (n.head_block_number - d.latest_ethereum_block_number) as blocks_behind_network,\n  (case when n.name = 'mainnet' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\n        when n.name = 'rinkeby' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\n        when n.name = 'kovan' then ((n.head_block_number - d.latest_ethereum_block_number)/15)::text\n        when n.name = 'poa-core' then ((n.head_block_number - d.latest_ethereum_block_number)/12)::text\n        else 'ø' end) as lag\nfrom subgraphs.subgraph_deployment as d,\n     subgraphs.subgraph_deployment_assignment as a,\n     subgraphs.subgraph_version as v,\n     subgraphs.subgraph as g,\n     subgraphs.ethereum_contract_data_source as ds,\n     subgraphs.subgraph_manifest m,\n     ethereum_networks  as n,\n     deployment_schemas as s\nwhere g.id = v.subgraph\n  and v.id in (g.pending_version, g.current_version)\n  and a.id = d.id\n  and m.id = d.manifest \n  and ds.id = m.data_sources[1]\n  and s.subgraph = d.id\n  and v.deployment = d.id\n  and not d.failed\n  and n.name = ds.network\n  and a.node_id not like 'index_node_%'\norder by blocks_behind_network desc, subgraph_name;",
+          "rawSql": "-- grafana ignore\r\nselect\r\n  g.name || (case\r\n        when g.pending_version = v.id then ' (P)'\r\n        when g.current_version = v.id then ' (C)'\r\n        else ' (U)' end) as subgraph_name,\r\n  d.deployment,\r\n  s.id as schema,\r\n  replace(a.node_id,'','') as nodeid,\r\n  d.synced::text,\r\n  n.name as network,\r\n  (n.head_block_number - d.latest_ethereum_block_number) as blocks_behind_network,\r\n  (case when n.name = 'mainnet' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'rinkeby' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'kovan' then ((n.head_block_number - d.latest_ethereum_block_number)/15)::text\r\n        when n.name = 'poa-core' then ((n.head_block_number - d.latest_ethereum_block_number)/12)::text\r\n\t\twhen n.name = 'ropsten' then ((n.head_block_number - d.latest_ethereum_block_number)/2)::text\r\n        else 'ø' end) as lag\r\nfrom subgraphs.subgraph_deployment as d,\r\n     subgraphs.subgraph_deployment_assignment as a,\r\n     subgraphs.subgraph_version as v,\r\n     subgraphs.subgraph as g,\r\n     ethereum_networks  as n,\r\n     deployment_schemas as s\r\nwhere g.id = v.subgraph\r\n  and v.id in (g.pending_version, g.current_version)\r\n  and a.id = s.id\r\n  and s.id = d.id\r\n  and v.deployment = d.deployment\r\n  and not d.failed\r\n  and n.name = s.network\r\n  and a.node_id not like 'index_node_%'\r\norder by blocks_behind_network desc, subgraph_name;",
           "refId": "A",
           "select": [
             [
@@ -587,7 +587,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 223
+                "value": 287
               }
             ]
           },
@@ -599,7 +599,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 185
+                "value": 257
               }
             ]
           },
@@ -626,11 +626,23 @@
                 "value": 402
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Deterministic"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 127
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 21
@@ -1013,10 +1025,10 @@
         ]
       },
       "gridPos": {
-        "h": 14,
+        "h": 7,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 29
       },
       "id": 37,
       "options": {
@@ -1097,7 +1109,7 @@
         "h": 4,
         "w": 12,
         "x": 0,
-        "y": 42
+        "y": 36
       },
       "id": 6,
       "links": [],
@@ -1205,7 +1217,7 @@
         "h": 4,
         "w": 12,
         "x": 12,
-        "y": 42
+        "y": 36
       },
       "id": 38,
       "links": [],
@@ -1353,7 +1365,7 @@
     ]
   },
   "timezone": "",
-  "title": "Indexing Status Overview",
-  "uid": "indexing-status-overview",
-  "version": 33
+  "title": "Indexing Status Overview Test",
+  "uid": "indexing-status-overview-test",
+  "version": 7
 }
