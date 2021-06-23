@@ -1,20 +1,20 @@
 
 Graph Protocol Mainnet Docker Compose
-========
+=========
 
 A monitoring solution for hosting a graph node on a single Docker host with [Prometheus](https://prometheus.io/), [Grafana](http://grafana.org/), [cAdvisor](https://github.com/google/cadvisor),
 [NodeExporter](https://github.com/prometheus/node_exporter) and alerting with [AlertManager](https://github.com/prometheus/alertmanager).
 
 The monitoring configuration adapted the K8S template by the graph team in the [mission control repository](https://github.com/graphprotocol/mission-control-indexer) during the testnet, and later adapted for mainnet using [this configuration](https://github.com/graphprotocol/indexer/blob/main/docs/networks.md#mainnet-and-testnet-configuration).
 
-The advantage of using Docker, as opposed to systemd bare-metal setups, is that Docker is easy to manipulate around and scale up if needed. We personally ran the whole testnet infrastructure on the same machine, including a TurboGeth Archive Node (not included in this docker build). 
+The advantage of using Docker, as opposed to systemd bare-metal setups, is that Docker is easy to manipulate around and scale up if needed. We personally ran the whole testnet infrastructure on the same machine, including a TurboGeth Archive Node (not included in this docker build).
 
 For those that consider running their infras like we did, here are our observations regarding the necessary hardware specs:
 
 > From my experience during the testnet, the heaviest load was put onto
 > Postgres at all times, whilst the other infrastructure parts had
 > little to no load on them at times. And Postgres loads the CPU
-> enormously even with all the optimizations in the world. Even my 48 
+> enormously even with all the optimizations in the world. Even my 48
 > core EPYC was struggling to deliver a steady 100-150 queries per
 > second for Uniswap during the testnet. I think I hit 90 system load on
 > it before my ETH node collapsed (it wasn't related to the traffic,
@@ -70,13 +70,13 @@ The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to si
 
 *Your mileage may vary, so take this with a grain of salt and be ready to upgrade.* :)
 
-- The minimum specs will definitely get you running, but not for long, assuming you want to serve data for more than a few heavy-weight subgraphs in the future. 
+- The minimum specs will definitely get you running, but not for long, assuming you want to serve data for more than a few heavy-weight subgraphs in the future.
 
 - The recommended specs are a good setup for those that want to dip more than their feet in the indexing waters. Can serve a decent number of subgraphs, but it's limited by the CPU if too many requests flow through.
 
 - The maxed out specs rule of thumb is basically more is better. More CPUs, more RAM, faster disks. There is never enough. IT...NEEDS....MORE!!!!11
 
-Closing note, regarding the specs mentioned above: ideally, they need to scale up proportional with your stake in the protocol. 
+Closing note, regarding the specs mentioned above: ideally, they need to scale up proportional with your stake in the protocol.
 
 
 
@@ -138,7 +138,7 @@ To use qlog or agora execute the `runqlog` or `runagora` scripts in the root of 
 This will use the compiled qlog tool and extract queries since yesterday or 5 hours ago and store them to the query-logs folder.
 
 ```bash
-./extract_queries_since yesterday 
+./extract_queries_since yesterday
 ./extract_queries_since "5 hours ago"
 
 ```
@@ -154,13 +154,13 @@ That's all.
 
 
 
-## Get a domain 
+## Get a domain
 
 To enable SSL on your host you should get a domain.
 
 You can use any domain and any regsitrar that allowes you to edit DNS records to point subdomains to your IP address.
 
-For a free option go to [myFreenom](https://my.freenom.com/) and find a free domain name. Create a account and complete the registration. 
+For a free option go to [myFreenom](https://my.freenom.com/) and find a free domain name. Create a account and complete the registration.
 
 In the last step choose "use dns" and enter the IP address of your server. You can choose up to 12 months for free.
 
@@ -444,7 +444,7 @@ The decision here is totally up to you 🙂
 ```bash
 default => price;
 
-or 
+or
 
 query {...} => price;
 
@@ -527,33 +527,33 @@ journalctl -fu indexer-agent -n 10 -f | pino-pretty -c -t
 
 ```
 
-## Troubleshooting scenarios	
+## Troubleshooting scenarios
 -   **Indexer-agent and Indexer-service containers are loop crashing**
-    
+
     This is an indication that your index-node cannot connect to either the PostgreSQL DB or your Ethereum Archive-node
-    
+
     **I mentioned this in discord, but worth mentioning it here as well:**
-    
+
     If, at any given time while you're starting up your dockerized/k8s'ed infrastructure, your `INDEX-NODE` can't connect to the `ETH-ARCHIVE`, your agent and service nodes will crash in a loop saying that they can't reach the index-node, but in reality, it's your index-node that can't reach the archive-node. There is no mention in the agent/service logs saying that they crash because of that. Only a `connection refused` error. And there is no mention in the index-node either that it can't connect to the archive node, only that it stalls when connecting, with no timeout. I spent 6 hours trying to fix this, I thought it was an UFW issue blocking my docker containers, when it reality it was what I explained above.
-    
+
 -   **You have allocated, but can't see the subgraph indexing in Grafana?**
-    
+
     Check the `indexer-agent` logs immediately, the agent is probably still about to send the allocation transaction, but who knows ¯\\\_(ツ)\_/¯
-    
+
 -   **You have allocated, you can see the subgraph indexing, but its blocks behind number doesnt go down**
-    
+
     Check your `archive-node` logs, and if everything looks good, check your `index-node` logs after
-    
+
 -   **Docker - Nginx load balanced indexer-service nodes are not getting queries or only part of them are**
-    
+
     When you compose-up, some of your containers, even if you set the correct order of container dependencies, will crash at start-up waiting for others to start first. By design, Nginx caches the internal Docker IPs at start-up. In order to mitigate that problem, add a script in the Nginx start sequence that executes the following command: `nginx -s reload`.
-    
+
     Alternatively, you can just manually do `docker exec -it nginx-loadbalancer nginx -s reload` right from the host machine.
-    
+
 -   **Other indexer-agent errors documentation from the logs can be found here:**
-    
+
 -   **You're getting `Could not find matching rule with non-null allocation`**
-    
+
     This means that one of your rules has `allocationAmount null` — usually I've seen this being the `global` rule missing a value.
-    
+
     To get rid of it, set `graph indexer rules set global allocationAmount 0.01`
