@@ -7,7 +7,7 @@ A monitoring solution for hosting a graph node on a single Docker host with [Pro
 
 The monitoring configuration adapted the K8S template by the graph team in the [mission control repository](https://github.com/graphprotocol/mission-control-indexer) during the testnet, and later adapted for mainnet using [this configuration](https://github.com/graphprotocol/indexer/blob/main/docs/networks.md#mainnet-and-testnet-configuration).
 
-The advantage of using Docker, as opposed to systemd bare-metal setups, is that Docker is easy to manipulate around and scale up if needed. We personally ran the whole testnet infrastructure on the same machine, including a TurboGeth Archive Node (not included in this docker build).
+The advantage of using Docker, as opposed to systemd bare-metal setups, is that Docker is easy to manipulate around and scale up if needed. We personally ran the whole testnet infrastructure on the same machine, including an Erigon Archive Node (not included in this docker build).
 
 For those that consider running their infras like we did, here are our observations regarding the necessary hardware specs:
 
@@ -31,21 +31,21 @@ The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to si
 |-----------------------|------------------|-------------------|-------------------|
 | CPUs                  | 16 vcore         | 32 vcore          | 64 vcore          |
 | RAM                   | 32 GB            | 64 GB             | 128 GB            |
-| Storage               | 1.5 TB SATA SSD  | 7 TB NVME         | 7 TB NVME RAID 10 |
+| Storage               | 1.5 TB SATA SSD  | 8 TB NVME         | 8 TB NVME RAID 10 |
 
-*Note: The 1.5 TB requirement for storage is the absolute minimum, it needs to be at least SATA SSD as it doesn't work with spinning disks. Also, only TurboGETH has that little space required. OE, Parity and GETH all take 7 TB at the very minimum, and expanding pretty fast.*
+*Note: The 1.5 TB requirement for storage is the absolute minimum, it needs to be at least SATA SSD as it doesn't work with spinning disks. Also, only Erigon has that little space required. OE, Parity and GETH all take 7 TB+ at the very minimum, and expanding pretty fast.*
 
 
 ### Archive node options
 
 | Self-hosted         | Trace API | Stable | EIP-1898 | Min Disk Size |
 |---------------------|-----------|--------|----------|---------------|
-| OpenEthereum 3.0.x  | yes ✔️    | no ⚠️  | yes ✔️   | 7 TB          |
-| OpenEthereum 3.1    | yes ✔️    | no ⚠️  | no ☠️    | 7 TB          |
-| OpenEthereum 3.2    | yes ✔️    | TBD ⚠️ | yes ✔️   | 7 TB          |
-| Parity 2.5.13       | yes ✔️    | yes ✔️ | no ☠️    | 7 TB          |
-| GETH                | no ⚠️     | yes ✔️ | yes ✔️   | 7 TB          |
-| TurboGETH           | no ⚠️     | no ⚠️  | yes ✔️   | 1.5 TB        |
+| OpenEthereum 3.0.x  | yes ✔️    | no ⚠️  | yes ✔️   | 8 TB          |
+| OpenEthereum 3.1    | yes ✔️    | no ⚠️  | no ☠️    | 8 TB          |
+| OpenEthereum 3.2    | yes ✔️    | TBD ⚠️ | yes ✔️   | 8 TB          |
+| Parity 2.5.13       | yes ✔️    | yes ✔️ | no ☠️    | 8 TB          |
+| GETH                | no ⚠️     | yes ✔️ | yes ✔️   | 8 TB          |
+| Erigon              | no ⚠️     | no ⚠️  | yes ✔️   | 1.5 TB        |
 
 
 | Service Providers (WIP)  |
@@ -166,10 +166,10 @@ In the last step choose "use dns" and enter the IP address of your server. You c
 
 Under "Service > My Domains > Manage Domain > Manage Freenom DNS" you can add more subdomains later.
 
-Create 3 subdomains, named as follows:
+Create 2 subdomains, named as follows:
 ```
 index.sld.tld
-dashboard.sld.tld
+grafana.sld.tld
 ```
 
 ## Create a mnemonic
