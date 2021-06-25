@@ -205,7 +205,7 @@ GEO_COORDINATES="69.420 69.420" \
 docker-compose up -d --remove-orphans --build $@
 ```
 
-**To start the software, just do `bash start.sh`**
+**To start the software, just do `bash start`**
 
 `EMAIL` is only used as contact to create SSL certificates. Usually it doesn't receive any emails but is required by the certificate issuer.
 
@@ -484,7 +484,7 @@ sudo apt install npm -y
 To install `graph-pino`, you can simply do:
 
 ```bash
-npm install -g --registry <https://registry.npmjs.org/> @graphprotocol/graph-pino
+npm install -g --registry https://registry.npmjs.org/ @graphprotocol/graph-pino
 
 ```
 
