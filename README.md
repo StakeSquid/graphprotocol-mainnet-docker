@@ -1,9 +1,9 @@
-Graph Protocol Mainnet Docker Compose - Advanced Edition 
+Graph Protocol Mainnet Docker Compose - Advanced Edition
 ============
 
 
 
-## Welcome to the Advanced Edition ​o​f ​o​ur​ ​M​ai​n​net​ ​rep​os​it​or​y​ :slightly_smiling_face:
+## Welcome to the Advanced Edition of our Mainnet repository :slightly_smiling_face:
 
 
 
