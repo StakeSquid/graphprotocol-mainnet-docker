@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 7,
-  "iteration": 1624466917985,
+  "iteration": 1624738051642,
   "links": [],
   "panels": [
     {
@@ -1047,7 +1047,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n\tds.name as deployment_schema,\r\n\tsg.name as deployment_name,\r\n\tsd.vid as num,\r\n\tsd.id as deployment_id,\r\n\tsubstring(sm.repository,20,31) as git_repo,\r\n\tsda.node_id as node_id,\r\n\tsd.health as sub_health,\r\n\tsd.failed as sub_failed,\r\n\tsd.synced as sub_sync,\r\n\tsd.latest_ethereum_block_number as last_block,\r\n\tsd.entity_count as sub_entity,\r\n\tsize.total_bytes as size_total, \r\n\tsize.total_bytes as size_total_bytes, \r\n\tsd.earliest_ethereum_block_number as start_block, \r\n\tencode(sd.earliest_ethereum_block_hash, 'hex') as start_hash, \r\n\tencode(sd.latest_ethereum_block_hash, 'hex') as last_hash,\r\n\tsd.reorg_count as reorg_count, \r\n\tsd.current_reorg_depth as curr_reorg_count, \r\n\tsd.max_reorg_depth as max_reorg\r\nFROM \r\n\tsubgraphs.\"subgraph_deployment\" as sd\r\n\r\nleft join subgraphs.\"subgraph_manifest\" as sm on (sm.vid = sd.vid)\r\nleft join subgraphs.\"subgraph_deployment_assignment\" as sda on (sda.vid = sd.vid)\r\nleft join subgraphs.\"subgraph_version\" as sv on (sv.vid = sd.vid)\r\nleft join subgraphs.\"subgraph\" as sg on (sg.vid = sd.vid)\r\nleft join public.\"deployment_schemas\" as ds on (ds.subgraph = sd.id)\r\n\r\nleft join (\r\n\tSELECT *, total_bytes-index_bytes-coalesce(toast_bytes,0) AS table_bytes FROM (\r\n\t\tSELECT nspname AS table_schema\r\n            , ds.subgraph\r\n            , sum(pg_total_relation_size(c.oid)) AS total_bytes\r\n            , sum(pg_indexes_size(c.oid)) AS index_bytes\r\n            , sum(pg_total_relation_size(reltoastrelid)) AS toast_bytes\r\n\t\tFROM pg_class c\r\n\t\tLEFT JOIN pg_namespace n ON n.oid = c.relnamespace\r\n\t\t\tINNER JOIN deployment_schemas ds ON ds.name = n.nspname\r\n\t\tWHERE relkind = 'r'\r\n\t\t\tGROUP BY ds.subgraph,table_schema\r\n  ) a\r\n) as size on (sd.id = size.subgraph) order by sd.vid",
+          "rawSql": "SELECT \r\n\tds.name as deployment_schema,\r\n\tsg.name as deployment_name,\r\n\tsd.id as deployment_id,\r\n\tsubstring(sm.repository,20,31) as git_repo,\r\n\tsda.node_id as node_id,\r\n\tsd.health as sub_health,\r\n\tsd.failed as sub_failed,\r\n\tsd.synced as sub_sync,\r\n\tsd.latest_ethereum_block_number as last_block,\r\n\tsd.entity_count as sub_entity,\r\n\tsize.total_bytes as size_total, \r\n\tsize.total_bytes as size_total_bytes, \r\n\tsd.earliest_ethereum_block_number as start_block, \r\n\tencode(sd.earliest_ethereum_block_hash, 'hex') as start_hash, \r\n\tencode(sd.latest_ethereum_block_hash, 'hex') as last_hash,\r\n\tsd.reorg_count as reorg_count, \r\n\tsd.current_reorg_depth as curr_reorg_count, \r\n\tsd.max_reorg_depth as max_reorg\r\nFROM subgraphs.\"subgraph_deployment\" as sd\r\nleft join subgraphs.\"subgraph_manifest\" as sm on (sm.id = sd.id)\r\nleft join subgraphs.\"subgraph_deployment_assignment\" as sda on (sda.id = sd.id)\r\nleft join subgraphs.\"subgraph_version\" as sv on (sv.deployment = sd.deployment)\r\nleft join subgraphs.\"subgraph\" as sg on (sv.id in (sg.current_version, sg.pending_version))\r\nleft join public.\"deployment_schemas\" as ds on (ds.subgraph = sd.deployment)\r\nleft join (\r\n\tSELECT *, total_bytes-index_bytes-coalesce(toast_bytes,0) AS table_bytes FROM (\r\n\t\tSELECT nspname AS table_schema\r\n            , ds.subgraph\r\n            , sum(pg_total_relation_size(c.oid)) AS total_bytes\r\n            , sum(pg_indexes_size(c.oid)) AS index_bytes\r\n            , sum(pg_total_relation_size(reltoastrelid)) AS toast_bytes\r\n\t\tFROM pg_class c\r\n\t\tLEFT JOIN pg_namespace n ON n.oid = c.relnamespace\r\n\t\t\tINNER JOIN deployment_schemas ds ON ds.name = n.nspname\r\n\t\tWHERE relkind = 'r'\r\n\t\t\tGROUP BY ds.subgraph,table_schema\r\n  ) a\r\n) as size on (sd.deployment = size.subgraph) order by sd.id",
           "refId": "A",
           "select": [
             [
@@ -1365,7 +1365,7 @@
     ]
   },
   "timezone": "",
-  "title": "Indexing Status Overview Test",
-  "uid": "indexing-status-overview-test",
-  "version": 7
+  "title": "Indexing Status Overview",
+  "uid": "indexing-status-overview",
+  "version": 9
 }
