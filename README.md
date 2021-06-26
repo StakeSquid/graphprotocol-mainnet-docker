@@ -9,7 +9,7 @@ Graph Protocol Mainnet Docker Compose - Advanced Edition
 
 #### Table of contents
 
-- [README.md](readme.md) <- you are here
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/README.md) <- you are here
 - [Pre-requisites](docs/pre-requisites.md)
 - [Getting Started](docs/getting-started.md)
 - [Advanced Configuration](docs/advanced-config.md)
