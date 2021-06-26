@@ -1,0 +1,15 @@
+[store]
+[store.primary]
+connection = "postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${GRAPH_NODE_DB_NAME}"
+weight = 0
+pool_size = 10
+
+[chains]
+ingestor = "index_node_1"
+
+[deployment]
+[[deployment.rule]]
+indexers = [ "index_node_0", "index_node_1" ]
+
+[general]
+query = "query_node_0"

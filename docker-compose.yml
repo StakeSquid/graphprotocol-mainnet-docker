@@ -174,6 +174,8 @@ services:
   index-node-0:
     image: graphprotocol/graph-node:v0.23.1
     container_name: index-node-0
+    volumes:
+      - ./graph-node-configs:/root/graph-node-configs/
     environment:
       postgres_host: ${DB_HOST:-postgres}
       postgres_user: ${DB_USER:-graph-node}
@@ -215,7 +217,10 @@ services:
   index-node-1:
     image: graphprotocol/graph-node:v0.23.1
     container_name: index-node-1
+    volumes:
+      - ./graph-node-configs:/root/graph-node-configs/
     environment:
+      GRAPH_NODE_CONFIG: /root/graph-node-configs/index_node_0_config.toml
       postgres_host: ${DB_HOST:-postgres}
       postgres_user: ${DB_USER:-graph-node}
       postgres_pass: ${DB_PASS:-db-password}
@@ -255,7 +260,10 @@ services:
   query-node-0:
     image: graphprotocol/graph-node:v0.23.1
     container_name: query-node-0
+    volumes:
+      - ./graph-node-configs:/root/graph-node-configs/
     environment:
+      GRAPH_NODE_CONFIG: /root/graph-node-configs/index_node_0_config.toml
       postgres_host: ${DB_HOST:-postgres}
       postgres_user: ${DB_USER:-graph-node}
       postgres_pass: ${DB_PASS:-db-password}
