@@ -1,7 +1,7 @@
 #### Table of contents
 
 - [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/README.md)
-- [Pre-requisites](docs/pre-requisites.md) <- you are here
+- [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/pre-requisites.md) <- you are here
 - [Getting Started](docs/getting-started.md)
 - [Advanced Configuration](docs/advanced-config.md)
 - [Setting Up Allocations](docs/allocations.md)
