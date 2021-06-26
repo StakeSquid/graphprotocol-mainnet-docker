@@ -5,22 +5,6 @@ Graph Protocol Mainnet Docker Compose - Advanced Edition
 
 ## Welcome to the Advanced Edition of our Mainnet repository :slightly_smiling_face:
 
-
-
-#### Table of contents
-
-- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/README.md) <- you are here
-- [Pre-requisites](docs/pre-requisites.md)
-- [Getting Started](docs/getting-started.md)
-- [Advanced Configuration](docs/advanced-config.md)
-- [Setting Up Allocations](docs/allocations.md)
-- [Setting Up Cost Models](docs/costmodels.md)
-- [Viewing Logs](docs/logs.md)
-- [Tips and Tricks](docs/tips.md)
-- [Troubleshooting](docs/troubleshooting.md)
-
-
-
 This branch is made for people that know what they're doing, and want to achieve more with their graph-nodes than what we provided in the master branch.
 
 If you have any questions or need support, feel free to reach us via Graph's Discord server. But keep in mind that, as a general rule of thumb, we will not provide any sort of support for anything that is already written and explained in the docs section of this repository so please make sure you read *all* the files in the docs folder, then ask questions :slightly_frowning_face:. Chances are your questions or concerns are already covered in the docs.
@@ -47,3 +31,17 @@ Note that you **need** access to an **Ethereum Archive Node that supports EIP-18
 The setup for the archive node is **not included** in this docker setup.
 
 The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to sign up using our [referral link](https://hetzner.cloud/?ref=x2opTk2fg2fM) -- you can save 20€ and we get 10€ bonus for setting up some testnet nodes to support the network growth. :)
+
+
+
+## Table of contents
+
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/README.md) <- you are here
+- [Pre-requisites](docs/pre-requisites.md)
+- [Getting Started](docs/getting-started.md)
+- [Advanced Configuration](docs/advanced-config.md)
+- [Setting Up Allocations](docs/allocations.md)
+- [Setting Up Cost Models](docs/costmodels.md)
+- [Viewing Logs](docs/logs.md)
+- [Tips and Tricks](docs/tips.md)
+- [Troubleshooting](docs/troubleshooting.md)
