@@ -34,8 +34,8 @@ In the [build-postgres](https://github.com/StakeSquid/graphprotocol-mainnet-dock
 
 ### Compile and run postgres outside of docker
 
-Execute the bash files in the build-postgres folder in the below order and read and follow the printed out instructions carefully. 
-In case of errors you will have to understand roughly what happens in the scripts to resolve them. 
+Execute the bash files in the build-postgres folder in the below order and read and follow the printed out instructions carefully.
+In case of errors you will have to understand roughly what happens in the scripts to resolve them.
 
 ***Note:*** The scripts assume you are running ubuntu.
 
@@ -50,7 +50,7 @@ cd build-postgres
 # ./stop.sh
 ```
 
-This will take some minutes and needs you to edit several text files and change the system configuration. 
+This will take some minutes and needs you to edit several text files and change the system configuration.
 
 Add the following in front of you usual docker-compose up -d startup command that contains all your other environment variables
 
@@ -78,7 +78,7 @@ Note that your postgres will automatically come back up on system startup. It wi
 
 ## Advanced Graph Node configuration
 
-In the [graph-node-configs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/tree/advanced/graph-node-configs) folder you can see a few configuration files specific to each graph-node you are running (by default, two index nodes and one query node). 
+In the [graph-node-configs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/tree/advanced/graph-node-configs) folder you can see a few configuration files specific to each graph-node you are running (by default, two index nodes and one query node).
 
 The configs are basic, and work by default just like before. They're loaded as volumes in `/root/graph-node-configs/` inside the Graph Node containers, and passed as flags `GRAPH_NODE_CONFIG=` in the compose file under each Graph Node component.
 
@@ -278,7 +278,7 @@ UFW is a popular iptables front end on Ubuntu that makes it easy to manage firew
 The issue is:
 
 1. UFW is enabled on a server that provides external services, and all incoming connections that are not allowed are blocked by default.
-2. Run a Docker container on the server and use the `-p` option to publish ports for that container on all IP addresses. 
+2. Run a Docker container on the server and use the `-p` option to publish ports for that container on all IP addresses.
    For example: `docker run -d --name httpd -p 0.0.0.0:8080:80 httpd:alpine`, this command will run an httpd service and publish port 80 of the container to port 8080 of the server.
 3. UFW will not block all external requests to visit port 8080. Even the command `ufw deny 8080` will not prevent external access to this port.
 4. This problem is actually quite serious, which means that a port that was originally intended to provide services internally is exposed to the public network.
@@ -303,7 +303,7 @@ Almost all of these solutions are similar. It requires to disable docker's iptab
 
 The solutions that we can find on internet are very similar and not elegant, I hope a new solution can:
 
-- Don't need to disable Docker's iptables and let Docker to manage it's network. 
+- Don't need to disable Docker's iptables and let Docker to manage it's network.
   We don't need to manually maintain iptables rules for any new Docker networks, and avoid potential side effects after disabling iptables in Docker.
 - The public network cannot access ports that published by Docker. Even if the port is published on all IP addresses using an option like `-p 8080:80`. Containers and internal networks can visit each other normally.
   Although it is possible to have Docker publish a container's port to the server's private IP address, the port will not be accessed on the public network. But, this server may have multiple private IP addresses, and these private IP addresses may also change.
@@ -333,25 +333,25 @@ Modify the UFW configuration file `/etc/ufw/after.rules` and add the following r
     :ufw-docker-logging-deny - [0:0]
     :DOCKER-USER - [0:0]
     -A DOCKER-USER -j ufw-user-forward
-    
+
     -A DOCKER-USER -j RETURN -s 10.0.0.0/8
     -A DOCKER-USER -j RETURN -s 172.16.0.0/12
     -A DOCKER-USER -j RETURN -s 192.168.0.0/16
-    
+
     -A DOCKER-USER -p udp -m udp --sport 53 --dport 1024:65535 -j RETURN
-    
+
     -A DOCKER-USER -j ufw-docker-logging-deny -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -d 192.168.0.0/16
     -A DOCKER-USER -j ufw-docker-logging-deny -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -d 10.0.0.0/8
     -A DOCKER-USER -j ufw-docker-logging-deny -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -d 172.16.0.0/12
     -A DOCKER-USER -j ufw-docker-logging-deny -p udp -m udp --dport 0:32767 -d 192.168.0.0/16
     -A DOCKER-USER -j ufw-docker-logging-deny -p udp -m udp --dport 0:32767 -d 10.0.0.0/8
     -A DOCKER-USER -j ufw-docker-logging-deny -p udp -m udp --dport 0:32767 -d 172.16.0.0/12
-    
+
     -A DOCKER-USER -j RETURN
-    
+
     -A ufw-docker-logging-deny -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW DOCKER BLOCK] "
     -A ufw-docker-logging-deny -j DROP
-    
+
     COMMIT
     # END UFW AND DOCKER
 
@@ -401,7 +401,7 @@ The following rules block connection requests initiated by all public networks, 
     -A DOCKER-USER -j DROP -p udp -m udp --dport 0:32767 -d 192.168.0.0/16
     -A DOCKER-USER -j DROP -p udp -m udp --dport 0:32767 -d 10.0.0.0/8
     -A DOCKER-USER -j DROP -p udp -m udp --dport 0:32767 -d 172.16.0.0/12
-    
+
     -A DOCKER-USER -j RETURN
 
 If a docker container doesn't follow the OS's settings when receiving data, that is to say, the minimal port number less than `32768`. For example, we have a Dnsmasq container. The minimal port number that Dnsmasq uses for receiving data is `1024`. We can use the following command to allow a bigger port range used for receiving DNS packages.
@@ -534,7 +534,7 @@ Remove the rule which port is `443` and protocol is `tcp` for the container `htt
 Expose the port `80` of the service `web`
 
     docker service create --name web --publish 8080:80 httpd:alpine
-    
+
     ufw-docker service allow web 80
     # or
     ufw-docker service allow web 80/tcp
@@ -545,7 +545,7 @@ Remove rules from all nodes related to the service `web`
 
 #### Try it out
 
-We use [Vagrant](https://www.vagrantup.com/) to set up a local testing environment. 
+We use [Vagrant](https://www.vagrantup.com/) to set up a local testing environment.
 
 Run the following command to create 1 master node and 2 worker nodes
 
@@ -576,3 +576,20 @@ We can access the `web` service from our host now
 - [What is the best practice of docker + ufw under Ubuntu - Stack Overflow](https://stackoverflow.com/questions/30383845/what-is-the-best-practice-of-docker-ufw-under-ubuntu/51741599#comment91451547_51741599)
 - [docker and ufw serious problems · Issue #4737 · moby/moby](https://github.com/moby/moby/issues/4737#issuecomment-420112149)
 
+
+--------------------
+--------------------
+--------------------
+
+
+#### Table of contents
+
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/README.md)
+- [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/pre-requisites.md)
+- [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/getting-started.md)
+- [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/advanced-config.md) <- you are here
+- [Setting Up Allocations](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/allocations.md)
+- [Setting Up Cost Models](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/costmodels.md)
+- [Viewing Logs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/logs.md)
+- [Tips and Tricks](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/tips.md)
+- [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/troubleshooting.md)
