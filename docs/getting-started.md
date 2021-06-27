@@ -1,3 +1,17 @@
+#### Table of contents
+
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/README.md)
+- [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/pre-requisites.md)
+- [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/getting-started.md) <- you are here
+- [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/advanced-config.md)
+- [Setting Up Allocations](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/allocations.md)
+- [Setting Up Cost Models](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/costmodels.md)
+- [Viewing Logs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/logs.md)
+- [Tips and Tricks](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/tips.md)
+- [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/troubleshooting.md)
+
+
+
 ## Install from scratch
 
 Run the following commands to clone the repository and set everything up:
@@ -37,17 +51,17 @@ grafana.sld.tld
 
 ## Create a mnemonic
 
-You need a wallet with a seed phrase that is registered as your operator wallet. This wallet will be the one that makes transactions on behalf of your main wallet (which holds and stakes the GRT). 
+You need a wallet with a seed phrase that is registered as your operator wallet. This wallet will be the one that makes transactions on behalf of your main wallet (which holds and stakes the GRT).
 
 The operator wallet has limited functionality, and it's recommended to be used for security reasons.
 
 *You need a 12-word, or 15-word mnemonic phrase in order for it to work.*
 
-To make yourself a mnemonic eth wallet you can go to this [website](https://iancoleman.io/bip39/), select ETH from the dropdown and press generate. 
+To make yourself a mnemonic eth wallet you can go to this [website](https://iancoleman.io/bip39/), select ETH from the dropdown and press generate.
 
-You get a seed phrase in the input field labeled BIP39 Mnemonic. 
+You get a seed phrase in the input field labeled BIP39 Mnemonic.
 
-You can find your address, public key and private key in the first row of the table if you scroll down the page in the section with the heading "Derived Addresses". 
+You can find your address, public key and private key in the first row of the table if you scroll down the page in the section with the heading "Derived Addresses".
 
 If you need, you can import the wallet using the private key into Metamask
 
