@@ -11,6 +11,10 @@
 - [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/troubleshooting.md)
 
 
+
+
+
+
 ## Installing pre-requisites
 
 
@@ -94,4 +98,22 @@ If you want to extract specific dates from your logs you can do as follows, wher
 ```bash
 journalctl CONTAINER_NAME=indexer-service -S "20:22:00" -U "20:55:00" -o cat 2>&1 | pino-pretty -c -t | sed -r "s/[[:cntrl:]]\[[0-9]{1,3}m//g" | tee service.log &> /dev/null &
 ```
+
+
+
+
+
+#### Table of contents
+
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/README.md)
+- [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/pre-requisites.md)
+- [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/getting-started.md)
+- [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/advanced-config.md)
+- [Setting Up Allocations](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/allocations.md)
+- [Setting Up Cost Models](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/costmodels.md)
+- [Viewing Logs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/logs.md) <- you are here
+- [Tips and Tricks](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/tips.md)
+- [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/troubleshooting.md)
+
+
 
