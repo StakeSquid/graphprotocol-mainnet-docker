@@ -69,7 +69,10 @@ If you need, you can import the wallet using the private key into Metamask
 
 ## Run
 
-In the root of the repo, edit the file called `start` and add your values to the following envs:
+Navigate to the `graph-node-configs` folder and edit both index-node configs with your Ethereum RPC urls.
+Unfortunately these variables cannot be passed yet from the start file.
+
+After that, the root of the repo, edit the file called `start` and add your values to the following envs:
 
 ```bash
 EMAIL=email@domain.com \
@@ -81,12 +84,10 @@ DB_USER=your_db_user \
 DB_PASS=your_db_password \
 GRAPH_NODE_DB_NAME=your_graphnode_db_name \
 AGENT_DB_NAME=your_agent_db_name \
-ETHEREUM_RPC_0="http://ip:port" \
-ETHEREUM_RPC_1="http://ip:port" \
 TXN_RPC="http://ip:port" \
 OPERATOR_SEED_PHRASE="12 or 15 word mnemonic" \
 STAKING_WALLET_ADDRESS=0xAdDreSs \
-GEO_COORDINATES="69.420 69.420"
+GEO_COORDINATES="69.420 69.420" \
 docker-compose up -d --remove-orphans --build $@
 
 #The following ENV vars are optional
@@ -122,8 +123,6 @@ docker-compose up -d --remove-orphans --build $@
 `GRAPH_NODE_DB_NAME` is the name of the database used by the Index/Query nodes.
 
 `AGENT_DB_NAME` is the name of the database used by the Indexer agent/service nodes.
-
-`ETHEREUM_RPC_0` and `ETHEREUM_RPC_1` should be your Ethereum Archive node endpoint. `RPC_0` will be used by `index-node-0` and `query-node-0` and `RPC_1` will be used by `index-node-1`
 
 `TXN_RPC` is your ETH RPC used by Indexer agent/service nodes. This can be a full or fast node, or archive, up to you.
 
