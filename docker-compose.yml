@@ -159,7 +159,7 @@ services:
       #INDEXER_AGENT_VECTOR_EVENT_SERVER_PORT: 8001
       #INDEXER_AGENT_VECTOR_ROUTER: "vector8BSZxfkr62As6KZX2so4yXuex5XcpPXQ2tYZrBqpub94dAobu7"
       INDEXER_AGENT_COLLECT_RECEIPTS_ENDPOINT: https://gateway.network.thegraph.com/collect-receipts
-      INDEXER_AGENT_OFFCHAIN_SUBGRAPHS: ${OFFCHAIN_SUBGRAPHS}
+      #INDEXER_AGENT_OFFCHAIN_SUBGRAPHS: ${OFFCHAIN_SUBGRAPHS}
     networks:
       - monitor-net
     restart: unless-stopped
@@ -183,7 +183,6 @@ services:
       postgres_pass: ${DB_PASS:-db-password}
       postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com}'
-      ethereum: 'mainnet:${ETHEREUM_RPC_0}'
       node_role: index-node
       node_id: index_node_0
       BLOCK_INGESTOR: index_node_0
@@ -227,7 +226,6 @@ services:
       postgres_pass: ${DB_PASS:-db-password}
       postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com}'
-      ethereum: 'mainnet:${ETHEREUM_RPC_1}'
       node_role: index-node
       node_id: index_node_1
       BLOCK_INGESTOR: index_node_0
@@ -270,7 +268,6 @@ services:
       postgres_pass: ${DB_PASS:-db-password}
       postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com}'
-      ethereum: 'mainnet:${ETHEREUM_RPC_0}'
       node_role: query-node
       node_id: query_node_0
       RUST_LOG: INFO
