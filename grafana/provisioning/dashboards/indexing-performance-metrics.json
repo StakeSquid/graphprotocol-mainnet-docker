@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "id": 5,
-  "iteration": 1623477563565,
+  "id": 11,
+  "iteration": 1627906683166,
   "links": [],
   "panels": [
     {
@@ -38,7 +38,7 @@
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": false,
+        "current": true,
         "max": false,
         "min": false,
         "rightSide": true,
@@ -67,7 +67,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "(deriv(deployment_blocks_behind[10m]) * -60)",
+          "exemplar": true,
+          "expr": "deriv(deployment_head[10m]) * 60",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -169,7 +170,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(deriv(deployment_blocks_behind[10m]) * -60)",
+          "expr": "sum(deriv(deployment_head[10m]) * 60)",
           "hide": false,
           "interval": "",
           "legendFormat": "Total Sync Rate",
@@ -238,16 +239,16 @@
       "id": 35,
       "legend": {
         "alignAsTable": true,
-        "avg": true,
+        "avg": false,
         "current": true,
         "hideEmpty": false,
         "hideZero": false,
-        "max": true,
+        "max": false,
         "min": false,
         "rightSide": true,
         "show": true,
         "sideWidth": null,
-        "sort": "avg",
+        "sort": "current",
         "sortDesc": true,
         "total": false,
         "values": true
@@ -269,13 +270,22 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "deployment_blocks_behind",
+          "exemplar": true,
+          "expr": "abs(deployment_head{instance=\"index-node-0:8040\"} - on (network) group_left ethereum_chain_head_number{instance=\"index-node-0:8040\"})",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{deployment}}",
           "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "abs(deployment_head{instance=\"index-node-1:8040\"} - on (network) group_left ethereum_chain_head_number{instance=\"index-node-1:8040\"})",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{deployment}}",
+          "refId": "B"
         }
       ],
       "thresholds": [],
@@ -593,110 +603,9 @@
         "align": false,
         "alignLevel": null
       }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "prometheus",
-      "fill": 1,
-      "fillGradient": 3,
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 35
-      },
-      "hiddenSeries": false,
-      "id": 38,
-      "legend": {
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.0.1",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Value",
-          "color": "#1250B0"
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "sum(deployment_blocks_behind)",
-          "format": "time_series",
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "Total blocks behind",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Blocks behind over time (all subgraphs)",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:28524",
-          "format": "locale",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:28525",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 30,
   "style": "dark",
   "tags": [],
@@ -716,7 +625,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -746,5 +655,5 @@
   "timezone": "",
   "title": "Indexing Performance Metrics",
   "uid": "indexing-performance-metrics",
-  "version": 15
+  "version": 13
 }
