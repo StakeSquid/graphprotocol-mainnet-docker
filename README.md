@@ -31,7 +31,7 @@ The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to si
 |-----------------------|------------------|-------------------|-------------------|
 | CPUs                  | 16 vcore         | 32 vcore          | 64 vcore          |
 | RAM                   | 32 GB            | 64 GB             | 128 GB            |
-| Storage               | 1.5 TB SATA SSD  | 8 TB NVME         | 8 TB NVME RAID 10 |
+| Storage               | 2 TB SATA SSD    | 8 TB NVME         | 8 TB NVME RAID 10 |
 
 *Note: The 1.5 TB requirement for storage is the absolute minimum, it needs to be at least SATA SSD as it doesn't work with spinning disks. Also, only Erigon has that little space required. OE, Parity and GETH all take 7 TB+ at the very minimum, and expanding pretty fast.*
 
@@ -40,12 +40,12 @@ The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to si
 
 | Self-hosted         | Trace API | Stable | EIP-1898 | Min Disk Size |
 |---------------------|-----------|--------|----------|---------------|
-| OpenEthereum 3.0.x  | yes ✔️    | no ⚠️  | yes ✔️   | 8 TB          |
-| OpenEthereum 3.1    | yes ✔️    | no ⚠️  | no ☠️    | 8 TB          |
-| OpenEthereum 3.2    | yes ✔️    | TBD ⚠️ | yes ✔️   | 8 TB          |
-| Parity 2.5.13       | yes ✔️    | yes ✔️ | no ☠️    | 8 TB          |
-| GETH                | no ⚠️     | yes ✔️ | yes ✔️   | 8 TB          |
-| Erigon              | no ⚠️     | no ⚠️  | yes ✔️   | 1.5 TB        |
+| OpenEthereum 3.0.x  | yes ✔️    | no ⚠️  | yes ✔️   | 9 TB          |
+| OpenEthereum 3.1    | yes ✔️    | no ⚠️  | no ☠️    | 9 TB          |
+| OpenEthereum 3.2    | yes ✔️    | TBD ⚠️ | yes ✔️   | 9 TB          |
+| Parity 2.5.13       | yes ✔️    | yes ✔️ | no ☠️    | 9 TB          |
+| GETH                | no ⚠️     | yes ✔️ | yes ✔️   | 9 TB          |
+| Erigon              | no ⚠️     | no ⚠️  | yes ✔️   | 2 TB          |
 
 
 | Service Providers (WIP)  |
@@ -201,7 +201,6 @@ TXN_RPC="http://ip:port" \
 OPERATOR_SEED_PHRASE="12 or 15 word mnemonic" \
 STAKING_WALLET_ADDRESS=0xAdDreSs \
 GEO_COORDINATES="69.420 69.420" \
-#QUERY_FEE_REBATE_CLAIM_THRESHOLD=0 \
 docker-compose up -d --remove-orphans --build $@
 ```
 
@@ -557,3 +556,11 @@ journalctl -fu indexer-agent -n 10 -f | pino-pretty -c -t
     This means that one of your rules has `allocationAmount null` — usually I've seen this being the `global` rule missing a value.
 
     To get rid of it, set `graph indexer rules set global allocationAmount 0.01`
+
+-   **How to see what subgraphs are available for indexing**
+
+        All available subgraphs are located in grafana graphql dashboard.
+
+        To convert subgraph id to ipfs hash you can use script ```subgraph_convert.py```
+
+        Before running script install python3 module called ```base58```.
