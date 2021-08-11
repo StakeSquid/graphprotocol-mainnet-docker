@@ -34,7 +34,7 @@ do
   start_block_index=0
   while [[ $start_block_index -lt $SAFE_VERIFICATION_NUMBER ]]
   do
-    START_BLOCK=$(http -b post https://gateway.network.thegraph.com/network query='query epoch($epoch: ID!) { epoch(id: $epoch) { startBlock } }' variables:="{ \"epoch\": \"$((($EPOCH-$start_block_index)))\" }" | jq .data.epoch.startBlock)
+    START_BLOCK=$(http -b post https://gateway.thegraph.com/network query='query epoch($epoch: ID!) { epoch(id: $epoch) { startBlock } }' variables:="{ \"epoch\": \"$((($EPOCH-$start_block_index)))\" }" | jq .data.epoch.startBlock)
     START_BLOCK_HEX=$(printf '%x' $START_BLOCK)
 
     BLOCK_DATA=$(http -b post https://mainnet.infura.io/v3/{project_id} jsonrpc="2.0" id="1" method="eth_getBlockByNumber" params:="[\"0x$START_BLOCK_HEX\", false]" | jq -c '.result | { number, hash }')
