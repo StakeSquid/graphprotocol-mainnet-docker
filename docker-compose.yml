@@ -172,7 +172,7 @@ services:
 
 
   index-node-0:
-    image: graphprotocol/graph-node:v0.23.1
+    image: stakesquid/graphprotocol-graph-node:v0.23.1-2
     container_name: index-node-0
     volumes:
       - ./graph-node-configs:/root/graph-node-configs/
@@ -216,7 +216,7 @@ services:
 
 
   index-node-1:
-    image: graphprotocol/graph-node:v0.23.1
+    image: stakesquid/graphprotocol-graph-node:v0.23.1-2
     container_name: index-node-1
     volumes:
       - ./graph-node-configs:/root/graph-node-configs/
@@ -259,7 +259,7 @@ services:
 
 
   query-node-0:
-    image: graphprotocol/graph-node:v0.23.1
+    image: stakesquid/graphprotocol-graph-node:v0.23.1-2
     container_name: query-node-0
     volumes:
       - ./graph-node-configs:/root/graph-node-configs/
