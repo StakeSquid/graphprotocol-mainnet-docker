@@ -348,7 +348,7 @@ services:
 
 
   postgres:
-    image: postgres:13.1
+    image: postgres:13.3
     container_name: postgres
     command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
     restart: unless-stopped
@@ -373,7 +373,7 @@ services:
 
 
   postgres2:
-    image: postgres:13.1
+    image: postgres:13.3
     container_name: postgres2
     command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
     restart: unless-stopped
@@ -398,7 +398,7 @@ services:
 
 
   prometheus:
-    image: prom/prometheus:v2.27.1
+    image: prom/prometheus:v2.28.1
     container_name: prometheus
     volumes:
       - ./prometheus:/etc/prometheus
@@ -453,7 +453,7 @@ services:
 
 
   nodeexporter:
-    image: prom/node-exporter:v1.1.2
+    image: prom/node-exporter:v1.2.0
     container_name: nodeexporter
     volumes:
       - /proc:/host/proc:ro
@@ -482,7 +482,7 @@ services:
 
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.39.2
+    image: gcr.io/cadvisor/cadvisor:v0.40.0
     container_name: cadvisor
     volumes:
       - /:/rootfs:ro
@@ -508,7 +508,7 @@ services:
 
 
   grafana:
-    image: grafana/grafana:8.0.1
+    image: grafana/grafana:8.0.6
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
