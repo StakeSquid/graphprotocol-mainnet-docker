@@ -159,7 +159,7 @@ services:
       #INDEXER_AGENT_VECTOR_EVENT_SERVER_PORT: 8001
       #INDEXER_AGENT_VECTOR_ROUTER: "vector8BSZxfkr62As6KZX2so4yXuex5XcpPXQ2tYZrBqpub94dAobu7"
       INDEXER_AGENT_COLLECT_RECEIPTS_ENDPOINT: https://gateway.network.thegraph.com/collect-receipts
-      #INDEXER_AGENT_OFFCHAIN_SUBGRAPHS: ${OFFCHAIN_SUBGRAPHS}
+      INDEXER_AGENT_OFFCHAIN_SUBGRAPHS: ${INDEXER_AGENT_OFFCHAIN_SUBGRAPHS}
     networks:
       - monitor-net
     restart: unless-stopped
