@@ -19,6 +19,7 @@ volumes:
     nginx_certs: {}
     nginx_vhost: {}
     nginx_html: {}
+    nginx_acme: {}
 
 services:
 
@@ -320,6 +321,7 @@ services:
       - nginx_certs:/etc/nginx/certs
       - nginx_vhost:/etc/nginx/vhost.d
       - nginx_html:/usr/share/nginx/html
+      - nginx_acme:/etc/acme.sh
     restart: unless-stopped
     networks:
       - monitor-net
