@@ -30,3 +30,4 @@ docker-compose up -d --remove-orphans --build $@
 #GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE=1000 \
 #GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE=500 \
 #FULLTEXT_SEARCH="false" \
+#PG_CONFIG="postgres -c var1 -c var2"
