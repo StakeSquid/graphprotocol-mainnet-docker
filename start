@@ -5,15 +5,28 @@ ADMIN_USER=your_user \
 ADMIN_PASSWORD=your_password \
 DB_USER=your_db_user \
 DB_PASS=your_db_password \
-AGENT_DB_NAME=your_agent_db_name \
 GRAPH_NODE_DB_NAME=your_graphnode_db_name \
+AGENT_DB_NAME=your_agent_db_name \
 ETHEREUM_RPC_0="http://ip:port" \
 ETHEREUM_RPC_1="http://ip:port" \
 TXN_RPC="http://ip:port" \
 OPERATOR_SEED_PHRASE="12 or 15 word mnemonic" \
 STAKING_WALLET_ADDRESS=0xAdDreSs \
 GEO_COORDINATES="69.420 69.420" \
-QUERY_FEE_REBATE_CLAIM_THRESHOLD=0 \
 docker-compose up -d --remove-orphans --build $@
 
-# NETWORK_SUBGRAPH_DEPLOYMENT=Qmf5XXWA8zhHbdvWqtPcR3jFkmb5FLR4MAefEYx8E3pHfr \
+
+#The following ENV vars are optional
+#they need to be added above the last line containing
+#docker-compose...
+
+#QUERY_FEE_REBATE_CLAIM_THRESHOLD=1000 \
+#NETWORK_SUBGRAPH_DEPLOYMENT=Qmf5XXWA8zhHbdvWqtPcR3jFkmb5FLR4MAefEYx8E3pHfr \
+#INDEXER_AGENT_OFFCHAIN_SUBGRAPHS="Qm,Qm,Qm" \
+#GRAPHNODE_LOGLEVEL=warn \
+#ETHEREUM_TRACE_STREAM_STEP_SIZE=100 \
+#ETHEREUM_BLOCK_BATCH_SIZE=50 \
+#ETHEREUM_RPC_MAX_PARALLEL_REQUESTS=128 \
+#GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE=1000 \
+#GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE=500 \
+#FULLTEXT_SEARCH="false" \
