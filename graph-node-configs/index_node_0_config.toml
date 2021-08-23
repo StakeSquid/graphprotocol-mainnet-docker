@@ -1,6 +1,6 @@
 [store]
 [store.primary]
-connection = "postgresql://${postgres_user}:${postgres_pass}@${postgres_host}:5432/${postgres_db}"
+connection = "postgresql://${postgres_user}:${postgres_pass}@${postgres_host}:5432/${postgres_db}?host=/var/run/postgresql"
 weight = 0
 pool_size = 10
 
@@ -10,7 +10,7 @@ ingestor = "index_node_1"
 
 [chains.mainnet]
 shard = "primary"
-provider = [ { label = "mainnet", url = "<your_eth_rpc_url>", features = ["archive", "traces"] } ]
+provider = [ { label = "mainnet", url = "${ETHEREUM_RPC_0}", features = ["archive", "traces"] } ]
 
 [deployment]
 [[deployment.rule]]

@@ -82,6 +82,7 @@ services:
       - index-node-1
       - query-node-0
       - indexer-agent
+      - postgres2
       #- vector-node
     environment:
       INDEXER_SERVICE_MNEMONIC: ${OPERATOR_SEED_PHRASE}
@@ -130,6 +131,7 @@ services:
       - index-node-0
       - index-node-1
       - query-node-0
+      - postgres2
       #- vector-node
     expose:
       - 7300
@@ -176,8 +178,12 @@ services:
   index-node-0:
     image: stakesquid/graphprotocol-graph-node:v0.23.1-2
     container_name: index-node-0
+    depends_on:
+      - postgres
+      - postgres2
     volumes:
       - ./graph-node-configs:/root/graph-node-configs/
+      - ./postgres-socket:/var/run/postgresql
     environment:
       GRAPH_NODE_CONFIG: /root/graph-node-configs/index_node_0_config.toml
       postgres_host: ${DB_HOST:-postgres}
@@ -191,6 +197,7 @@ services:
       BLOCK_INGESTOR: index_node_0
       RUST_LOG: INFO
       GRAPH_LOG: ${GRAPHNODE_LOGLEVEL:-DEBUG}
+      GRAPH_ETH_CALL_GAS: 50000000
       STORE_CONNECTION_POOL_SIZE: ${STORE_CONNECTION_POOL_SIZE:-10}
       ETHEREUM_TRACE_STREAM_STEP_SIZE: ${ETHEREUM_TRACE_STREAM_STEP_SIZE:-50}
       ETHEREUM_BLOCK_BATCH_SIZE: ${ETHEREUM_BLOCK_BATCH_SIZE:-10}
@@ -220,8 +227,12 @@ services:
   index-node-1:
     image: stakesquid/graphprotocol-graph-node:v0.23.1-2
     container_name: index-node-1
+    depends_on:
+      - postgres
+      - postgres2
     volumes:
       - ./graph-node-configs:/root/graph-node-configs/
+      - ./postgres-socket:/var/run/postgresql
     environment:
       GRAPH_NODE_CONFIG: /root/graph-node-configs/index_node_1_config.toml
       postgres_host: ${DB_HOST:-postgres}
@@ -235,6 +246,7 @@ services:
       BLOCK_INGESTOR: index_node_0
       RUST_LOG: INFO
       GRAPH_LOG: ${GRAPHNODE_LOGLEVEL:-DEBUG}
+      GRAPH_ETH_CALL_GAS: 50000000
       STORE_CONNECTION_POOL_SIZE: ${STORE_CONNECTION_POOL_SIZE:-10}
       ETHEREUM_TRACE_STREAM_STEP_SIZE: ${ETHEREUM_TRACE_STREAM_STEP_SIZE:-50}
       ETHEREUM_BLOCK_BATCH_SIZE: ${ETHEREUM_BLOCK_BATCH_SIZE:-10}
@@ -263,8 +275,12 @@ services:
   query-node-0:
     image: stakesquid/graphprotocol-graph-node:v0.23.1-2
     container_name: query-node-0
+    depends_on:
+      - postgres
+      - postgres2
     volumes:
       - ./graph-node-configs:/root/graph-node-configs/
+      - ./postgres-socket:/var/run/postgresql
     environment:
       GRAPH_NODE_CONFIG: /root/graph-node-configs/query_node_0_config.toml
       postgres_host: ${DB_HOST:-postgres}
@@ -277,6 +293,7 @@ services:
       node_id: query_node_0
       RUST_LOG: INFO
       GRAPH_LOG: INFO
+      GRAPH_ETH_CALL_GAS: 50000000
       STORE_CONNECTION_POOL_SIZE: ${STORE_CONNECTION_POOL_SIZE:-10}
       GRAPH_LOG_QUERY_TIMING: gql
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
@@ -353,7 +370,7 @@ services:
   postgres:
     image: postgres:13.3
     container_name: postgres
-    command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
+    command: ${PG_CONFIG:-"postgres -c shared_preload_libraries=pg_stat_statements"}
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USER:-graph-node}
@@ -361,6 +378,7 @@ services:
       POSTGRES_DB: ${GRAPH_NODE_DB_NAME:-graph-node}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres-socket:/var/run/postgresql
     networks:
       - monitor-net
     expose:
