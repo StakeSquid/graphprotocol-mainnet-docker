@@ -22,7 +22,9 @@ if [[ -z "$QUERY_NODE_STATUS_ENDPOINT" ]] || [[ -z "$MAX_EPOCH" ]] || [[ -z "$MI
   exit 1
 fi
 
-echo "Epoch,Verified,Indexer ID,Allocation ID,Subgraph PoI,Verification PoI,Verification Try Number" >> $FILENAME
+echo "Epoch,Verified,Indexer ID,Allocation ID,Subgraph PoI,Verification PoI,Verification Try Number" >> ${FILENAME}-successful.csv
+echo "Epoch,Verified,Indexer ID,Allocation ID,Subgraph PoI,Verification PoI,Verification Try Number" >> ${FILENAME}-failed.csv
+echo "Epoch,Verified,Indexer ID,Allocation ID,Subgraph PoI,Verification PoI,Verification Try Number" >> ${FILENAME}.csv
 
 while [[ $EPOCH -le $MAX_EPOCH ]]
 do
@@ -49,7 +51,7 @@ do
   VARIABLES="{\"epoch\": $EPOCH, \"deployment\": \"$DEPLOYMENT\"}"
 
   POIS=$(http -b post https://gateway.network.thegraph.com/network \
-       query='query pois($epoch: Int!, $deployment: String!) {allocations (where: {closedAtEpoch: $epoch, subgraphDeployment_contains: $deployment}) {indexer {id} id poi closedAtEpoch}}' \
+       query='query pois($epoch: Int!, $deployment: String!) {allocations (where: {closedAtEpoch: $epoch, subgraphDeployment_contains: $deployment, poi_not:"0x0000000000000000000000000000000000000000000000000000000000000000"}) {indexer {id} id poi closedAtEpoch}}' \
        variables:="$(echo $VARIABLES)")
 
 
@@ -83,7 +85,8 @@ do
           allocation_id=$(echo $POIS | jq -r ".data.allocations[$index].id")
           subgraph_poi=$(echo $POIS | jq -r ".data.allocations[$index].poi")
           verification_poi=$(echo $VERIFICATION | jq -r '.data.proofOfIndexing')
-          echo "$EPOCH,true,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> $FILENAME
+          echo "$EPOCH,true,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> ${FILENAME}-successful.csv
+          echo "$EPOCH,true,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> ${FILENAME}.csv
           verified=true
           ((SUCCESSFUL_VERIFICATIONS=SUCCESSFUL_VERIFICATIONS+1))
           break
@@ -102,7 +105,8 @@ do
         echo "Subgraph PoI: $subgraph_poi"
         echo "Verification PoI: $verification_poi"
         echo "ALERT ALERT ALERT !!! POIs are not equal."
-        echo "$EPOCH,false,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> $FILENAME
+        echo "$EPOCH,false,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> ${FILENAME}-failed.csv
+        echo "$EPOCH,false,$indexer_id,$allocation_id,$subgraph_poi,$verification_poi,$verifications" >> ${FILENAME}.csv
         ((FAILED_VERIFICATIONS=FAILED_VERIFICATIONS+1))
     fi
 
