@@ -1,14 +1,14 @@
 #### Table of contents
 
-- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/README.md)
-- [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/pre-requisites.md)
-- [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/getting-started.md)
-- [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/advanced-config.md) <- you are here
-- [Setting Up Allocations](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/allocations.md)
-- [Setting Up Cost Models](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/costmodels.md)
-- [Viewing Logs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/logs.md)
-- [Tips and Tricks](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/tips.md)
-- [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/troubleshooting.md)
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/README.md)
+- [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/pre-requisites.md)
+- [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/getting-started.md)
+- [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/advanced-config.md) <- you are here
+- [Setting Up Allocations](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/allocations.md)
+- [Setting Up Cost Models](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/costmodels.md)
+- [Viewing Logs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/logs.md)
+- [Tips and Tricks](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/tips.md)
+- [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/troubleshooting.md)
 
 
 
@@ -78,7 +78,7 @@ Note that your postgres will automatically come back up on system startup. It wi
 
 ## Advanced Graph Node configuration
 
-In the [graph-node-configs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/tree/advanced/graph-node-configs) folder you can see a few configuration files specific to each graph-node you are running (by default, two index nodes and one query node).
+In the [graph-node-configs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/tree/graph-node-configs) folder you can see a few configuration files specific to each graph-node you are running (by default, two index nodes and one query node).
 
 The configs are basic, and work by default just like before. They're loaded as volumes in `/root/graph-node-configs/` inside the Graph Node containers, and passed as flags `GRAPH_NODE_CONFIG=` in the compose file under each Graph Node component.
 
@@ -584,12 +584,12 @@ We can access the `web` service from our host now
 
 #### Table of contents
 
-- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/README.md)
-- [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/pre-requisites.md)
-- [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/getting-started.md)
-- [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/advanced-config.md) <- you are here
-- [Setting Up Allocations](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/allocations.md)
-- [Setting Up Cost Models](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/costmodels.md)
-- [Viewing Logs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/logs.md)
-- [Tips and Tricks](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/tips.md)
-- [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/troubleshooting.md)
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/README.md)
+- [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/pre-requisites.md)
+- [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/getting-started.md)
+- [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/advanced-config.md) <- you are here
+- [Setting Up Allocations](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/allocations.md)
+- [Setting Up Cost Models](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/costmodels.md)
+- [Viewing Logs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/logs.md)
+- [Tips and Tricks](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/tips.md)
+- [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/troubleshooting.md)

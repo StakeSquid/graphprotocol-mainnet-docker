@@ -1,14 +1,14 @@
 #### Table of contents
 
-- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/README.md)
-- [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/pre-requisites.md)
-- [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/getting-started.md) <- you are here
-- [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/advanced-config.md)
-- [Setting Up Allocations](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/allocations.md)
-- [Setting Up Cost Models](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/costmodels.md)
-- [Viewing Logs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/logs.md)
-- [Tips and Tricks](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/tips.md)
-- [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/troubleshooting.md)
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/README.md)
+- [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/pre-requisites.md)
+- [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/getting-started.md) <- you are here
+- [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/advanced-config.md)
+- [Setting Up Allocations](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/allocations.md)
+- [Setting Up Cost Models](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/costmodels.md)
+- [Viewing Logs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/logs.md)
+- [Tips and Tricks](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/tips.md)
+- [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/troubleshooting.md)
 
 
 
@@ -23,7 +23,7 @@ git submodule init
 git submodule update
 git config --global user.email "you@example.com"
 git config --global user.name "Example User"
-git branch --set-upstream-to=origin/advanced
+git branch --set-upstream-to=origin
 
 ```
 
@@ -288,12 +288,12 @@ To use qlog or agora execute the `runqlog` or `runagora` scripts in the root of 
 
 #### Table of contents
 
-- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/README.md)
-- [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/pre-requisites.md)
-- [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/getting-started.md) <- you are here
-- [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/advanced-config.md)
-- [Setting Up Allocations](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/allocations.md)
-- [Setting Up Cost Models](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/costmodels.md)
-- [Viewing Logs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/logs.md)
-- [Tips and Tricks](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/tips.md)
-- [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/advanced/docs/troubleshooting.md)
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/README.md)
+- [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/pre-requisites.md)
+- [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/getting-started.md) <- you are here
+- [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/advanced-config.md)
+- [Setting Up Allocations](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/allocations.md)
+- [Setting Up Cost Models](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/costmodels.md)
+- [Viewing Logs](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/logs.md)
+- [Tips and Tricks](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/tips.md)
+- [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/docs/troubleshooting.md)
