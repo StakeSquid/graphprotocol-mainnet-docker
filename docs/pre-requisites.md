@@ -1,6 +1,6 @@
 #### Table of contents
 
-- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/README.md)
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/README.md)
 - [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/pre-requisites.md) <- you are here
 - [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/getting-started.md)
 - [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/advanced-config.md)
@@ -14,7 +14,7 @@
 
 ## Ethereum Archive Node Specs
 
-Again, as mentioned in the [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/README.md), the setup for the archive node is **not included** in this docker setup.
+Again, as mentioned in the [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/README.md), the setup for the archive node is **not included** in this docker setup.
 
 This section is purely informative.
 
@@ -92,7 +92,7 @@ npm install -g pino-pretty
 
 #### Table of contents
 
-- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/README.md)
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/README.md)
 - [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/pre-requisites.md) <- you are here
 - [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/getting-started.md)
 - [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/advanced-config.md)

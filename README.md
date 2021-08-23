@@ -29,7 +29,7 @@ The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to si
 ## Table of contents
 
 
-- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/README.md) <- you are here
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/README.md) <- you are here
 - [Pre-requisites](docs/pre-requisites.md)
 - [Getting Started](docs/getting-started.md)
 - [Advanced Configuration](docs/advanced-config.md)

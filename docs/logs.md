@@ -1,6 +1,6 @@
 #### Table of contents
 
-- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/README.md)
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/README.md)
 - [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/pre-requisites.md)
 - [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/getting-started.md)
 - [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/advanced-config.md)
@@ -105,7 +105,7 @@ journalctl CONTAINER_NAME=indexer-service -S "20:22:00" -U "20:55:00" -o cat 2>&
 
 #### Table of contents
 
-- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/README.md)
+- [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/README.md)
 - [Pre-requisites](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/pre-requisites.md)
 - [Getting Started](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/getting-started.md)
 - [Advanced Configuration](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/advanced-config.md)
