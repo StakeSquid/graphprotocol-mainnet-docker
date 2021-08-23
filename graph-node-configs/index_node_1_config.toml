@@ -10,7 +10,7 @@ ingestor = "index_node_1"
 
 [chains.mainnet]
 shard = "primary"
-provider = [ { label = "mainnet", url = "ETHEREUM_RPC_1", features = ["archive", "traces"] } ]
+provider = [ { label = "mainnet", url = "${ETHEREUM_RPC_1}", features = ["archive", "traces"] } ]
 
 [deployment]
 [[deployment.rule]]
