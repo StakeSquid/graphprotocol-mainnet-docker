@@ -395,7 +395,7 @@ services:
   postgres2:
     image: postgres:13.3
     container_name: postgres2
-    command: "postgres" "-c" "shared_preload_libraries=pg_stat_statements"
+    command: ["postgres" "-c" "shared_preload_libraries=pg_stat_statements"]
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USER:-graph-node}
