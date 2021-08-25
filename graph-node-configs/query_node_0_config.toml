@@ -1,7 +1,6 @@
 [store]
 [store.primary]
 connection = "postgresql://${postgres_user}:${postgres_pass}@${postgres_host}:5432/${postgres_db}?host=/var/run/postgresql"
-weight = 0
 pool_size = 10
 
 [chains]
