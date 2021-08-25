@@ -191,7 +191,7 @@ services:
       postgres_pass: ${DB_PASS:-db-password}
       postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com}'
-      ethereum: 'mainnet:${ETHEREUM_RPC_1}'
+      ETHEREUM_RPC_0: ${ETHEREUM_RPC_0}
       node_role: index-node
       node_id: index_node_0
       BLOCK_INGESTOR: index_node_0
@@ -240,7 +240,7 @@ services:
       postgres_pass: ${DB_PASS:-db-password}
       postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com}'
-      ethereum: 'mainnet:${ETHEREUM_RPC_1}'
+      ETHEREUM_RPC_1: ${ETHEREUM_RPC_1}
       node_role: index-node
       node_id: index_node_1
       BLOCK_INGESTOR: index_node_0
@@ -288,7 +288,6 @@ services:
       postgres_pass: ${DB_PASS:-db-password}
       postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com}'
-      ethereum: 'mainnet:${ETHEREUM_RPC_0}'
       node_role: query-node
       node_id: query_node_0
       RUST_LOG: INFO
