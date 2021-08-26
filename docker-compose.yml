@@ -176,7 +176,7 @@ services:
 
 
   index-node-0:
-    image: stakesquid/graphprotocol-graph-node:v0.23.1-2
+    image: graphprotocol/graph-node:v0.24.0
     container_name: index-node-0
     depends_on:
       - postgres
@@ -197,8 +197,6 @@ services:
       BLOCK_INGESTOR: index_node_0
       RUST_LOG: INFO
       GRAPH_LOG: ${GRAPHNODE_LOGLEVEL:-DEBUG}
-      GRAPH_ETH_CALL_GAS: 50000000
-      STORE_CONNECTION_POOL_SIZE: ${STORE_CONNECTION_POOL_SIZE:-10}
       ETHEREUM_TRACE_STREAM_STEP_SIZE: ${ETHEREUM_TRACE_STREAM_STEP_SIZE:-50}
       ETHEREUM_BLOCK_BATCH_SIZE: ${ETHEREUM_BLOCK_BATCH_SIZE:-10}
       ETHEREUM_RPC_MAX_PARALLEL_REQUESTS: ${ETHEREUM_RPC_MAX_PARALLEL_REQUESTS:-64}
@@ -225,7 +223,7 @@ services:
 
 
   index-node-1:
-    image: stakesquid/graphprotocol-graph-node:v0.23.1-2
+    image: graphprotocol/graph-node:v0.24.0
     container_name: index-node-1
     depends_on:
       - postgres
@@ -246,8 +244,6 @@ services:
       BLOCK_INGESTOR: index_node_0
       RUST_LOG: INFO
       GRAPH_LOG: ${GRAPHNODE_LOGLEVEL:-DEBUG}
-      GRAPH_ETH_CALL_GAS: 50000000
-      STORE_CONNECTION_POOL_SIZE: ${STORE_CONNECTION_POOL_SIZE:-10}
       ETHEREUM_TRACE_STREAM_STEP_SIZE: ${ETHEREUM_TRACE_STREAM_STEP_SIZE:-50}
       ETHEREUM_BLOCK_BATCH_SIZE: ${ETHEREUM_BLOCK_BATCH_SIZE:-10}
       ETHEREUM_RPC_MAX_PARALLEL_REQUESTS: ${ETHEREUM_RPC_MAX_PARALLEL_REQUESTS:-64}
@@ -273,7 +269,7 @@ services:
 
 
   query-node-0:
-    image: stakesquid/graphprotocol-graph-node:v0.23.1-2
+    image: graphprotocol/graph-node:v0.24.0
     container_name: query-node-0
     depends_on:
       - postgres
@@ -292,8 +288,6 @@ services:
       node_id: query_node_0
       RUST_LOG: INFO
       GRAPH_LOG: INFO
-      GRAPH_ETH_CALL_GAS: 50000000
-      STORE_CONNECTION_POOL_SIZE: ${STORE_CONNECTION_POOL_SIZE:-10}
       GRAPH_LOG_QUERY_TIMING: gql
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
@@ -367,7 +361,7 @@ services:
 
 
   postgres:
-    image: postgres:13.3
+    image: postgres:13.4
     container_name: postgres
     command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
     restart: unless-stopped
@@ -393,7 +387,7 @@ services:
 
 
   postgres2:
-    image: postgres:13.3
+    image: postgres:13.4
     container_name: postgres2
     command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
     restart: unless-stopped
@@ -418,7 +412,7 @@ services:
 
 
   prometheus:
-    image: prom/prometheus:v2.28.1
+    image: prom/prometheus:v2.29.1
     container_name: prometheus
     volumes:
       - ./prometheus:/etc/prometheus
@@ -448,7 +442,7 @@ services:
 
 
   alertmanager:
-    image: prom/alertmanager:v0.22.2
+    image: prom/alertmanager:v0.23.0
     container_name: alertmanager
     volumes:
       - ./alertmanager:/etc/alertmanager
@@ -473,7 +467,7 @@ services:
 
 
   nodeexporter:
-    image: prom/node-exporter:v1.2.0
+    image: prom/node-exporter:v1.2.2
     container_name: nodeexporter
     volumes:
       - /proc:/host/proc:ro
@@ -528,7 +522,7 @@ services:
 
 
   grafana:
-    image: grafana/grafana:8.0.6
+    image: grafana/grafana:8.1.12
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
