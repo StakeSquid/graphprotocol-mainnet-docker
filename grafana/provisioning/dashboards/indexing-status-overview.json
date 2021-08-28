@@ -1096,6 +1096,22 @@
               "sub_sync": "Sync"
             }
           }
+              },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNotNull",
+                  "options": {}
+                },
+                "fieldName": "Deployment Name"
+              }
+            ],
+            "match": "all",
+            "type": "include"
+          }
         }
       ],
       "transparent": true,
