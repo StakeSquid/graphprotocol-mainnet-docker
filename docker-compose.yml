@@ -522,7 +522,7 @@ services:
 
 
   grafana:
-    image: grafana/grafana:8.1.12
+    image: grafana/grafana:8.0.6
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
