@@ -2,11 +2,12 @@
 
 set -e
 
-MAX_EPOCH=$3
-MIN_EPOCH=$2
 SUBGRAPH=$1
+MIN_EPOCH=$2
 EPOCH=$2
+MAX_EPOCH=$3
 SAFE_VERIFICATION_NUMBER=$4
+INFURA_ID=$5
 
 timestamp=$(date +%s)
 FILENAME="${SUBGRAPH}-${timestamp}"
@@ -16,9 +17,9 @@ SUCCESSFUL_VERIFICATIONS=0
 FAILED_VERIFICATIONS=0
 
 if [[ -z "$QUERY_NODE_STATUS_ENDPOINT" ]] || [[ -z "$MAX_EPOCH" ]] || [[ -z "$MIN_EPOCH" ]] ||  [[ -z "$SAFE_VERIFICATION_NUMBER" ]] || [[ -z "$FILENAME" ]] ||[[ -z "$SUBGRAPH" ]]; then
-  echo "Usage: $0 <subgraph-id> <min-epoch> <max-epoch> <max-acceptable-epoch-verification>"
+  echo "Usage: $0 <subgraph-id> <min-epoch> <max-epoch> <max-acceptable-epoch-verification> <infura-id>"
   echo
-  echo "Example: $0 QmRhYzT8HEZ9LziQhP6JfNfd4co9A7muUYQhPMJsMUojSF 100 135 1"
+  echo "Example: $0 QmRhYzT8HEZ9LziQhP6JfNfd4co9A7muUYQhPMJsMUojSF 100 135 1 193af9e5c12a464585d0a646cf375bc"
   exit 1
 fi
 
@@ -36,10 +37,10 @@ do
   start_block_index=0
   while [[ $start_block_index -lt $SAFE_VERIFICATION_NUMBER ]]
   do
-    START_BLOCK=$(http -b post https://gateway.network.thegraph.com/network query='query epoch($epoch: ID!) { epoch(id: $epoch) { startBlock } }' variables:="{ \"epoch\": \"$((($EPOCH-$start_block_index)))\" }" | jq .data.epoch.startBlock)
+    START_BLOCK=$(http -b post https://gateway.thegraph.com/network query='query epoch($epoch: ID!) { epoch(id: $epoch) { startBlock } }' variables:="{ \"epoch\": \"$((($EPOCH-$start_block_index)))\" }" | jq .data.epoch.startBlock)
     START_BLOCK_HEX=$(printf '%x' $START_BLOCK)
 
-    BLOCK_DATA=$(http -b post https://mainnet.infura.io/v3/{project_id} jsonrpc="2.0" id="1" method="eth_getBlockByNumber" params:="[\"0x$START_BLOCK_HEX\", false]" | jq -c '.result | { number, hash }')
+    BLOCK_DATA=$(http -b post https://mainnet.infura.io/v3/$INFURA_ID jsonrpc="2.0" id="1" method="eth_getBlockByNumber" params:="[\"0x$START_BLOCK_HEX\", false]" | jq -c '.result | { number, hash }')
 
     HASHES[$start_block_index]=$(echo $BLOCK_DATA | jq '.hash')
     NON_HEX_NUMBERS[$start_block_index]=$(echo "$BLOCK_DATA" | jq '.number' | xargs printf '%d')
@@ -50,7 +51,7 @@ do
   DEPLOYMENT=$(echo "$SUBGRAPH" | base58 -d | hexdump -s 2 -v -e '/1 "%02X"' | sed -e 's/\(.*\)/\L\1/' | sed -e 's/^/0x/')
   VARIABLES="{\"epoch\": $EPOCH, \"deployment\": \"$DEPLOYMENT\"}"
 
-  POIS=$(http -b post https://gateway.network.thegraph.com/network \
+  POIS=$(http -b post https://gateway.thegraph.com/network \
        query='query pois($epoch: Int!, $deployment: String!) {allocations (where: {closedAtEpoch: $epoch, subgraphDeployment_contains: $deployment, poi_not:"0x0000000000000000000000000000000000000000000000000000000000000000"}) {indexer {id} id poi closedAtEpoch}}' \
        variables:="$(echo $VARIABLES)")
 
