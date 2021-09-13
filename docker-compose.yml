@@ -177,7 +177,7 @@ services:
 
 
   index-node-0:
-    image: graphprotocol/graph-node:v0.24.0
+    image: graphprotocol/graph-node:v0.24.1
     container_name: index-node-0
     depends_on:
       - postgres
@@ -224,7 +224,7 @@ services:
 
 
   index-node-1:
-    image: graphprotocol/graph-node:v0.24.0
+    image: graphprotocol/graph-node:v0.24.1
     container_name: index-node-1
     depends_on:
       - postgres
@@ -270,7 +270,7 @@ services:
 
 
   query-node-0:
-    image: graphprotocol/graph-node:v0.24.0
+    image: graphprotocol/graph-node:v0.24.1
     container_name: query-node-0
     depends_on:
       - postgres
