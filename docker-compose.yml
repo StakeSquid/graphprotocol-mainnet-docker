@@ -75,7 +75,7 @@ services:
 ######################################################################################
 
   indexer-service:
-    image: ghcr.io/graphprotocol/indexer-service:v0.17.0
+    image: ghcr.io/graphprotocol/indexer-service:v0.18.1
     container_name: indexer-service
     depends_on:
       - index-node-0
@@ -125,7 +125,7 @@ services:
 ######################################################################################
 
   indexer-agent:
-    image: ghcr.io/graphprotocol/indexer-agent:v0.17.0
+    image: ghcr.io/graphprotocol/indexer-agent:v0.18.1
     container_name: indexer-agent
     depends_on:
       - index-node-0
@@ -198,6 +198,8 @@ services:
       BLOCK_INGESTOR: index_node_0
       RUST_LOG: INFO
       GRAPH_LOG: ${GRAPHNODE_LOGLEVEL:-DEBUG}
+      GRAPH_ETH_CALL_GAS: 50000000
+      GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
       ETHEREUM_TRACE_STREAM_STEP_SIZE: ${ETHEREUM_TRACE_STREAM_STEP_SIZE:-50}
       ETHEREUM_BLOCK_BATCH_SIZE: ${ETHEREUM_BLOCK_BATCH_SIZE:-10}
       ETHEREUM_RPC_MAX_PARALLEL_REQUESTS: ${ETHEREUM_RPC_MAX_PARALLEL_REQUESTS:-64}
@@ -245,6 +247,8 @@ services:
       BLOCK_INGESTOR: index_node_0
       RUST_LOG: INFO
       GRAPH_LOG: ${GRAPHNODE_LOGLEVEL:-DEBUG}
+      GRAPH_ETH_CALL_GAS: 50000000
+      GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
       ETHEREUM_TRACE_STREAM_STEP_SIZE: ${ETHEREUM_TRACE_STREAM_STEP_SIZE:-50}
       ETHEREUM_BLOCK_BATCH_SIZE: ${ETHEREUM_BLOCK_BATCH_SIZE:-10}
       ETHEREUM_RPC_MAX_PARALLEL_REQUESTS: ${ETHEREUM_RPC_MAX_PARALLEL_REQUESTS:-64}
@@ -289,6 +293,8 @@ services:
       node_id: query_node_0
       RUST_LOG: INFO
       GRAPH_LOG: INFO
+      GRAPH_ETH_CALL_GAS: 50000000
+      GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
       GRAPH_LOG_QUERY_TIMING: gql
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
