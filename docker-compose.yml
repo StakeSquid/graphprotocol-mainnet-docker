@@ -75,7 +75,7 @@ services:
 ######################################################################################
 
   indexer-service:
-    image: ghcr.io/graphprotocol/indexer-service:v0.18.3
+    image: ghcr.io/graphprotocol/indexer-service:v0.18.4
     container_name: indexer-service
     depends_on:
       - index-node-0
@@ -125,7 +125,7 @@ services:
 ######################################################################################
 
   indexer-agent:
-    image: ghcr.io/graphprotocol/indexer-agent:v0.18.3
+    image: ghcr.io/graphprotocol/indexer-agent:v0.18.4
     container_name: indexer-agent
     depends_on:
       - index-node-0
@@ -144,6 +144,7 @@ services:
       INDEXER_AGENT_INDEX_NODE_IDS: "index_node_0,index_node_1"
       INDEXER_AGENT_INJECT_DAI: "true"
       INDEXER_AGENT_ALLOCATION_CLAIM_THRESHOLD: ${QUERY_FEE_REBATE_CLAIM_THRESHOLD:-0}
+      INDEXER_AGENT_REBATE_CLAIM_BATCH_THRESHOLD: ${REBATE_CLAIM_BATCH_THRESHOLD:-0}
       INDEXER_AGENT_ETHEREUM_NETWORK: mainnet
       INDEXER_AGENT_ETHEREUM: ${TXN_RPC}
       INDEXER_AGENT_GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
@@ -177,7 +178,7 @@ services:
 
 
   index-node-0:
-    image: graphprotocol/graph-node:v0.24.2
+    image: graphprotocol/graph-node:v0.25.0
     container_name: index-node-0
     depends_on:
       - postgres
@@ -226,7 +227,7 @@ services:
 
 
   index-node-1:
-    image: graphprotocol/graph-node:v0.24.2
+    image: graphprotocol/graph-node:v0.25.0
     container_name: index-node-1
     depends_on:
       - postgres
@@ -274,7 +275,7 @@ services:
 
 
   query-node-0:
-    image: graphprotocol/graph-node:v0.24.2
+    image: graphprotocol/graph-node:v0.25.0
     container_name: query-node-0
     depends_on:
       - postgres
@@ -531,7 +532,7 @@ services:
 
 
   grafana:
-    image: grafana/grafana:8.0.6
+    image: grafana/grafana:8.3.1
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
