@@ -361,7 +361,7 @@ If you want to allow public networks to access the services provided by the Dock
 
     ufw route allow proto tcp from any to any port 80
 
-This allows the public network to access all published ports whose container port is `80`.
+This allows the public network to access all published ports whose container port is `80`. If you are serving traffic over https then you need to also run the rule again with `port 443`.
 
 Note: If we publish a port by using option `-p 8080:80`, we should use the container port `80`, not the host port `8080`.
 
