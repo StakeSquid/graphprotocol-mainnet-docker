@@ -50,6 +50,28 @@ default => 0.01;
 
 ```
 
+### How to set a default cost model?
+
+Connect to your CLI 
+
+```
+./shell cli
+```
+
+Create a default cost model by creating a default file using `nano default` and the adding the following to the new file.
+```
+default => 0.00005;
+```
+**Note: This will serve each query at 0.00005 GRT / query**
+
+Save and exit the file, then apply this setting to each of your indexed subgraphs
+```
+graph indexer cost set model <IPFS HASH> default
+```
+
+Once you have applied the default cost model to each you can review them by typeing `graph indexer cost get all`
+
+
 ### How do the variables look like?
 
 ```json
