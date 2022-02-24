@@ -75,7 +75,7 @@ services:
 ######################################################################################
 
   indexer-service:
-    image: ghcr.io/graphprotocol/indexer-service:v0.18.4
+    image: ghcr.io/graphprotocol/indexer-service:v0.19.0
     container_name: indexer-service
     depends_on:
       - index-node-0
@@ -125,7 +125,7 @@ services:
 ######################################################################################
 
   indexer-agent:
-    image: ghcr.io/graphprotocol/indexer-agent:v0.18.4
+    image: ghcr.io/graphprotocol/indexer-agent:v0.19.0
     container_name: indexer-agent
     depends_on:
       - index-node-0
@@ -178,7 +178,7 @@ services:
 
 
   index-node-0:
-    image: graphprotocol/graph-node:v0.25.0
+    image: graphprotocol/graph-node:v0.25.1
     container_name: index-node-0
     depends_on:
       - postgres
@@ -227,7 +227,7 @@ services:
 
 
   index-node-1:
-    image: graphprotocol/graph-node:v0.25.0
+    image: graphprotocol/graph-node:v0.25.1
     container_name: index-node-1
     depends_on:
       - postgres
@@ -275,7 +275,7 @@ services:
 
 
   query-node-0:
-    image: graphprotocol/graph-node:v0.25.0
+    image: graphprotocol/graph-node:v0.25.1
     container_name: query-node-0
     depends_on:
       - postgres
@@ -296,8 +296,8 @@ services:
       GRAPH_LOG: INFO
       GRAPH_ETH_CALL_GAS: 50000000
       GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
-      GRAPH_GRAPHQL_WARN_RESULT_SIZE: ${GRAPH_GRAPHQL_WARN_RESULT_SIZE}
-      GRAPH_GRAPHQL_ERROR_RESULT_SIZE: ${GRAPH_GRAPHQL_ERROR_RESULT_SIZE}
+      #GRAPH_GRAPHQL_WARN_RESULT_SIZE: ${GRAPH_GRAPHQL_WARN_RESULT_SIZE}
+      #GRAPH_GRAPHQL_ERROR_RESULT_SIZE: ${GRAPH_GRAPHQL_ERROR_RESULT_SIZE}
       GRAPH_LOG_QUERY_TIMING: gql
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
@@ -371,7 +371,7 @@ services:
 
 
   postgres:
-    image: postgres:13.5
+    image: postgres:13.6
     container_name: postgres
     command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
     restart: unless-stopped
@@ -397,7 +397,7 @@ services:
 
 
   postgres2:
-    image: postgres:13.5
+    image: postgres:13.6
     container_name: postgres2
     command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
     restart: unless-stopped
@@ -422,7 +422,7 @@ services:
 
 
   prometheus:
-    image: prom/prometheus:v2.31.1
+    image: prom/prometheus:v2.33.4
     container_name: prometheus
     volumes:
       - ./prometheus:/etc/prometheus
@@ -532,7 +532,7 @@ services:
 
 
   grafana:
-    image: grafana/grafana:8.3.1
+    image: grafana/grafana:8.4.2
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
