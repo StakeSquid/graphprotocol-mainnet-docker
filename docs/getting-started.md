@@ -17,7 +17,7 @@
 Run the following commands to clone the repository and set everything up:
 
 ```bash
-git clone -b advanced git@github.com:StakeSquid/graphprotocol-mainnet-docker.git
+git clone git@github.com:StakeSquid/graphprotocol-mainnet-docker.git
 cd graphprotocol-mainnet-docker
 git submodule init
 git submodule update
