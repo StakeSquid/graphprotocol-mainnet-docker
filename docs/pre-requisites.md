@@ -55,7 +55,6 @@ This section is purely informative.
 | Storage | 300 GB SATA SSD | 2 TB NVME         | 8+ TB NVME RAID 10 |
 
 *The specs/requirements listed here come from our own experience during the testnet.*
-
 *Your mileage may vary, so take this with a grain of salt and be ready to upgrade.* :)
 
 - The minimum specs will definitely get you running, but not for long, assuming you want to serve data for more than a few heavy-weight subgraphs in the future.
