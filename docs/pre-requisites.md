@@ -22,30 +22,27 @@ This section is purely informative.
 | ------- | --------------- | ----------------- | ----------------- |
 | CPUs    | 16 vcore        | 32 vcore          | 64 vcore          |
 | RAM     | 32 GB           | 64 GB             | 128 GB            |
-| Storage | 1.5 TB SATA SSD | 8 TB NVME         | 8 TB NVME RAID 10 |
+| Storage | 3 TB SATA SSD   | 5 TB NVME         | 5 TB NVME RAID 10 |
 
-*Note: The 1.5 TB requirement for storage is the absolute minimum, it needs to be at least SATA SSD as it doesn't work with spinning disks. Also, only Erigon has that little space required. OE, Parity and GETH all take 7 TB+ at the very minimum, and expanding pretty fast.*
+*Note: The 3 TB requirement for storage is the absolute minimum, it needs to be at least SATA SSD as spinning disks as too slow to also serve the RPC data to the Graph stack. Also, only Erigon has that little space required. OE (now deprecated) and GETH all take 10 TB+ at the very minimum, and expanding pretty fast.*
 
 
 ### Archive node options
 
-| Self-hosted        | Trace API | Stable | EIP-1898 | Min Disk Size |
-| ------------------ | --------- | ------ | -------- | ------------- |
-| OpenEthereum 3.0.x | yes ✔️     | no ⚠️   | yes ✔️    | 8 TB          |
-| OpenEthereum 3.1   | yes ✔️     | no ⚠️   | no ⚠️     | 8 TB          |
-| OpenEthereum 3.2   | yes ✔️     | yes ✔️  | yes ✔️    | 8 TB          |
-| Parity 2.5.13      | yes ✔️     | yes ✔️  | no ⚠️     | 8 TB          |
-| GETH               | no ⚠️      | yes ✔️  | yes ✔️    | 8 TB          |
-| Erigon             | yes ✔️     | yes ✔️  | yes ✔️    | 1.5 TB        |
+| Self-hosted        | Trace API | Stable | EIP-1898 | Min Disk Size | Deprecated |
+| ------------------ | --------- | ------ | -------- | ------------- |------------|
+| OpenEthereum       | yes ✔️     | yes ✔️  | yes ✔️    | 8 TB      |yes ⚠️      |
+| GETH               | no ⚠️      | yes ✔️  | yes ✔️    | 8 TB      |no ✔️       |
+| Erigon             | yes ✔️     | yes ✔️  | yes ✔️    | 3 TB      |no ✔️       |
 
 
 | Service Providers (WIP) |
 | ----------------------- |
-| Infura                  |
-| Alchemy                 |
-| ChainStack              |
-| Quiknode                |
-| Ankr                    |
+| Infura                             |
+| Alchemy                        |
+| ChainStack                   |
+| Quiknode                      |
+| Ankr                              |
 
 
 
@@ -78,17 +75,45 @@ Closing note, regarding the specs mentioned above: ideally, they need to scale u
 * Docker Compose
 * git
 * httpie
+* curl
+* wget
 * jq
-* npm
 
 On a fresh Ubuntu server login via ssh and execute the following commands:
 
 ```bash
 apt update -y && apt upgrade -y && apt autoremove -y
-apt install docker.io docker-compose httpie git jq npm nano -y
+
+apt install docker.io docker-compose httpie curl wget git jq nano -y
+
 npm install -g pino-pretty
 
 ```
+
+## Optional Software
+* NPM (through Node Version Manager)
+* Uncomplicated Firewall (ufw)
+* pino-pretty
+
+```bash
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+# restart or open a new shell/terminal
+
+nvm install node
+
+# restart or open a new shell/terminal
+
+npm install -g pino-pretty
+
+apt install ufw
+
+```
+
+**IMPORTANT:** Make sure you open your ssh port in ufw before starting it. The default installation will try to open port 22 (default), but if you changed it, make sure you open the right port, otherwise you'll be locked out. In case that happens, reboot into rescue-mode and disable ufw.
 
 #### Table of contents
 
