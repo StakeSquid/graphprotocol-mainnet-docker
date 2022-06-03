@@ -75,7 +75,7 @@ services:
 ######################################################################################
 
   indexer-service:
-    image: ghcr.io/graphprotocol/indexer-service:v0.19.2
+    image: ghcr.io/graphprotocol/indexer-service:v0.19.1
     container_name: indexer-service
     depends_on:
       - index-node-0
@@ -125,7 +125,7 @@ services:
 ######################################################################################
 
   indexer-agent:
-    image: ghcr.io/graphprotocol/indexer-agent:v0.19.2
+    image: ghcr.io/graphprotocol/indexer-agent:v0.19.1
     container_name: indexer-agent
     depends_on:
       - index-node-0
