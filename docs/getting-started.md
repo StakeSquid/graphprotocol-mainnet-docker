@@ -141,6 +141,8 @@ docker-compose up -d --remove-orphans --build $@
 - `GRAPH_GRAPHQL_WARN_RESULT_SIZE` - these vars are disabled in docker-compose.yaml for the time being, do not uncomment and leave empty
 - `GRAPH_GRAPHQL_ERROR_RESULT_SIZE` - these vars are disabled in docker-compose.yaml for the time being, do not uncomment and leave empty
 
+**Note:** If you want to use any of the optional env vars, you need to copy the line that you want to enable above the `docker-compose up...` part, and uncomment it. Do NOT uncomment lines below it, or comment lines above it.
+
 
 **Containers:**
 * Graph Node (query node)
