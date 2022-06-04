@@ -19,10 +19,19 @@
 
 First off, I strongly recommend having either `graph-pino` or `pino-pretty` installed for this.
 
-You will need NPM installed for them to work and be viewable in a more human-esque manner.
+You will need NPM installed for them to work and be viewable in a more human-esque manner, so for that, we'll be using NVM (Node Version Manager) to make things easier.
 
 ```bash
-sudo apt install npm -y
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+# restart or open a new shell/terminal
+
+nvm install node
+
+# restart or open a new shell/terminal
 
 ```
 
