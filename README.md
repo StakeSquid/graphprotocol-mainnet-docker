@@ -35,6 +35,5 @@ The minimum configuration should to be the CPX51 VPS at Hetzner. Feel free to si
 - [Advanced Configuration](docs/advanced-config.md)
 - [Setting Up Allocations](docs/allocations.md)
 - [Setting Up Cost Models](docs/costmodels.md)
-- [Viewing Logs](docs/logs.md)
 - [Tips and Tricks](docs/tips.md)
 - [Troubleshooting](docs/troubleshooting.md)
