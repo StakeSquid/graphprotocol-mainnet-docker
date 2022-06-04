@@ -85,7 +85,6 @@ apt update -y && apt upgrade -y && apt autoremove -y
 
 apt install docker.io docker-compose httpie curl wget git jq nano -y
 
-npm install -g pino-pretty
 
 ```
 
@@ -109,6 +108,7 @@ nvm install node
 npm install -g pino-pretty
 
 apt install ufw
+
 
 ```
 
