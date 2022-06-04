@@ -110,7 +110,7 @@ Another, more direct, way of checking for successful allocations onchain, would 
 
 - https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet/graphql
 
-```json
+```bash
 query MyQuery {
   allocations(
     where: {activeForIndexer: "<lower_case_address>"}
