@@ -10,151 +10,154 @@
 - [Troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/troubleshooting.md)
 
 
+## Working environment
 
+To open or close allocations, we will be using the `cli` container.
 
-## Managing Allocations
-
--   To **control** the allocations, we will use the **indexer-cli**
--   To **check** our allocations, we will use the **indexer-cli, other community-made tools, and later on, the Graph Explorer**
-
-
-
-### How to check your allocations
-
-Assuming you already have the graph-cli and indexer-cli installed, in the root of the directory, type:
+Get into the `cli` container by running the following command inside the root of the repository
 
 ```bash
 ./shell cli
-graph indexer rules get all
 
 ```
 
-You will be greeted by this table. By default, it's set to these values below:
-![](https://i.imgur.com/rPwX9wL.png)
+Now we have access to both `graph-cli` and the `indexer-cli` as an extension to the former.
 
-### What do the table columns mean?
-
--   `deployment` - can be either **global**, or an **IPFS hash** of a subgraph of your choice
--   `allocationAmount` - refers to the **GRT allocation** that you want to set, either **globally** or for a **specific subgraph**, depending on your preference
--   `parallelAllocations` - influence how many **state channels** the gateways open with you for a deployment, and this in turn affects the max query request rate you can receive
--   `minSignal` - conditional decision basis ruled by the **minimum** Subgraph **Signal**
--   `maxSignal` - conditional decision basis ruled by the **maximum** Subgraph **Signal**
--   `minStake` - conditional decision basis ruled by the **minimum** Subgraph **Stake**
--   `minAverageQueryFees` - conditional decision basis ruled by the **minimum average** of **query fees**
--   `decisionBasis` - dictates the **behavior** of your **rules**
-
-
-
-
-### General caveats
-
--   Your total stake of a specific subgraph, or globally, will be calculated as follows:
-
-`allocationAmount` x `parallelAllocations` = `totalStake`
-
-*Example:*
-
-`allocationAmount 100` x `parallelAllocations 5` = 500 GRT allocated
-
-
-
--   `decisionBasis` can be of three types: `always` , `never` and `rules`
-
-`decisionBasis always` overrides the conditional decision basis rules that you might have set (minStake, minSignal, etc) and will ensure that your **allocation** is **always active**
-
-`decisionBasis never` same as above, only that it will ensure that your **allocation** is **always inactive**
-
-`decisionBasis rules` will give you the option of using the conditional decision basis
-
-
-
-
--   `global` rules will have, by default, an `allocationAmount` of `0.01` GRT and `parallelAllocations` set to `2`
-
-This means that by default, every time you set an `allocationAmount` of a specific subgraph, it will inherit `parallelAllocations 2` rule from `global`.
-
-To see the global rules merged into the rest of your allocations table, you can use the following command:
+To get more information about the available `graph` commands use the following:
 
 ```bash
-graph indexer rules get all --merged
+graph --help
+graph indexer --help
+
 
 ```
 
 
 
+## Understanding Subgraph Allocations
 
-## How to set allocations?
+In order to get a better understanding around Subgraph Allocations as an indexer, I would highly recommend reading the following article, written by Jim from WaveFive, along with the Network Overview blogposts written by Brandon.
 
-**Examples:**
+- https://wavefive.notion.site/The-Graph-Protocol-Indexer-Subgraph-Selection-Guide-725f6e575f6e4024ad7e50f2f4e9bbad
+- https://thegraph.com/blog/the-graph-network-in-depth-part-1
+- https://thegraph.com/blog/the-graph-network-in-depth-part-2
 
-**1.**
+
+Without a thorough understanding of the Protocol economics, you won't be profitable. So before jumping to anything else, give those links a read.
+
+
+
+## Opening Allocations
+
+Once you read those links above and you know exactly what your plan is, and what you're doing, then make it to the Graph Explorer (https://thegraph.com/explorer), find the subgraphs that you want to allocate towards, and copy their IPFS hash (Deployment ID).
+
+!()[https://i.postimg.cc/NFyqRHY2/image.png]
+
+
+Now, to allocate towards your chosen subgraph, inside the cli container, run the following command:
 
 ```bash
-graph indexer rules set <IPFS_HASH> allocationAmount 1000 decisionBasis always
+graph indexer rules set <IPFS_HASH> allocationAmount <GRT> decisionBasis always
+
 
 ```
 
-Assuming the `<IPFS_HASH>` exists on-chain, this will set an `allocationAmount` of `1000 GRT` and will ensure that the subgraph will `always` be allocated, through `decisionBasis always`
-
-**2.**
-
-```bash
-graph indexer rules set global allocationAmount 100 parallelAllocations 10 decisionBasis always
-
-```
-
-This command will enable you to automatically allocate `100 GRT` x `10 parallelAllocations` to **all** the subgraphs that exist on-chain, with 10 parallel allocations each
-
-**3.**
-
-```bash
-graph indexer rules set <IPFS_HASH> allocationAmount 1337 parallelAllocations 5 minSignal 100 maxSignal 200 decisionBasis rules
-
-```
-
-This command will enable you to use the decision basis conditional rules of minSignal and maxSignal. The subgraph will only get allocated by the Agent IF the network participants have a minimum of 100 signal strength and a maximum of 200 signal strength.
-
-Generally speaking, you'll be good to just use either the first command or the second one, as they're not complicated to understand. Just be aware of the parallelAllocations number.
+This will trigger the `indexer-agent` to send an allocation transaction on the network, and once that's confirmed, you've successfully allocated to the subgraph of your choice!
 
 
+## Reviewing your allocations using the indexer-cli
 
-## How to verify your allocations?
+### Review local database of allocations
 
-We can use the following command(s) with the indexer-cli:
+We can use the following command with the indexer-cli:
 
-**This will only display the subgraph-specific allocation rules**
-
-```bash
-graph indexer rules get <IPFS_HASH>
-
-```
-
-**This will display the full rules table**
 
 ```bash
 graph indexer rules get all
 
 ```
 
-**This will display the full rules table with the global values merged**
+This will give us a table with all the allocations that we've set up. It doesn't check for on-chain allocations, as it's only displaying the allocation rules found in your agent database.
+
+### Check for onchain allocations via the indexer-cli
+
+We can use the following command with the indexer-cli:
 
 ```bash
-graph indexer rules get all --merged
+graph indexer status
+
+
+```
+
+This will give you information about the status of your endpoints, and also display current on-chain allocations and their status.
+
+### Check for onchain allocations via the Graph Explorer and other 3rd party tools
+
+You can easily see if you've successfully allocated to a subgraph by going to your indexer profile on the Graph Explorer, or other 3rd party tools.
+
+- https://thegraph.com/explorer/participants/indexers
+- https://graphscan.io/#indexers
+- https://www.graphtronauts.com/#/indexers
+- https://maplenodes.com/graph/indexers/
+- https://indexer-tools.vincenttaglia.com/
+
+You simply have to search for your indexer address (staking wallet) to find out if your allocations are set on-chain.
+
+
+### Check for onchain allocations via querying the Network Subgraph
+
+Another, more direct, way of checking for successful allocations onchain, would be to query the Network Subgraph for your indexer address, with the following query:
+
+- https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet/graphql
+
+```json
+query MyQuery {
+  allocations(
+    where: {activeForIndexer: "<lower_case_address>"}
+  ) {
+    id
+    subgraphDeployment {
+      ipfsHash
+      originalName
+    }
+  }
+}
+
 
 ```
 
 
-## What happens after you set your allocations?
 
-The indexer-agent will now start to allocate the amount of GRT that you specified for each subgraph that it finds to be present on-chain.
+## Closing allocations
 
-Depending on how many subgraphs you allocated towards, it will take time for this action to finish.
+To close allocations, you have two options:
 
-Keep in mind that the indexer-agent once given the instructions to allocate, it will throw everything in a queue of transactions that you will not be able to close. For example, if you set `global always` then immediately after, you decide to set `global rules` or `never` it will do a full set of transactions for `global always` then go around and deallocate from them with your second transactions. This means that you will likely be facing a lot of delay between the input time and until the actions have finalized on-chain.
+First option would be to run the same command that you used to allocate, but chainging the `decisionBasis` to `never`:
 
-A workaround for this is to restart the indexer-agent app/container, as this will reset his internal queue managing system and start with the most fresh data that it has.
+```bash
+graph indexer rules set <IPFS_HASH> decisionBasis never
 
-Another workaround is to either delete your rules with `graph indexer rules delete <IPFS>`
+
+```
+
+This will trigger the `indexer-agent` to send an allocation closure transaction on the network, and once that's confirmed, you've successfully unallocated off that subgraph!
+
+The second option would be to just delete the allocation from the rules database. This also makes things much more nice and tidy, especially if you use the `get rules all` command all the time.
+
+```bash
+graph indexer rules delete <IPFS_HASH>
+
+
+```
+
+Or you can delete all the rules via
+
+```bash
+graph indexer rules delete all
+
+
+```
+
 
 
 
