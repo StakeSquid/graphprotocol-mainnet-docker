@@ -159,6 +159,17 @@ graph indexer rules delete all
 ```
 
 
+## The life of an allocation
+
+After being created by an indexer a healthy allocation goes through four states.
+
+-   **Active** - Once an allocation is created on-chain ([allocateFrom()](https://github.com/graphprotocol/contracts/blob/master/contracts/staking/Staking.sol#L873)) it is considered **active**. A portion of the indexer's own and/or delegated stake is allocated towards a subgraph deployment, which allows them to claim indexing rewards and serve queries for that subgraph deployment. The indexer agent manages creating allocations based on the indexer rules.
+    
+-   **Closed** - An indexer is free to close an allocation once 1 epoch has passed ([closeAllocation()](https://github.com/graphprotocol/contracts/blob/master/contracts/staking/Staking.sol#L873)) or their indexer agent will automatically close the allocation after the **maxAllocationEpochs** (currently 28 days). When an allocation is closed with a valid proof of indexing (POI) their indexing rewards are distributed to the indexer and its delegators (see "how are rewards distributed?" below to learn more).
+    
+-   **Finalized** - Once an allocation has been closed there is a dispute period after which the allocation is considered **finalized** and it's query fee rebates are available to be claimed (claim()). The indexer agent monitors the network to detect **finalized** allocations and claims them if they are above a configurable (and optional) threshold, **—-allocation-claim-threshold**.
+    
+-   **Claimed** - The final state of an allocation; it has run its course as an active allocation, all eligible rewards have been distributed and its query fee rebates have been claimed.
 
 
 
