@@ -5,6 +5,9 @@ Graph Protocol Mainnet Docker Compose
 
 This repository is a one-stop solution to the decentralized world of The Graph. It spins up all the necessary containers on one single machine including monitoring solutions and a CLI container that allows you to interact with the graph-nodes or the indexer-agent.
 
+⚠️ **WARNING:** It is very important to read the entire documentation if you want to thoroughly understand the ins and outs of the Indexer Software Stack. If you're trying to binge through this documentation, no help will be offered, and you'll be sent back to **RTFM**. Thanks for understanding. 💖
+
+
 A monitoring solution for hosting a graph node on a single Docker host with [Prometheus](https://prometheus.io/), [Grafana](http://grafana.org/), [cAdvisor](https://github.com/google/cadvisor),
 [NodeExporter](https://github.com/prometheus/node_exporter) and alerting with [AlertManager](https://github.com/prometheus/alertmanager).
 
