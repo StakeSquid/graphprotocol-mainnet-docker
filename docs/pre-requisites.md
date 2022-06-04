@@ -25,6 +25,7 @@ This can easily be done via the Web UI, by going to the [Graph Explorer](https:/
 ![](https://i.ibb.co/CtrnyGf/image.png)
 
 3. Stake the amount of GRT that you desire, then you're all done!
+
 ![](https://i.ibb.co/Nrdq9zn/image.png)
 
 ## Set your Operator
