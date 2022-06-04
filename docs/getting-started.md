@@ -25,6 +25,7 @@ git config --global user.email "you@example.com"
 git config --global user.name "Example User"
 git branch --set-upstream-to=origin
 
+
 ```
 
 
@@ -67,7 +68,7 @@ If you need, you can import the wallet using the private key into Metamask
 
 
 
-## Run
+## Configure the environment variables
 
 Edit the file called `start` and add your values to the following envs:
 
@@ -104,43 +105,44 @@ docker-compose up -d --remove-orphans --build $@
 #ETHEREUM_RPC_MAX_PARALLEL_REQUESTS=128 \
 #GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE=1000 \
 #GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE=500 \
-#FULLTEXT_SEARCH="false" \
 #INDEXER_AGENT_GAS_PRICE_MAX=gas-price-in-gwei \
 #GRAPH_GRAPHQL_WARN_RESULT_SIZE=bytes \
 #GRAPH_GRAPHQL_ERROR_RESULT_SIZE=bytes \
 
 ```
 
-**To start the software, just do `bash start`**
+**Required env vars:**
+- `EMAIL` - only used as contact to create SSL certificates. Usually it doesn't receive any emails but is required by the certificate issuer.
+- `INDEX_HOST` - your indexer public endpoint. The gateway will be sending queries to this endpoint.
+- `GRAFANA_HOST` - your Grafana dashboard for indexer stack monitoring.
+- `ADMIN_USER` and `ADMIN_PASSWORD` - will be used by Grafana, Prometheus and AlertManager.
+- `DB_USER` and `DB_PASS` - will be used for initializing the PostgreSQL Databases (both index/query DB and indexer agent/service DB).
+- `GRAPH_NODE_DB_NAME` - the name of the database used by the Index/Query nodes.
+- `AGENT_DB_NAME` - the name of the database used by the Indexer agent/service nodes.
+- `ETHERUM_RPC_0` and `ETHEREUM_RPC_1` - your ETH RPCs used by the index nodes. They can be different URLs or the same, up to you.
+- `TXN_RPC` - your ETH RPC used by Indexer agent/service nodes. This can be a fast/full/archive node, up to you! Please note that using Erigon as the TXN_RPC has proven unreliable by some indexers.
+- `OPERATOR_SEED_PHRASE` - the 12/15 word mnemonic that you generated earlier. Will be used by the Agent/Service to send transactions (open/close allocations, etc)
+- `STAKING_WALLET_ADDRESS` - the address (0x...) that you staked your GRT with, ideally living on an entirely different mnemonic phrase than your Operator Wallet. 
+- `GEO_COORDINATES` of your server - you can search for an ip location website and check your server exact coordinates.
 
-`EMAIL` is only used as contact to create SSL certificates. Usually it doesn't receive any emails but is required by the certificate issuer.
+**Optional env vars:**
+- `QUERY_FEE_REBATE_CLAIM_THRESHOLD`  - the minimum amount of GRT to claim per allocation
+- `REBATE_CLAIM_BATCH_THRESHOLD` - the minimum amount of Total GRT to batch claim for all allocations combined
+- `NETWORK_SUBGRAPH_DEPLOYMENT` - The Mainnet Network Subgraph IPFS hash, used if you want to rely on your own subgraph deployment rather than the gateways subgraphs 
+- `INDEXER_AGENT_OFFCHAIN_SUBGRAPHS` - Gives you the possibility of syncing subgraphs locally without allocating to them onchain
+- `GRAPHNODE_LOGLEVEL` - the log level of the graph-node (indexer/query) - trace/debug/info/warn/error - if you have a whackton of subgraphs, increasing the loglevel to warn/error helps lowering the indexing time
+- `ETHEREUM_TRACE_STREAM_STEP_SIZE` - this helps (or not) indexing times by very small margins - use at own risk
+- `ETHEREUM_TRACE_STREAM_STEP_SIZE` - this helps (or not) indexing times by very small margins - use at own risk
+- `ETHEREUM_BLOCK_BATCH_SIZE` - this helps (or not) indexing times by very small margins - use at own risk
+- `ETHEREUM_RPC_MAX_PARALLEL_REQUESTS` - this helps (or not) indexing times by very small margins - use at own risk
+- `GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE` - this helps (or not) indexing times by very small margins - use at own risk
+- `GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE` - this helps (or not) indexing times by very small margins - use at own risk
+- `INDEXER_AGENT_GAS_PRICE_MAX` - the maximum Gas Price (GWEI) that the indexer-agent will attempt to send transactions with
+- `GRAPH_GRAPHQL_WARN_RESULT_SIZE` - these vars are disabled in docker-compose.yaml for the time being, do not uncomment and leave empty
+- `GRAPH_GRAPHQL_ERROR_RESULT_SIZE` - these vars are disabled in docker-compose.yaml for the time being, do not uncomment and leave empty
 
-`INDEX_HOST` and `GRAFANA_HOST` should point to the subdomains created earlier.
 
-`ADMIN_USER` and `ADMIN_PASSWORD` will be used by Grafana, Prometheus and AlertManager.
-
-`DB_USER` and `DB_PASS` will be used for initializing the PostgreSQL Databases (both index/query DB and indexer agent/service DB).
-
-`GRAPH_NODE_DB_NAME` is the name of the database used by the Index/Query nodes.
-
-`AGENT_DB_NAME` is the name of the database used by the Indexer agent/service nodes.
-
-`ETHERUM_RPC_0` and `ETHEREUM_RPC_1` are your ETH RPCs used by the index nodes. They can be different URLs or the same, up to you.
-
-`TXN_RPC` is your ETH RPC used by Indexer agent/service nodes. This can be a full or fast node, or archive, up to you.
-
-`OPERATOR_SEED_PHRASE` should belong to the operator wallet mnemonic phrase.
-
-`STAKING_WALLET_ADDRESS` needs to be the address that you staked your GRT with.
-
-To find out the `GEO_COORDINATES` you can search for an ip location website and check your server exact coordinates.
-
-***YOU MUST SET ALL THE ENVS ABOVE EVEN IF SOME OF THEM MIGHT HAVE THE SAME VALUES (eg. RPC_0 RPC_1 and TXN_RPC)***
-
-In case something goes wrong try to add `--force-recreate` at the end of the command, eg.: `bash start --force-recreate <container_name>`.
-
-Containers:
-
+**Containers:**
 * Graph Node (query node)
 * Graph Node (index node)
 * Indexer Agent
@@ -162,6 +164,51 @@ Containers:
 
 - Agent/Service - [networks.md](https://github.com/graphprotocol/indexer/blob/main/docs/networks.md)
 - Graph-Node - [environment-variables.md](https://github.com/graphprotocol/graph-node/blob/master/docs/environment-variables.md)
+
+
+## Start
+
+To start, all you need to do is to:
+
+```bash
+bash start
+
+
+```
+
+Be aware that initially it takes several minutes to download and run all the containers (especially the cli container, that one takes a while to build), so be patient. :)
+
+Subsequent restarts will be much faster.
+
+In case something goes wrong, find the problem, edit the variables, and add `--force-recreate` at the end of the command, plus the container you want to recreate:
+
+```bash 
+bash start --force-recreate <container_name>
+
+```
+
+Or to recreate the entire stack:
+
+```bash 
+bash start --force-recreate
+
+```
+
+
+## Verify that it runs properly
+
+To verify that everything is up and running, you need to:
+
+```bash
+docker ps
+
+```
+
+And look for containers that are crash looping - you will notice `restarting` and a countdown - that means those containers are not working properly.
+
+To further debug, try looking for the container logs and see what they say. 
+More information in the [troubleshooting](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/troubleshooting.md) section.
+
 
 
 
@@ -239,7 +286,6 @@ mkdir -p /var/log/journal
 
 ```
 
-That's all.
 
 
 
@@ -260,7 +306,7 @@ This will update the scripts from the repository.
 
 To upgrade the containers:
 ```bash
-bash start --force-recreate <container-name>
+bash start --force-recreate
 
 ```
 
