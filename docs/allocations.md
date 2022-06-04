@@ -51,7 +51,7 @@ Without a thorough understanding of the Protocol economics, you won't be profita
 
 Once you read those links above and you know exactly what your plan is, and what you're doing, then make it to the Graph Explorer (https://thegraph.com/explorer), find the subgraphs that you want to allocate towards, and copy their IPFS hash (Deployment ID).
 
-!()[https://i.postimg.cc/NFyqRHY2/image.png]
+![](https://i.postimg.cc/NFyqRHY2/image.png)
 
 
 Now, to allocate towards your chosen subgraph, inside the cli container, run the following command:
