@@ -63,6 +63,8 @@ You get a seed phrase in the input field labeled BIP39 Mnemonic.
 
 You can find your address, public key and private key in the first row of the table if you scroll down the page in the section with the heading "Derived Addresses".
 
+**Make sure you save the mnemonic, private key and the wallet address somewhere safe.**
+
 If you need, you can import the wallet using the private key into Metamask
 
 

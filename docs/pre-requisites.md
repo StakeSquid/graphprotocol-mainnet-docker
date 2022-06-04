@@ -12,6 +12,38 @@
 
 
 
+## Stake on the Network
+
+In order to become an indexer on the Graph Protocol Network, you'll have to stake a minimum of 100,000 GRT.
+
+This can easily be done via the Web UI, by going to the [Graph Explorer](https://thegraph.com/explorer).
+
+1. Login with Metamask on the Wallet that holds your GRT
+![](https://i.ibb.co/DQPpzST/image.png)
+
+2. Go to your Profile, then switch to the "Indexing" Tab and hit "Stake"
+![](https://i.ibb.co/CtrnyGf/image.png)
+
+3. Stake the amount of GRT that you desire, then you're all done!
+![](https://i.ibb.co/Nrdq9zn/image.png)
+
+## Set your Operator
+
+The Operator is a wallet address that is entirely separate from the address which you staked your GRT from. This Operator wallet will be filled with ETH, and will be used to send transactions (such as allocations) to the network, while keeping your Staked GRT safe in case of an attack on your infrastructure. It is highly recommended for you to use a new wallet, generated from a new mnemonic phrase.
+
+For this, follow the [instructions here](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/docs/getting-started.md#create-a-mnemonic) first, then head back for the rest.
+
+Okay, assuming that you followed the instructions and you have your new Operator wallet at hand, lets go and link it up with the wallet that you used to stake your GRT.
+
+1. Login with Metamask on the wallet that you used to stake your GRT
+2. Click the Profile dropdown button, and go to "Settings", and then to the "Operators" tab
+![](https://i.ibb.co/rd9vk8k/image.png)
+3. Click the Plus (+) button and add your operator public address there
+4. Submit the transaction, then you're done
+
+
+
+
 ## Ethereum Archive Node Specs
 
 Again, as mentioned in the [README.md](https://github.com/StakeSquid/graphprotocol-mainnet-docker/blob/master/README.md), the setup for the archive node is **not included** in this docker setup.
