@@ -12,6 +12,7 @@
 
 
 ## Managing cost models
+
 ### What are cost models?
 
 Cost models are indexer tools that they can use in order to set a price for the data that they serve.
