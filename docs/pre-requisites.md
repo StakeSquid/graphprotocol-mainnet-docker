@@ -19,14 +19,12 @@ In order to become an indexer on the Graph Protocol Network, you'll have to stak
 This can easily be done via the Web UI, by going to the [Graph Explorer](https://thegraph.com/explorer).
 
 1. Login with Metamask on the Wallet that holds your GRT
-![](https://i.ibb.co/DQPpzST/image.png)
 
 2. Go to your Profile, then switch to the "Indexing" Tab and hit "Stake"
-![](https://i.ibb.co/CtrnyGf/image.png)
+![](https://i.ibb.co/4KxB08t/image.png)
 
 3. Stake the amount of GRT that you desire, then you're all done!
 
-![](https://i.ibb.co/Nrdq9zn/image.png)
 
 ## Set your Operator
 
@@ -38,7 +36,7 @@ Okay, assuming that you followed the instructions and you have your new Operator
 
 1. Login with Metamask on the wallet that you used to stake your GRT
 2. Click the Profile dropdown button, and go to "Settings", and then to the "Operators" tab
-![](https://i.ibb.co/rd9vk8k/image.png)
+![](https://i.ibb.co/4PYjJj0/image.png)
 3. Click the Plus (+) button and add your operator public address there
 4. Submit the transaction, then you're done
 
