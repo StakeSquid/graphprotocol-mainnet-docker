@@ -9,16 +9,11 @@ ENV PATH="/root/.cargo/bin:$PATH"
 
 WORKDIR /root/
 RUN git clone https://github.com/graphprotocol/indexer /root/.npm-global/lib/node_modules/@graphprotocol/indexer-cli
-RUN git clone https://github.com/graphprotocol/graph-cli /root/.npm-global/lib/node_modules/@graphprotocol/graph-cli
 
 WORKDIR /root/.npm-global/lib/node_modules/@graphprotocol/indexer-cli
 RUN yarn --global --frozen-lockfile --non-interactive --production=false
 
-WORKDIR /root/.npm-global/lib/node_modules/@graphprotocol/graph-cli
-RUN yarn --global --frozen-lockfile --non-interactive --production=false
-
-RUN ln -s /root/.npm-global/lib/node_modules/@graphprotocol/indexer-cli/packages/indexer-cli/bin/graph-indexer /usr/bin/graph-indexer
-RUN ln -s /root/.npm-global/lib/node_modules/@graphprotocol/graph-cli/bin/graph /usr/bin/graph
+RUN ln -s /root/.npm-global/lib/node_modules/@graphprotocol/indexer-cli/packages/indexer-cli/bin/graph-indexer /usr/bin/graph
 
 RUN mkdir -p "/root/.config/graph-cli/"
 RUN echo "api = \"http://indexer-agent:8000/\"" >> "/root/.config/graph-cli/indexing.toml"
