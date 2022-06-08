@@ -20,6 +20,7 @@ RUN apt-get -q update \
     wget \
 	  bsdmainutils \
 	  base58 \
+    bc \
     build-essential
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
