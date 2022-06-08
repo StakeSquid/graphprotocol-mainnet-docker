@@ -2,7 +2,7 @@ FROM node:16.15-bullseye-slim as build
 
 ENV NODE_ENV production
 
-RUN apt-get update && apt-get install -y build-essential git curl httpie jq nano wget bsdmainutils base58 netcat net-tools libsecret-1-dev python2.7 clang cmake
+RUN apt-get update && apt-get install -y build-essential bc git curl httpie jq nano wget bsdmainutils base58 netcat net-tools libsecret-1-dev python2.7 clang cmake
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > /tmp/rustup.sh && sh /tmp/rustup.sh -y
 ENV PATH="/root/.cargo/bin:$PATH"

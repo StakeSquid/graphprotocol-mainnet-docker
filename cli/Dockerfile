@@ -18,8 +18,8 @@ RUN apt-get -q update \
     clang \
     cmake \
     wget \
-	bsdmainutils \
-	base58 \
+	  bsdmainutils \
+	  base58 \
     build-essential
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
