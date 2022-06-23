@@ -75,7 +75,7 @@ services:
 ######################################################################################
 
   indexer-service:
-    image: ghcr.io/graphprotocol/indexer-service:v0.19.1
+    image: ${INDEXER_SERVICE_VERSION:-ghcr.io/graphprotocol/indexer-service:v0.19.3}
     container_name: indexer-service
     depends_on:
       - index-node-0
@@ -125,7 +125,7 @@ services:
 ######################################################################################
 
   indexer-agent:
-    image: ghcr.io/graphprotocol/indexer-agent:v0.19.1
+    image: ${INDEXER_AGENT_VERSION:-ghcr.io/graphprotocol/indexer-agent:v0.19.3}
     container_name: indexer-agent
     depends_on:
       - index-node-0
@@ -178,7 +178,7 @@ services:
 
 
   index-node-0:
-    image: graphprotocol/graph-node:v0.26.0
+    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.26.0}
     container_name: index-node-0
     depends_on:
       - postgres
@@ -228,7 +228,7 @@ services:
 
 
   index-node-1:
-    image: graphprotocol/graph-node:v0.26.0
+    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.26.0}
     container_name: index-node-1
     depends_on:
       - postgres
@@ -277,7 +277,7 @@ services:
 
 
   query-node-0:
-    image: graphprotocol/graph-node:v0.26.0
+    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.26.0}
     container_name: query-node-0
     depends_on:
       - postgres
