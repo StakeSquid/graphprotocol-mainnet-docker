@@ -43,39 +43,13 @@ services:
 
 
 
-######################################################################################
-#####################            VECTOR NODE                   #######################
-######################################################################################
-
-#  vector-node:
-#    image: connextproject/vector_node:a340c8a4
-#    container_name: vector-node
-#    depends_on:
-#      - postgres2
-#    environment:
-#      VECTOR_PROD: "true"
-#      VECTOR_MNEMONIC: ${OPERATOR_SEED_PHRASE}
-#      VECTOR_PG_HOST: postgres2
-#      VECTOR_PG_PORT: 5432
-#      VECTOR_PG_USERNAME: ${DB_USER:-graph-node}
-#      VECTOR_PG_PASSWORD: ${DB_PASS:-db-password}
-#      VECTOR_PG_DATABASE: vector
-#      VECTOR_CONFIG: $JSON_STRING
-#    expose:
-#      - 8000
-#      - 8001
-#    networks:
-#      - monitor-net
-#    restart: unless-stopped
-#    logging: *default-logging
-
 
 ######################################################################################
 #####################         INDEXER SERVICE CONTAINER        #######################
 ######################################################################################
 
   indexer-service:
-    image: ${INDEXER_SERVICE_VERSION:-ghcr.io/graphprotocol/indexer-service:v0.19.3}
+    image: ${INDEXER_SERVICE_VERSION:-ghcr.io/graphprotocol/indexer-service:v0.20.1}
     container_name: indexer-service
     depends_on:
       - index-node-0
@@ -125,7 +99,7 @@ services:
 ######################################################################################
 
   indexer-agent:
-    image: ${INDEXER_AGENT_VERSION:-ghcr.io/graphprotocol/indexer-agent:v0.19.3}
+    image: ${INDEXER_AGENT_VERSION:-ghcr.io/graphprotocol/indexer-agent:v0.20.2}
     container_name: indexer-agent
     depends_on:
       - index-node-0
@@ -178,7 +152,7 @@ services:
 
 
   index-node-0:
-    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.26.0}
+    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.27.0}
     container_name: index-node-0
     depends_on:
       - postgres
@@ -208,8 +182,8 @@ services:
       GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE: ${GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE:-500}
       GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE: ${GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE:-200}
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
-      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-"true"}
-      GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: ${GRAPH_ALLOW_NON_DETERMINISTIC_IPFS:-"false"}
+      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-true}
+      GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: ${GRAPH_ALLOW_NON_DETERMINISTIC_IPFS:-false}
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
     restart: unless-stopped
     expose:
@@ -229,7 +203,7 @@ services:
 
 
   index-node-1:
-    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.26.0}
+    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.27.0}
     container_name: index-node-1
     depends_on:
       - postgres
@@ -259,8 +233,8 @@ services:
       GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE: ${GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE:-500}
       GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE: ${GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE:-200}
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
-      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-"true"}
-      GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: ${GRAPH_ALLOW_NON_DETERMINISTIC_IPFS:-"false"}
+      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-true}
+      GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: ${GRAPH_ALLOW_NON_DETERMINISTIC_IPFS:-false}
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
     restart: unless-stopped
     expose:
@@ -279,7 +253,7 @@ services:
 
 
   query-node-0:
-    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.26.0}
+    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.27.0}
     container_name: query-node-0
     depends_on:
       - postgres
@@ -307,8 +281,8 @@ services:
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
       GRAPH_LOG_QUERY_TIMING: ${GRAPH_LOG_QUERY_TIMING:-gql}
-      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-"true"}
-      GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: ${GRAPH_ALLOW_NON_DETERMINISTIC_IPFS:-"false"}
+      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-true}
+      GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: ${GRAPH_ALLOW_NON_DETERMINISTIC_IPFS:-false}
     restart: unless-stopped
     expose:
       - 8001
@@ -585,33 +559,3 @@ services:
     labels:
       org.label-schema.group: "monitoring"
     logging: *default-logging
-
-
-
-######################################################################################
-#####################              CADDY CONTAINER             #######################
-######################################################################################
-
-
-
-#  caddy:
-#    image: stefanprodan/caddy
-#    container_name: caddy
-#    ports:
-#      - "3000:3000"
-#      #- "8000:8000"
-#      #- "8001:8001"
-#      - "9090:9090"
-#      - "9093:9093"
-#      - "9091:9091"
-#    volumes:
-#      - ./caddy:/etc/caddy
-#    environment:
-#      - ADMIN_USER=${ADMIN_USER:-admin}
-#      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
-#    restart: unless-stopped
-#    networks:
-#      - monitor-net
-#    labels:
-#      org.label-schema.group: "monitoring"
-#    logging: *default-logging

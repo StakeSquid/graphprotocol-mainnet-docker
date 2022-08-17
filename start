@@ -13,6 +13,7 @@ TXN_RPC="http://ip:port" \
 OPERATOR_SEED_PHRASE="12 or 15 word mnemonic" \
 STAKING_WALLET_ADDRESS=0xAdDreSs \
 GEO_COORDINATES="69.420 69.420" \
+INDEXER_AGENT_OFFCHAIN_SUBGRAPHS="" \
 docker-compose up -d --remove-orphans --build $@
 
 
