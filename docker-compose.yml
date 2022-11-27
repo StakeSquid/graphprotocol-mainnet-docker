@@ -58,6 +58,7 @@ services:
       - '--graph-node-status-endpoint=http://index-node-0:8030/graphql'
       - '--mnemonic=${OPERATOR_SEED_PHRASE}'
       - '--indexer-address=${STAKING_WALLET_ADDRESS}'
+      - '--poifier-token=${POIFIER_TOKEN}'
     tty: true
     networks:
        - monitor-net
