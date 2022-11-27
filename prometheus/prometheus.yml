@@ -38,17 +38,12 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['index-node-0:8040']
-      
-  - job_name: 'index-node-1'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['index-node-1:8040']
 
   - job_name: 'query-node'
     scrape_interval: 5s
     static_configs:
       - targets: ['query-node-0:8040']
-  
+
   - job_name: 'indexer-service'
     scrape_interval: 5s
     static_configs:
@@ -58,12 +53,12 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['grafana:3000']
-  
+
 alerting:
   alertmanagers:
   - scheme: http
     static_configs:
-    - targets: 
+    - targets:
       - 'alertmanager:9093'
 
 #  - job_name: 'nginx'
