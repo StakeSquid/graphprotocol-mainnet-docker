@@ -49,7 +49,7 @@ services:
 ######################################################################################
 
   poifier:
-    image: grassets/poifier-client
+    image: grassets/poifier-client:latest
     container_name: poifier
     command:
       - '--poifier-server=https://poifier.io'
@@ -214,7 +214,6 @@ services:
       - index-node-0
       - query-node-0
       - postgres2
-      #- vector-node
     expose:
       - 7300
       - 8000
@@ -225,8 +224,12 @@ services:
       INDEXER_AGENT_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
       INDEXER_AGENT_INDEX_NODE_IDS: "index_node_0"
       INDEXER_AGENT_INJECT_DAI: "true"
-      INDEXER_AGENT_ALLOCATION_CLAIM_THRESHOLD: ${QUERY_FEE_REBATE_CLAIM_THRESHOLD:-0}
-      INDEXER_AGENT_REBATE_CLAIM_BATCH_THRESHOLD: ${REBATE_CLAIM_BATCH_THRESHOLD:-0}
+      INDEXER_AGENT_REBATE_CLAIM_TRESHOLD: ${REBATE_CLAIM_TRESHOLD:-200}
+      INDEXER_AGENT_REBATE_CLAIM_BATCH_THRESHOLD: ${REBATE_CLAIM_BATCH_THRESHOLD:-2000}
+      INDEXER_AGENT_REBATE_CLAIM_MAX_BATCH_SIZE: ${REBATE_CLAIM_MAX_BATCH_SIZE:-100}
+      INDEXER_AGENT_VOUCHER_REDEMPTION_THRESHOLD: ${VOUCHER_REDEMPTION_THRESHOLD:-200}
+      INDEXER_AGENT_VOUCHER_REDEMPTION_BATCH_THRESHOLD: ${VOUCHER_REDEMPTION_BATCH_THRESHOLD:-2000}
+      INDEXER_AGENT_VOUCHER_REDEMPTION_MAX_BATCH_SIZE: ${VOUCHER_REDEMPTION_MAX_BATCH_SIZE:-100}
       INDEXER_AGENT_ETHEREUM_NETWORK: mainnet
       INDEXER_AGENT_ETHEREUM: ${TXN_RPC}
       INDEXER_AGENT_GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
@@ -255,7 +258,7 @@ services:
 ######################################################################################
 
   indexer-agent-gui:
-    image: ${INDEXER_AGENT_GUI:-ghcr.io/stakemachine/indexer-agent-ui:v0.1.7}
+    image: ${INDEXER_AGENT_GUI:-ghcr.io/stakemachine/indexer-agent-ui:v0.1.9}
     container_name: indexer-agent-gui
     depends_on:
       - indexer-agent
@@ -266,6 +269,8 @@ services:
       - UI_PASS=${ADMIN_PASSWORD:-pass}
       - AGENT_ENDPOINT=${INDEXER_AGENT_ENDPOINT:-http://indexer-agent:8000}
       - SUBGRAPH_ENDPOINT=${INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT:-https://gateway.thegraph.com/network}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=https://${AGENT_GUI_HOST}/
       - VIRTUAL_HOST=${AGENT_GUI_HOST}
       - VIRTUAL_PORT=3000
       - LETSENCRYPT_HOST=${AGENT_GUI_HOST}
@@ -299,19 +304,12 @@ services:
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com/ipfs/}'
       node_role: index-node
       node_id: index_node_0
-      CHAIN_0_NAME: ${CHAIN_0_NAME}
-      CHAIN_0_RPC: ${CHAIN_0_RPC}
       BLOCK_INGESTOR: index_node_0
       RUST_LOG: INFO
       GRAPH_LOG: ${GRAPHNODE_LOGLEVEL:-DEBUG}
       GRAPH_ETH_CALL_GAS: 50000000
       GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
       GRAPH_MAX_GAS_PER_HANDLER: 1000000000000000
-      ETHEREUM_TRACE_STREAM_STEP_SIZE: ${ETHEREUM_TRACE_STREAM_STEP_SIZE:-50}
-      ETHEREUM_BLOCK_BATCH_SIZE: ${ETHEREUM_BLOCK_BATCH_SIZE:-10}
-      ETHEREUM_RPC_MAX_PARALLEL_REQUESTS: ${ETHEREUM_RPC_MAX_PARALLEL_REQUESTS:-64}
-      GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE: ${GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE:-500}
-      GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE: ${GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE:-200}
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
       GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-false}
       GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: ${GRAPH_ALLOW_NON_DETERMINISTIC_IPFS:-false}
