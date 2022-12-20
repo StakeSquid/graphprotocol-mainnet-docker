@@ -2,10 +2,5 @@
 .vs/
 .vscode/
 .idea/
-start
-.obsidian/app.json
-.obsidian/appearance.json
-.obsidian/core-plugins.json
-.obsidian/hotkeys.json
-.obsidian/workspace
+.env
 offchain-subgraphs

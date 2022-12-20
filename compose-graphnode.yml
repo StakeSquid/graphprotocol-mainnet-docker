@@ -1,0 +1,138 @@
+version: '2.1'
+
+x-logging:
+  &default-logging
+  options:
+    max-file: '1'
+    compress: 'false'
+  driver: local
+
+networks:
+  monitor-net:
+    driver: bridge
+
+volumes:
+    postgres_data: {}
+
+
+services:
+
+
+
+######################################################################################
+#####################           INDEX NODE CONTAINER 0         #######################
+######################################################################################
+
+
+  index-node-0:
+    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.28.2}
+    container_name: index-node-0
+    depends_on:
+      - postgres
+    volumes:
+      - ./graph-node-configs:/root/graph-node-configs/
+      - ./postgres-socket:/var/run/postgresql
+    environment:
+      GRAPH_NODE_CONFIG: /root/graph-node-configs/config.toml
+      postgres_host: ${DB_HOST:-postgres}
+      postgres_user: ${DB_USER:-graph-node}
+      postgres_pass: ${DB_PASS:-db-password}
+      postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
+      ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com/ipfs/}'
+      node_role: index-node
+      node_id: index_node_0
+      BLOCK_INGESTOR: index_node_0
+      RUST_LOG: INFO
+      GRAPH_LOG: ${GRAPHNODE_LOGLEVEL:-DEBUG}
+      GRAPH_ETH_CALL_GAS: 50000000
+      GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
+      GRAPH_MAX_GAS_PER_HANDLER: 1000000000000000
+      GRAPH_KILL_IF_UNRESPONSIVE: "true"
+      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-false}
+      GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: ${GRAPH_ALLOW_NON_DETERMINISTIC_IPFS:-false}
+      EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
+    restart: unless-stopped
+    expose:
+      - 8001
+      - 8000
+      - 8030
+      - 8040
+    networks:
+      - monitor-net
+    logging: *default-logging
+
+
+
+
+
+######################################################################################
+#####################           QUERY NODE CONTAINER 0         #######################
+######################################################################################
+
+
+  query-node-0:
+    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.28.2}
+    container_name: query-node-0
+    depends_on:
+      - postgres
+    volumes:
+      - ./graph-node-configs:/root/graph-node-configs/
+      - ./postgres-socket:/var/run/postgresql
+    environment:
+      GRAPH_NODE_CONFIG: /root/graph-node-configs/config.toml
+      postgres_host: ${DB_HOST:-postgres}
+      postgres_user: ${DB_USER:-graph-node}
+      postgres_pass: ${DB_PASS:-db-password}
+      postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
+      ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com/ipfs/}'
+      node_role: query-node
+      node_id: query_node_0
+      RUST_LOG: INFO
+      GRAPH_LOG: INFO
+      GRAPH_ETH_CALL_GAS: 50000000
+      GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
+      GRAPH_MAX_GAS_PER_HANDLER: 1000000000000000
+      GRAPH_LOG_QUERY_TIMING: gql
+      EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
+      GRAPH_KILL_IF_UNRESPONSIVE: "true"
+      #VIRTUAL_HOST: ${QUERY_HOST}
+      #VIRTUAL_PORT: 8000
+      #LETSENCRYPT_HOST: ${QUERY_HOST}
+      GRAPH_LOG_QUERY_TIMING: ${GRAPH_LOG_QUERY_TIMING:-gql}
+      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-false}
+    restart: unless-stopped
+    logging:
+        driver: "journald"
+    expose:
+      - 8001
+      - 8000
+      - 8020
+      - 8030
+      - 8040
+    networks:
+      - monitor-net
+
+
+######################################################################################
+#####################            POSTGRES CONTAINER            #######################
+######################################################################################
+
+
+
+  postgres:
+    image: postgres:13.6
+    container_name: postgres
+    command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-graph-node}
+      POSTGRES_PASSWORD: ${DB_PASS:-db-password}
+      POSTGRES_DB: ${GRAPH_NODE_DB_NAME:-graph-node}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-socket:/var/run/postgresql
+    networks:
+      - monitor-net
+    expose:
+      - 5432
+    logging: *default-logging

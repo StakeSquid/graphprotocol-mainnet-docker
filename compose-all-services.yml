@@ -16,10 +16,13 @@ volumes:
     grafana_data: {}
     postgres_data: {}
     postgres2_data: {}
+    postgres_agora_data: {}
     nginx_certs: {}
     nginx_vhost: {}
     nginx_html: {}
     nginx_acme: {}
+    rabbitmq_etc: {}
+    rabbitmq_data: {}
 
 services:
 
@@ -41,23 +44,39 @@ services:
     volumes:
       - ./cli/scripts:/home/graph/scripts
 
+######################################################################################
+#####################           POIFIER CONTAINER              #######################
+######################################################################################
 
-
+  poifier:
+    image: grassets/poifier-client:latest
+    container_name: poifier
+    command:
+      - '--poifier-server=https://poifier.io'
+      - '--ethereum-endpoint=${TXN_RPC}'
+      - '--mainnet-subgraph-endpoint=https://gateway.thegraph.com/network'
+      - '--graph-node-status-endpoint=http://index-node-0:8030/graphql'
+      - '--mnemonic=${OPERATOR_SEED_PHRASE}'
+      - '--indexer-address=${STAKING_WALLET_ADDRESS}'
+      - '--poifier-token=${POIFIER_TOKEN}'
+    tty: true
+    networks:
+       - monitor-net
+    restart: unless-stopped
 
 ######################################################################################
 #####################         INDEXER SERVICE CONTAINER        #######################
 ######################################################################################
 
   indexer-service:
-    image: ${INDEXER_SERVICE_VERSION:-ghcr.io/graphprotocol/indexer-service:v0.20.3}
+    image: ${INDEXER_SERVICE_VERSION:-kwetlesen/autoagora-indexer-service:latest}
     container_name: indexer-service
     depends_on:
       - index-node-0
-      - index-node-1
       - query-node-0
       - indexer-agent
       - postgres2
-      #- vector-node
+      - rabbitmq
     environment:
       INDEXER_SERVICE_MNEMONIC: ${OPERATOR_SEED_PHRASE}
       INDEXER_SERVICE_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
@@ -73,9 +92,11 @@ services:
       INDEXER_SERVICE_POSTGRES_PASSWORD: ${DB_PASS:-db-password}
       INDEXER_SERVICE_POSTGRES_DATABASE: ${AGENT_DB_NAME:-indexer-agent}
       INDEXER_SERVICE_WALLET_WORKER_THREADS: ${WORKER_THREADS_PER_INDEXER_SERVICE:-8}
-      #INDEXER_SERVICE_VECTOR_NODE: "http://vector-node:8000"
-      #INDEXER_SERVICE_VECTOR_ROUTER: "vector8BSZxfkr62As6KZX2so4yXuex5XcpPXQ2tYZrBqpub94dAobu7"
       INDEXER_SERVICE_CLIENT_SIGNER_ADDRESS: "0x982D10c56b8BBbD6e09048F5c5f01b43C65D5aE0"
+      INDEXER_SERVICE_QUERY_TIMING_LOGS: "true"
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USERNAME: ${RABBITMQ_USER:-rabbitmquser}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-rabbitmqpassword}
       SKIP_EVM_VALIDATION: "true"
       SERVER_HOST: ${AGENT_DB_HOST:-postgres2}
       SERVER_PORT: 5432
@@ -95,18 +116,104 @@ services:
 
 
 ######################################################################################
+#####################           RABBITMQ CONTAINER             #######################
+######################################################################################
+
+  rabbitmq:
+    image: rabbitmq:3.9.25
+    container_name: rabbitmq
+    volumes:
+      - rabbitmq_etc:/etc/rabbitmq/
+      - rabbitmq_data:/var/lib/rabbitmq/
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER:-rabbitmquser}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD:-rabbitmqpassword}
+    expose:
+      - 5672
+      - 15672
+    networks:
+       - monitor-net
+    restart: unless-stopped
+
+######################################################################################
+#####################      AUTOAGORA PROCESSOR CONTAINER       #######################
+######################################################################################
+
+  ag-processor:
+    image: kwetlesen/autoagora-processor:latest
+    container_name: ag-processor
+    volumes:
+      - ./postgres-socket:/var/run/postgresql
+    depends_on:
+      - indexer-agent
+      - indexer-service
+      - postgres
+      - postgres-agora
+      - rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USERNAME: ${RABBITMQ_USER:-rabbitmquser}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-rabbitmqpassword}
+      GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
+      GRAPH_POSTGRES_HOST: ${DB_HOST:-postgres}
+      GRAPH_POSTGRES_DATABASE: ${GRAPH_NODE_DB_NAME:-graph-node}
+      GRAPH_POSTGRES_USERNAME: ${DB_USER:-graph-node}
+      GRAPH_POSTGRES_PASSWORD: ${DB_PASS:-db-password}
+      LOG_LEVEL: DEBUG
+      POSTGRES_HOST: postgres-agora
+      POSTGRES_DATABASE: autoagora
+      POSTGRES_USERNAME: autoagora
+      POSTGRES_PASSWORD: autoagora-password
+    networks:
+      - monitor-net
+    logging: *default-logging
+
+
+######################################################################################
+#####################           AUTOAGORA CONTAINER            #######################
+######################################################################################
+
+  ag:
+    image: kwetlesen/autoagora:latest
+    container_name: ag
+    restart: unless-stopped
+    volumes:
+      - ./postgres-socket:/var/run/postgresql
+    depends_on:
+      - indexer-agent
+      - indexer-service
+      - postgres-agora
+      - rabbitmq
+      - ag-processor
+    environment:
+      INDEXER_AGENT_MGMT_ENDPOINT: http://indexer-agent:8000
+      INDEXER_SERVICE_METRICS_ENDPOINT: http://indexer-service:7300/metrics
+      LOGS_POSTGRES_HOST: postgres-agora
+      LOGS_POSTGRES_PORT: 5432
+      LOGS_POSTGRES_DATABASE: autoagora
+      LOGS_POSTGRES_USERNAME: autoagora
+      LOGS_POSTGRES_PASSWORD: autoagora-password
+      LOG_LEVEL: DEBUG
+      JSON_LOGS: "true"
+    networks:
+      - monitor-net
+    logging: *default-logging
+
+
+
+
+######################################################################################
 #####################        INDEXER AGENT CONTAINER           #######################
 ######################################################################################
 
   indexer-agent:
-    image: ${INDEXER_AGENT_VERSION:-ghcr.io/graphprotocol/indexer-agent:v0.20.3}
+    image: ${INDEXER_AGENT_VERSION:-ghcr.io/graphprotocol/indexer-agent:sha-2ae5fb6}
     container_name: indexer-agent
     depends_on:
       - index-node-0
-      - index-node-1
       - query-node-0
       - postgres2
-      #- vector-node
     expose:
       - 7300
       - 8000
@@ -115,10 +222,14 @@ services:
     environment:
       INDEXER_AGENT_MNEMONIC: ${OPERATOR_SEED_PHRASE}
       INDEXER_AGENT_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
-      INDEXER_AGENT_INDEX_NODE_IDS: "index_node_0,index_node_1"
+      INDEXER_AGENT_INDEX_NODE_IDS: "index_node_0"
       INDEXER_AGENT_INJECT_DAI: "true"
-      INDEXER_AGENT_ALLOCATION_CLAIM_THRESHOLD: ${QUERY_FEE_REBATE_CLAIM_THRESHOLD:-0}
-      INDEXER_AGENT_REBATE_CLAIM_BATCH_THRESHOLD: ${REBATE_CLAIM_BATCH_THRESHOLD:-0}
+      INDEXER_AGENT_REBATE_CLAIM_TRESHOLD: ${REBATE_CLAIM_TRESHOLD:-200}
+      INDEXER_AGENT_REBATE_CLAIM_BATCH_THRESHOLD: ${REBATE_CLAIM_BATCH_THRESHOLD:-2000}
+      INDEXER_AGENT_REBATE_CLAIM_MAX_BATCH_SIZE: ${REBATE_CLAIM_MAX_BATCH_SIZE:-100}
+      INDEXER_AGENT_VOUCHER_REDEMPTION_THRESHOLD: ${VOUCHER_REDEMPTION_THRESHOLD:-200}
+      INDEXER_AGENT_VOUCHER_REDEMPTION_BATCH_THRESHOLD: ${VOUCHER_REDEMPTION_BATCH_THRESHOLD:-2000}
+      INDEXER_AGENT_VOUCHER_REDEMPTION_MAX_BATCH_SIZE: ${VOUCHER_REDEMPTION_MAX_BATCH_SIZE:-100}
       INDEXER_AGENT_ETHEREUM_NETWORK: mainnet
       INDEXER_AGENT_ETHEREUM: ${TXN_RPC}
       INDEXER_AGENT_GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
@@ -128,22 +239,46 @@ services:
       INDEXER_AGENT_INDEXER_GEO_COORDINATES: ${GEO_COORDINATES:-60.16952 24.93545}
       INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT: ${INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT:-https://gateway.thegraph.com/network}
       INDEXER_AGENT_NETWORK_SUBGRAPH_DEPLOYMENT: ${NETWORK_SUBGRAPH_DEPLOYMENT}
+      INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT: ${INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/mainnet-epoch-block-oracle}
       INDEXER_AGENT_POSTGRES_HOST: ${AGENT_DB_HOST:-postgres2}
       INDEXER_AGENT_POSTGRES_USERNAME: ${DB_USER:-graph-node}
       INDEXER_AGENT_POSTGRES_PASSWORD: ${DB_PASS:-db-password}
       INDEXER_AGENT_POSTGRES_DATABASE: ${AGENT_DB_NAME:-indexer-agent}
       INDEXER_AGENT_DAI_CONTRACT: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
-      #INDEXER_AGENT_VECTOR_NODE: "http://vector-node:8000"
-      #INDEXER_AGENT_VECTOR_EVENT_SERVER: "http://indexer-agent:8001"
-      #INDEXER_AGENT_VECTOR_EVENT_SERVER_PORT: 8001
-      #INDEXER_AGENT_VECTOR_ROUTER: "vector8BSZxfkr62As6KZX2so4yXuex5XcpPXQ2tYZrBqpub94dAobu7"
-      INDEXER_AGENT_COLLECT_RECEIPTS_ENDPOINT: https://gateway.network.thegraph.com/collect-receipts
+      INDEXER_AGENT_COLLECT_RECEIPTS_ENDPOINT: https://gateway.thegraph.com/collect-receipts
       INDEXER_AGENT_OFFCHAIN_SUBGRAPHS: ${INDEXER_AGENT_OFFCHAIN_SUBGRAPHS}
       INDEXER_AGENT_GAS_PRICE_MAX: ${INDEXER_AGENT_GAS_PRICE_MAX:-50}
     networks:
       - monitor-net
     restart: unless-stopped
     logging: *default-logging
+
+######################################################################################
+#####################            INDEXER AGENT GUI             #######################
+######################################################################################
+
+  indexer-agent-gui:
+    image: ${INDEXER_AGENT_GUI:-ghcr.io/stakemachine/indexer-agent-ui:v0.1.9}
+    container_name: indexer-agent-gui
+    depends_on:
+      - indexer-agent
+    expose:
+      - 3000
+    environment:
+      - UI_LOGIN=${ADMIN_USER:-test}
+      - UI_PASS=${ADMIN_PASSWORD:-pass}
+      - AGENT_ENDPOINT=${INDEXER_AGENT_ENDPOINT:-http://indexer-agent:8000}
+      - SUBGRAPH_ENDPOINT=${INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT:-https://gateway.thegraph.com/network}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=https://${AGENT_GUI_HOST}/
+      - VIRTUAL_HOST=${AGENT_GUI_HOST}
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST=${AGENT_GUI_HOST}
+    restart: unless-stopped
+    networks:
+      - monitor-net
+    logging: *default-logging
+
 
 
 ######################################################################################
@@ -152,7 +287,7 @@ services:
 
 
   index-node-0:
-    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.27.0}
+    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.28.2}
     container_name: index-node-0
     depends_on:
       - postgres
@@ -161,13 +296,12 @@ services:
       - ./graph-node-configs:/root/graph-node-configs/
       - ./postgres-socket:/var/run/postgresql
     environment:
-      GRAPH_NODE_CONFIG: /root/graph-node-configs/index_node_0_config.toml
+      GRAPH_NODE_CONFIG: /root/graph-node-configs/config.toml
       postgres_host: ${DB_HOST:-postgres}
       postgres_user: ${DB_USER:-graph-node}
       postgres_pass: ${DB_PASS:-db-password}
       postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com/ipfs/}'
-      ETHEREUM_RPC_0: ${ETHEREUM_RPC_0}
       node_role: index-node
       node_id: index_node_0
       BLOCK_INGESTOR: index_node_0
@@ -176,13 +310,8 @@ services:
       GRAPH_ETH_CALL_GAS: 50000000
       GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
       GRAPH_MAX_GAS_PER_HANDLER: 1000000000000000
-      ETHEREUM_TRACE_STREAM_STEP_SIZE: ${ETHEREUM_TRACE_STREAM_STEP_SIZE:-50}
-      ETHEREUM_BLOCK_BATCH_SIZE: ${ETHEREUM_BLOCK_BATCH_SIZE:-10}
-      ETHEREUM_RPC_MAX_PARALLEL_REQUESTS: ${ETHEREUM_RPC_MAX_PARALLEL_REQUESTS:-64}
-      GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE: ${GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE:-500}
-      GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE: ${GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE:-200}
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
-      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-true}
+      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-false}
       GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: ${GRAPH_ALLOW_NON_DETERMINISTIC_IPFS:-false}
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
     restart: unless-stopped
@@ -196,55 +325,7 @@ services:
     logging: *default-logging
 
 
-######################################################################################
-#####################           INDEX NODE CONTAINER 1         #######################
-######################################################################################
 
-
-
-  index-node-1:
-    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.27.0}
-    container_name: index-node-1
-    depends_on:
-      - postgres
-      - postgres2
-    volumes:
-      - ./graph-node-configs:/root/graph-node-configs/
-      - ./postgres-socket:/var/run/postgresql
-    environment:
-      GRAPH_NODE_CONFIG: /root/graph-node-configs/index_node_1_config.toml
-      postgres_host: ${DB_HOST:-postgres}
-      postgres_user: ${DB_USER:-graph-node}
-      postgres_pass: ${DB_PASS:-db-password}
-      postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
-      ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com/ipfs/}'
-      ETHEREUM_RPC_1: ${ETHEREUM_RPC_1}
-      node_role: index-node
-      node_id: index_node_1
-      BLOCK_INGESTOR: index_node_0
-      RUST_LOG: INFO
-      GRAPH_LOG: ${GRAPHNODE_LOGLEVEL:-DEBUG}
-      GRAPH_ETH_CALL_GAS: 50000000
-      GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
-      GRAPH_MAX_GAS_PER_HANDLER: 1000000000000000
-      ETHEREUM_TRACE_STREAM_STEP_SIZE: ${ETHEREUM_TRACE_STREAM_STEP_SIZE:-50}
-      ETHEREUM_BLOCK_BATCH_SIZE: ${ETHEREUM_BLOCK_BATCH_SIZE:-10}
-      ETHEREUM_RPC_MAX_PARALLEL_REQUESTS: ${ETHEREUM_RPC_MAX_PARALLEL_REQUESTS:-64}
-      GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE: ${GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE:-500}
-      GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE: ${GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE:-200}
-      GRAPH_KILL_IF_UNRESPONSIVE: "true"
-      GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-true}
-      GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: ${GRAPH_ALLOW_NON_DETERMINISTIC_IPFS:-false}
-      EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
-    restart: unless-stopped
-    expose:
-      - 8001
-      - 8000
-      - 8030
-      - 8040
-    networks:
-      - monitor-net
-    logging: *default-logging
 
 
 ######################################################################################
@@ -253,7 +334,7 @@ services:
 
 
   query-node-0:
-    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.27.0}
+    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.28.2}
     container_name: query-node-0
     depends_on:
       - postgres
@@ -262,7 +343,7 @@ services:
       - ./graph-node-configs:/root/graph-node-configs/
       - ./postgres-socket:/var/run/postgresql
     environment:
-      GRAPH_NODE_CONFIG: /root/graph-node-configs/query_node_0_config.toml
+      GRAPH_NODE_CONFIG: /root/graph-node-configs/config.toml
       postgres_host: ${DB_HOST:-postgres}
       postgres_user: ${DB_USER:-graph-node}
       postgres_pass: ${DB_PASS:-db-password}
@@ -275,15 +356,17 @@ services:
       GRAPH_ETH_CALL_GAS: 50000000
       GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
       GRAPH_MAX_GAS_PER_HANDLER: 1000000000000000
-      #GRAPH_GRAPHQL_WARN_RESULT_SIZE: ${GRAPH_GRAPHQL_WARN_RESULT_SIZE}
-      #GRAPH_GRAPHQL_ERROR_RESULT_SIZE: ${GRAPH_GRAPHQL_ERROR_RESULT_SIZE}
       GRAPH_LOG_QUERY_TIMING: gql
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
       GRAPH_KILL_IF_UNRESPONSIVE: "true"
+      #VIRTUAL_HOST: ${QUERY_HOST}
+      #VIRTUAL_PORT: 8000
+      #LETSENCRYPT_HOST: ${QUERY_HOST}
       GRAPH_LOG_QUERY_TIMING: ${GRAPH_LOG_QUERY_TIMING:-gql}
       GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: ${FULLTEXT_SEARCH:-true}
-      GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: ${GRAPH_ALLOW_NON_DETERMINISTIC_IPFS:-false}
     restart: unless-stopped
+    logging:
+        driver: "journald"
     expose:
       - 8001
       - 8000
@@ -292,8 +375,7 @@ services:
       - 8040
     networks:
       - monitor-net
-    logging:
-        driver: "journald"
+
 
 ######################################################################################
 #####################          NGINX PROXY CONTAINER           #######################
@@ -304,6 +386,14 @@ services:
   nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
+    depends_on:
+      - indexer-service
+      - grafana
+      - indexer-agent-gui
+    #environment:
+    #  PROMETHEUS_HOST: ${PROMETHEUS_HOST}
+    #  HTTP_AUTH_LOGIN: ${HTTP_AUTH_USER}
+    #  HTTP_AUTH_PASSWORD: ${HTTP_AUTH_PASSWORD}
     ports:
       - "80:80"
       - "443:443"
@@ -312,6 +402,7 @@ services:
       - nginx_certs:/etc/nginx/certs
       - nginx_vhost:/etc/nginx/vhost.d
       - nginx_html:/usr/share/nginx/html
+    #  - ./nginx-proxy/htpasswd:/etc/nginx/htpasswd
       - ./nginx-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
     networks:
       - monitor-net
@@ -327,12 +418,18 @@ services:
   nginx-ssl:
     image: jrcs/letsencrypt-nginx-proxy-companion
     container_name: nginx-ssl
+    depends_on:
+      - indexer-service
+      - grafana
+      - indexer-agent-gui
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - nginx_certs:/etc/nginx/certs
       - nginx_vhost:/etc/nginx/vhost.d
       - nginx_html:/usr/share/nginx/html
       - nginx_acme:/etc/acme.sh
+    #  - ./nginx-proxy/htpasswd:/etc/nginx/htpasswd
+      - ./nginx-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
     restart: unless-stopped
     networks:
       - monitor-net
@@ -371,7 +468,7 @@ services:
 
 
 ######################################################################################
-#####################          POSTGRES 2 CONTAINER            #######################
+#####################       POSTGRES AGENT CONTAINER           #######################
 ######################################################################################
 
 
@@ -396,6 +493,29 @@ services:
 
 
 ######################################################################################
+#####################          POSTGRES AGORA CONTAINER        #######################
+######################################################################################
+
+  postgres-agora:
+    image: postgres:13.6
+    container_name: postgres-agora
+    command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: autoagora
+      POSTGRES_PASSWORD: autoagora-password
+      POSTGRES_DB: autoagora
+    volumes:
+      - postgres_agora_data:/var/lib/postgresql/data
+    networks:
+      - monitor-net
+    expose:
+      - 5432
+    logging: *default-logging
+
+
+
+######################################################################################
 #####################          PROMETHEUS CONTAINER            #######################
 ######################################################################################
 
@@ -404,6 +524,10 @@ services:
   prometheus:
     image: prom/prometheus
     container_name: prometheus
+    #environment:
+    #  VIRTUAL_HOST: ${PROMETHEUS_HOST}
+    #  VIRTUAL_PORT: 9090
+    #  LETSENCRYPT_HOST: ${PROMETHEUS_HOST}
     volumes:
       - ./prometheus:/etc/prometheus
       - prometheus_data:/prometheus

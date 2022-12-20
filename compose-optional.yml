@@ -1,0 +1,128 @@
+version: '2.1'
+
+x-logging:
+  &default-logging
+  options:
+    max-file: '1'
+    compress: 'false'
+  driver: local
+
+networks:
+  monitor-net:
+    driver: bridge
+
+volumes:
+    nginx_certs: {}
+    nginx_vhost: {}
+    nginx_html: {}
+    nginx_acme: {}
+
+services:
+
+
+######################################################################################
+#####################           POIFIER CONTAINER              #######################
+######################################################################################
+
+  poifier:
+    image: grassets/poifier-client:latest
+    container_name: poifier
+    command:
+      - '--poifier-server=https://poifier.io'
+      - '--ethereum-endpoint=${TXN_RPC}'
+      - '--mainnet-subgraph-endpoint=https://gateway.thegraph.com/network'
+      - '--graph-node-status-endpoint=http://index-node-0:8030/graphql'
+      - '--mnemonic=${OPERATOR_SEED_PHRASE}'
+      - '--indexer-address=${STAKING_WALLET_ADDRESS}'
+      - '--poifier-token=${POIFIER_TOKEN}'
+    tty: true
+    networks:
+       - monitor-net
+    restart: unless-stopped
+
+
+######################################################################################
+#####################            INDEXER AGENT GUI             #######################
+######################################################################################
+
+  indexer-agent-gui:
+    image: ${INDEXER_AGENT_GUI:-ghcr.io/stakemachine/indexer-agent-ui:v0.1.9}
+    container_name: indexer-agent-gui
+    expose:
+      - 3000
+    environment:
+      - UI_LOGIN=${ADMIN_USER:-test}
+      - UI_PASS=${ADMIN_PASSWORD:-pass}
+      - AGENT_ENDPOINT=${INDEXER_AGENT_ENDPOINT:-http://indexer-agent:8000}
+      - SUBGRAPH_ENDPOINT=${INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT:-https://gateway.thegraph.com/network}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=https://${AGENT_GUI_HOST}/
+      - VIRTUAL_HOST=${AGENT_GUI_HOST}
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST=${AGENT_GUI_HOST}
+    restart: unless-stopped
+    networks:
+      - monitor-net
+    logging: *default-logging
+
+
+
+
+
+######################################################################################
+#####################          NGINX PROXY CONTAINER           #######################
+######################################################################################
+
+
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    depends_on:
+      - indexer-agent-gui
+    #environment:
+    #  PROMETHEUS_HOST: ${PROMETHEUS_HOST}
+    #  HTTP_AUTH_LOGIN: ${HTTP_AUTH_USER}
+    #  HTTP_AUTH_PASSWORD: ${HTTP_AUTH_PASSWORD}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - nginx_certs:/etc/nginx/certs
+      - nginx_vhost:/etc/nginx/vhost.d
+      - nginx_html:/usr/share/nginx/html
+    #  - ./nginx-proxy/htpasswd:/etc/nginx/htpasswd
+      - ./nginx-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - monitor-net
+    restart: unless-stopped
+    logging: *default-logging
+
+
+######################################################################################
+#####################            NGINX SSL CONTAINER           #######################
+######################################################################################
+
+
+  nginx-ssl:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-ssl
+    depends_on:
+      - indexer-agent-gui
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - nginx_certs:/etc/nginx/certs
+      - nginx_vhost:/etc/nginx/vhost.d
+      - nginx_html:/usr/share/nginx/html
+      - nginx_acme:/etc/acme.sh
+    #  - ./nginx-proxy/htpasswd:/etc/nginx/htpasswd
+      - ./nginx-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+    networks:
+      - monitor-net
+    restart: unless-stopped
+    environment:
+      NGINX_PROXY_CONTAINER: nginx-proxy
+      DEFAULT_EMAIL: ${EMAIL}
+    logging: *default-logging

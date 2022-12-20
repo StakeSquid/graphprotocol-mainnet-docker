@@ -42,85 +42,85 @@ groups:
 - name: containers
   rules:
   - alert: querynode_down
-    expr: absent((time() - container_last_seen{name="query-node"}) < 10)
+    expr: absent((time() - container_last_seen{name=~"query-node.*"}) < 10)
     for: 30s
     labels:
       severity: critical
     annotations:
-      summary: "Query Node down"
-      description: "Query Node container is down for more than 30 seconds."
+      summary: "{{ $labels.instance }} is down"
+      description: "{{ $labels.instance }} container is down for more than 30 seconds."
 
   - alert: querynode_high_cpu
-    expr: sum(rate(container_cpu_usage_seconds_total{name="query-node"}[1m])) / count(node_cpu_seconds_total{mode="system"}) * 100 > 10
+    expr: sum(rate(container_cpu_usage_seconds_total{name=~"query-node.*"}[1m])) / count(node_cpu_seconds_total{mode="system"}) * 100 > 10
     for: 30s
     labels:
       severity: warning
     annotations:
-      summary: "Query Node high CPU usage"
-      description: "Query Node CPU usage is {{ humanize $value}}%."
+      summary: "{{ $labels.instance }} high CPU usage"
+      description: "Query Node {{ $labels.instance }} CPU usage is {{ humanize $value}}%."
 
   - alert: querynode_high_memory
-    expr: sum(container_memory_usage_bytes{name="query-node"}) > 1200000000
+    expr: sum(container_memory_usage_bytes{name=~"query-node.*"}) > 1200000000
     for: 30s
     labels:
       severity: warning
     annotations:
-      summary: "Query Node high memory usage"
-      description: "Query Node memory consumption is at {{ humanize $value}}."
+      summary: "{{ $labels.instance }} high memory usage"
+      description: "Query Node {{ $labels.instance }} memory consumption is at {{ humanize $value}}."
 
   - alert: indexnode_down
-    expr: absent((time() - container_last_seen{name="index-node"}) < 10)
+    expr: absent((time() - container_last_seen{name=~"index-node.*"}) < 10)
     for: 30s
     labels:
       severity: critical
     annotations:
-      summary: "Index Node down"
-      description: "Index Node container is down for more than 30 seconds."
+      summary: "{{ $labels.instance }} is down"
+      description: "{{ $labels.instance }} container is down for more than 30 seconds."
 
   - alert: indexnode_high_cpu
-    expr: sum(rate(container_cpu_usage_seconds_total{name="index-node"}[1m])) / count(node_cpu_seconds_total{mode="system"}) * 100 > 10
+    expr: sum(rate(container_cpu_usage_seconds_total{name=~"index-node.*"}[1m])) / count(node_cpu_seconds_total{mode="system"}) * 100 > 10
     for: 30s
     labels:
       severity: warning
     annotations:
-      summary: "Index Node high CPU usage"
-      description: "Index Node CPU usage is {{ humanize $value}}%."
+      summary: "{{ $labels.instance }} high CPU usage"
+      description: "{{ $labels.instance }} node CPU usage is {{ humanize $value}}%."
 
   - alert: indexnode_high_memory
-    expr: sum(container_memory_usage_bytes{name="query-node"}) > 1200000000
+    expr: sum(container_memory_usage_bytes{name=~"query-node.*"}) > 1200000000
     for: 30s
     labels:
       severity: warning
     annotations:
-      summary: "Query Node high memory usage"
-      description: "Query Node memory consumption is at {{ humanize $value}}."
+      summary: "{{ $labels.instance }} high memory usage"
+      description: "{{ $labels.instance }} memory consumption is at {{ humanize $value}}."
 
   - alert: postgres_down
-    expr: absent((time() - container_last_seen{name="postgres"}) < 10)
+    expr: absent((time() - container_last_seen{name=~"postgres.*"}) < 10)
     for: 10s
     labels:
       severity: critical
     annotations:
-      summary: "Postgres down"
-      description: "Postgres container is down for more than 30 seconds."
+      summary: "{{ $labels.instance }} down"
+      description: "{{ $labels.instance }} container is down for more than 30 seconds."
 
   - alert: postgres_high_cpu
-    expr: sum(rate(container_cpu_usage_seconds_total{name="postgres"}[1m])) / count(node_cpu_seconds_total{mode="system"}) * 100 > 10
+    expr: sum(rate(container_cpu_usage_seconds_total{name=~"postgres.*"}[1m])) / count(node_cpu_seconds_total{mode="system"}) * 100 > 10
     for: 30s
     labels:
       severity: warning
     annotations:
-      summary: "Postgres high CPU usage"
-      description: "Postgres CPU usage is {{ humanize $value}}%."
+      summary: "{{ $labels.instance }} high CPU usage"
+      description: "{{ $labels.instance }} CPU usage is {{ humanize $value}}%."
 
   - alert: postgres_high_memory
-    expr: sum(container_memory_usage_bytes{name="postgres"}) > 1200000000
+    expr: sum(container_memory_usage_bytes{name=~"postgres.*"}) > 1200000000
     for: 30s
     labels:
       severity: warning
     annotations:
-      summary: "Postgres high memory usage"
-      description: "Postgres memory consumption is at {{ humanize $value}}."
+      summary: "{{ $labels.instance }} high memory usage"
+      description: "{{ $labels.instance }} memory consumption is at {{ humanize $value}}."
 
   - alert: nginx_down
     expr: absent((time() - container_last_seen{name="nginx-proxy"}) < 10)
@@ -148,30 +148,3 @@ groups:
     annotations:
       summary: "Nginx high memory usage"
       description: "Nginx memory consumption is at {{ humanize $value}}."
-
-  - alert: caddy_down
-    expr: absent((time() - container_last_seen{name="caddy"}) < 10)
-    for: 30s
-    labels:
-      severity: critical
-    annotations:
-      summary: "Caddy down"
-      description: "Caddy container is down for more than 30 seconds."
-
-  - alert: caddy_high_cpu
-    expr: sum(rate(container_cpu_usage_seconds_total{name="caddy"}[1m])) / count(node_cpu_seconds_total{mode="system"}) * 100 > 10
-    for: 30s
-    labels:
-      severity: warning
-    annotations:
-      summary: "Caddy high CPU usage"
-      description: "Caddy CPU usage is {{ humanize $value}}%."
-
-  - alert: caddy_high_memory
-    expr: sum(container_memory_usage_bytes{name="caddy"}) > 1200000000
-    for: 30s
-    labels:
-      severity: warning
-    annotations:
-      summary: "Caddy high memory usage"
-      description: "Caddy memory consumption is at {{ humanize $value}}."
