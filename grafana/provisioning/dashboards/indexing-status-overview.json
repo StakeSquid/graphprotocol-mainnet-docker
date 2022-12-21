@@ -3,25 +3,38 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 7,
-  "iteration": 1624738051642,
+  "id": 6,
+  "iteration": 1671652853067,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
       "columns": [],
-      "datasource": "postgres",
+      "datasource": {
+        "type": "postgres",
+        "uid": "PA942B37CCFAF5A81"
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 13,
@@ -31,7 +44,6 @@
       },
       "id": 10,
       "links": [],
-      "pageSize": null,
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -42,7 +54,6 @@
         {
           "alias": "Blocks behind",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(50, 172, 45, 0.97)",
             "rgba(237, 129, 40, 0.89)",
@@ -61,7 +72,6 @@
         {
           "alias": "Lag",
           "align": "right",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -76,7 +86,6 @@
         {
           "alias": "Synced",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -104,7 +113,6 @@
         {
           "alias": "Network",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -121,7 +129,6 @@
         {
           "alias": "Node ID",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -138,7 +145,6 @@
         {
           "alias": "Schema no.",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -155,7 +161,6 @@
         {
           "alias": "Subgraph ID",
           "align": "left",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -173,7 +178,6 @@
         {
           "alias": "Deployment name",
           "align": "left",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -217,8 +221,6 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Indexing status",
       "transform": "table",
       "transparent": true,
@@ -226,7 +228,10 @@
     },
     {
       "columns": [],
-      "datasource": "postgres",
+      "datasource": {
+        "type": "postgres",
+        "uid": "PA942B37CCFAF5A81"
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 8,
@@ -236,18 +241,15 @@
       },
       "id": 34,
       "links": [],
-      "pageSize": null,
       "scroll": true,
       "showHeader": true,
       "sort": {
-        "col": null,
         "desc": false
       },
       "styles": [
         {
           "alias": "Blocks behind",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(50, 172, 45, 0.97)",
             "rgba(237, 129, 40, 0.89)",
@@ -266,7 +268,6 @@
         {
           "alias": "Lag",
           "align": "right",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -281,7 +282,6 @@
         {
           "alias": "Sync",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -308,7 +308,6 @@
         {
           "alias": "Network",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -325,7 +324,6 @@
         {
           "alias": "Schema no.",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -342,7 +340,6 @@
         {
           "alias": "Subgraph ID",
           "align": "left",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -359,7 +356,6 @@
         {
           "alias": "Deployment name",
           "align": "left",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -376,7 +372,6 @@
         {
           "alias": "Node ID",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -419,21 +414,23 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Paused Subgraphs",
       "transform": "table",
       "transparent": true,
       "type": "table-old"
     },
     {
-      "datasource": "postgres",
+      "datasource": {
+        "type": "postgres",
+        "uid": "PA942B37CCFAF5A81"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null,
+            "align": "auto",
             "displayMode": "auto",
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -649,10 +646,17 @@
       },
       "id": 36,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.1",
+      "pluginVersion": "8.5.2",
       "targets": [
         {
           "format": "table",
@@ -676,24 +680,26 @@
           "where": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Fatal errors",
       "transformations": [],
       "transparent": true,
       "type": "table"
     },
     {
-      "datasource": "postgres",
+      "datasource": {
+        "type": "postgres",
+        "uid": "PA942B37CCFAF5A81"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
           "custom": {
-            "align": null,
+            "align": "auto",
             "displayMode": "auto",
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -736,7 +742,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 191
+                "value": 260
               }
             ]
           },
@@ -748,7 +754,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 402
+                "value": 125
               }
             ]
           },
@@ -760,7 +766,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 127
+                "value": 259
               }
             ]
           },
@@ -1032,6 +1038,13 @@
       },
       "id": 37,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "showHeader": true,
         "sortBy": [
           {
@@ -1040,14 +1053,18 @@
           }
         ]
       },
-      "pluginVersion": "8.0.1",
+      "pluginVersion": "8.5.2",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "PA942B37CCFAF5A81"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n\tds.name as deployment_schema,\r\n\tsg.name as deployment_name,\r\n\tsd.id as deployment_id,\r\n\tsubstring(sm.repository,20,31) as git_repo,\r\n\tsda.node_id as node_id,\r\n\tsd.health as sub_health,\r\n\tsd.failed as sub_failed,\r\n\tsd.synced as sub_sync,\r\n\tsd.latest_ethereum_block_number as last_block,\r\n\tsd.entity_count as sub_entity,\r\n\tsize.total_bytes as size_total, \r\n\tsize.total_bytes as size_total_bytes, \r\n\tsd.earliest_ethereum_block_number as start_block, \r\n\tencode(sd.earliest_ethereum_block_hash, 'hex') as start_hash, \r\n\tencode(sd.latest_ethereum_block_hash, 'hex') as last_hash,\r\n\tsd.reorg_count as reorg_count, \r\n\tsd.current_reorg_depth as curr_reorg_count, \r\n\tsd.max_reorg_depth as max_reorg\r\nFROM subgraphs.\"subgraph_deployment\" as sd\r\nleft join subgraphs.\"subgraph_manifest\" as sm on (sm.id = sd.id)\r\nleft join subgraphs.\"subgraph_deployment_assignment\" as sda on (sda.id = sd.id)\r\nleft join subgraphs.\"subgraph_version\" as sv on (sv.deployment = sd.deployment)\r\nleft join subgraphs.\"subgraph\" as sg on (sv.id in (sg.current_version, sg.pending_version))\r\nleft join public.\"deployment_schemas\" as ds on (ds.subgraph = sd.deployment)\r\nleft join (\r\n\tSELECT *, total_bytes-index_bytes-coalesce(toast_bytes,0) AS table_bytes FROM (\r\n\t\tSELECT nspname AS table_schema\r\n            , ds.subgraph\r\n            , sum(pg_total_relation_size(c.oid)) AS total_bytes\r\n            , sum(pg_indexes_size(c.oid)) AS index_bytes\r\n            , sum(pg_total_relation_size(reltoastrelid)) AS toast_bytes\r\n\t\tFROM pg_class c\r\n\t\tLEFT JOIN pg_namespace n ON n.oid = c.relnamespace\r\n\t\t\tINNER JOIN deployment_schemas ds ON ds.name = n.nspname\r\n\t\tWHERE relkind = 'r'\r\n\t\t\tGROUP BY ds.subgraph,table_schema\r\n  ) a\r\n) as size on (sd.deployment = size.subgraph) order by sd.id",
+          "rawSql": "SELECT \n\tds.name as deployment_schema,\n\tsg.name as deployment_name,\n\tsd.id as deployment_id,\n\tsubstring(sm.repository,20,31) as git_repo,\n\tsda.node_id as node_id,\n\tsd.health as sub_health,\n\tsd.failed as sub_failed,\n\tsd.synced as sub_sync,\n\tsd.latest_ethereum_block_number as last_block,\n\tsd.entity_count as sub_entity,\n\tsize.total_bytes as size_total, \n\tsize.total_bytes as size_total_bytes, \n\tsm.start_block_number as start_block, \n\tencode(sm.start_block_hash, 'hex') as start_hash, \n\tencode(sd.latest_ethereum_block_hash, 'hex') as last_hash,\n\tsd.reorg_count as reorg_count, \n\tsd.current_reorg_depth as curr_reorg_count, \n\tsd.max_reorg_depth as max_reorg\nFROM subgraphs.\"subgraph_deployment\" as sd\njoin subgraphs.\"subgraph_manifest\" as sm on (sm.id = sd.id)\njoin public.\"deployment_schemas\" as ds on (ds.subgraph = sd.deployment)\njoin subgraphs.\"subgraph_version\" as sv on (sv.deployment = sd.deployment)\njoin subgraphs.\"subgraph\" as sg on (sv.id in (sg.current_version, sg.pending_version))\nleft join subgraphs.\"subgraph_deployment_assignment\" as sda on (sda.id = sd.id)\nleft join info.subgraph_sizes as size on (ds.name = size.name)\norder by sd.id",
           "refId": "A",
           "select": [
             [
@@ -1064,8 +1081,6 @@
           "where": []
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Subgraph Health",
       "transformations": [
         {
@@ -1096,7 +1111,7 @@
               "sub_sync": "Sync"
             }
           }
-              },
+        },
         {
           "id": "filterByValue",
           "options": {
@@ -1119,7 +1134,10 @@
     },
     {
       "columns": [],
-      "datasource": "postgres",
+      "datasource": {
+        "type": "postgres",
+        "uid": "PA942B37CCFAF5A81"
+      },
       "fontSize": "80%",
       "gridPos": {
         "h": 4,
@@ -1129,7 +1147,6 @@
       },
       "id": 6,
       "links": [],
-      "pageSize": null,
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -1140,7 +1157,6 @@
         {
           "alias": "Number",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -1157,7 +1173,6 @@
         {
           "alias": "Node ID",
           "align": "left",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -1174,7 +1189,6 @@
         {
           "alias": "Deployment ID",
           "align": "left",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -1218,8 +1232,6 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Subgraph Node Assignments",
       "transform": "table",
       "transparent": true,
@@ -1227,7 +1239,10 @@
     },
     {
       "columns": [],
-      "datasource": "postgres",
+      "datasource": {
+        "type": "postgres",
+        "uid": "PA942B37CCFAF5A81"
+      },
       "fontSize": "80%",
       "gridPos": {
         "h": 4,
@@ -1237,7 +1252,6 @@
       },
       "id": 38,
       "links": [],
-      "pageSize": null,
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -1248,7 +1262,6 @@
         {
           "alias": "Network",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -1265,7 +1278,6 @@
         {
           "alias": "Head block",
           "align": "center",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -1282,7 +1294,6 @@
         {
           "alias": "Block hash",
           "align": "left",
-          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
@@ -1325,8 +1336,6 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Networks",
       "transform": "table",
       "transparent": true,
@@ -1334,15 +1343,15 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 30,
+  "schemaVersion": 36,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
-        "datasource": "Elasticsearch",
-        "description": null,
-        "error": null,
+        "datasource": {
+          "uid": "Elasticsearch"
+        },
         "filters": [],
         "hide": 0,
         "label": "",
@@ -1383,5 +1392,6 @@
   "timezone": "",
   "title": "Indexing Status Overview",
   "uid": "indexing-status-overview",
-  "version": 9
+  "version": 5,
+  "weekStart": ""
 }
