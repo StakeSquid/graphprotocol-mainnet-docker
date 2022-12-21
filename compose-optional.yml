@@ -30,11 +30,10 @@ services:
     command:
       - '--poifier-server=https://poifier.io'
       - '--ethereum-endpoint=${TXN_RPC}'
-      - '--mainnet-subgraph-endpoint=https://gateway.thegraph.com/network'
       - '--graph-node-status-endpoint=http://index-node-0:8030/graphql'
       - '--mnemonic=${OPERATOR_SEED_PHRASE}'
       - '--indexer-address=${STAKING_WALLET_ADDRESS}'
-      - '--poifier-token=${POIFIER_TOKEN}'
+      - '--indexer-agent-epoch-subgraph-endpoint=${INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/mainnet-epoch-block-oracle}'
     tty: true
     networks:
        - monitor-net
