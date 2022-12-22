@@ -15,5 +15,5 @@
 ## Setup a cronjob to refresh materialized view:
 
 ```bash
-echo "0 0,12 * * * $HOME/graphprotocol-testnet-docker/refresh-sizes.sh" | crontab -
+echo "0 0,12 * * * $HOME/graphprotocol-mainnet-docker/refresh-sizes.sh" | crontab -
 ```
