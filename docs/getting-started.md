@@ -68,47 +68,36 @@ You can find your address, public key and private key in the first row of the ta
 If you need, you can import the wallet using the private key into Metamask
 
 
-
 ## Configure the environment variables
 
-Edit the file called `start` and add your values to the following envs:
+Edit the file called `.env` and add your values to the following envs:
 
 ```bash
-EMAIL=email@domain.com \
-INDEX_HOST=index.sld.tld \
-GRAFANA_HOST=grafana.sld.tld \
-ADMIN_USER=your_user \
-ADMIN_PASSWORD=your_password \
-DB_USER=your_db_user \
-DB_PASS=your_db_password \
-GRAPH_NODE_DB_NAME=your_graphnode_db_name \
-AGENT_DB_NAME=your_agent_db_name \
-ETHEREUM_RPC_0="http://ip:port" \
-ETHEREUM_RPC_1="http://ip:port" \
-TXN_RPC="http://ip:port" \
-OPERATOR_SEED_PHRASE="12 or 15 word mnemonic" \
-STAKING_WALLET_ADDRESS=0xAdDreSs \
-GEO_COORDINATES="69.420 69.420" \
-docker-compose up -d --remove-orphans --build $@
+EMAIL=email@sld.tld
+INDEX_HOST=index.sld.tld
+GRAFANA_HOST=grafana.sld.tld
+AGENT_GUI_HOST=agent.sld.tld
+ADMIN_USER=your_user
+ADMIN_PASSWORD=your_password
+DB_USER=your_db_user
+DB_PASS=your_db_password
+GRAPH_NODE_DB_NAME=your_graphnode_db_name
+AGENT_DB_NAME=your_agent_db_name
+CHAIN_0_NAME="network-name"
+CHAIN_0_RPC="http://ip:port"
+TXN_RPC="http://ip:port"
+OPERATOR_SEED_PHRASE="12 or 15 word mnemonic"
+STAKING_WALLET_ADDRESS=0xAdDreSs
+GEO_COORDINATES='69.420 69.420'
+INDEXER_AGENT_OFFCHAIN_SUBGRAPHS=""
 
 
-#The following ENV vars are optional
-#they need to be added above the last line containing
-#docker-compose...
 
-#QUERY_FEE_REBATE_CLAIM_THRESHOLD=number-in-grt \
-#REBATE_CLAIM_BATCH_THRESHOLD=number-in-grt \
-#NETWORK_SUBGRAPH_DEPLOYMENT=QmTePWCvPedmVxAvPnDFmFVxxYNW73z6xisyKCL2xa5P6e \
-#INDEXER_AGENT_OFFCHAIN_SUBGRAPHS="Qm,Qm,Qm" \
-#GRAPHNODE_LOGLEVEL=warn \
-#ETHEREUM_TRACE_STREAM_STEP_SIZE=100 \
-#ETHEREUM_BLOCK_BATCH_SIZE=50 \
-#ETHEREUM_RPC_MAX_PARALLEL_REQUESTS=128 \
-#GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE=1000 \
-#GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE=500 \
-#INDEXER_AGENT_GAS_PRICE_MAX=gas-price-in-gwei \
-#GRAPH_GRAPHQL_WARN_RESULT_SIZE=bytes \
-#GRAPH_GRAPHQL_ERROR_RESULT_SIZE=bytes \
+#Optional env vars depending on which services you use:
+
+###Indexer agent GUI:
+#AGENT_GUI_HOST=agent.sld.tld
+#NEXTAUTH_SECRET=$(openssl rand -base64 32)
 
 ```
 
@@ -120,48 +109,55 @@ docker-compose up -d --remove-orphans --build $@
 - `DB_USER` and `DB_PASS` - will be used for initializing the PostgreSQL Databases (both index/query DB and indexer agent/service DB).
 - `GRAPH_NODE_DB_NAME` - the name of the database used by the Index/Query nodes.
 - `AGENT_DB_NAME` - the name of the database used by the Indexer agent/service nodes.
-- `ETHERUM_RPC_0` and `ETHEREUM_RPC_1` - your ETH RPCs used by the index nodes. They can be different URLs or the same, up to you.
-- `TXN_RPC` - your ETH RPC used by Indexer agent/service nodes. This can be a fast/full/archive node, up to you! Please note that using Erigon as the TXN_RPC has proven unreliable by some indexers.
+- `CHAIN_0_NAME` - the name of the network that you want to index
+- `CHAIN_0_RPC` - your RPCs (archive nodes) used by the index nodes.
+- `TXN_RPC` - your Goerli ETH RPC used by Indexer agent/service nodes. This can be a fast/full/archive node, up to you! Please note that using Erigon as the TXN_RPC has proven unreliable by some indexers.
 - `OPERATOR_SEED_PHRASE` - the 12/15 word mnemonic that you generated earlier. Will be used by the Agent/Service to send transactions (open/close allocations, etc)
-- `STAKING_WALLET_ADDRESS` - the address (0x...) that you staked your GRT with, ideally living on an entirely different mnemonic phrase than your Operator Wallet. 
+- `STAKING_WALLET_ADDRESS` - the address (0x...) that you staked your GRT with, ideally living on an entirely different mnemonic phrase than your Operator Wallet.
 - `GEO_COORDINATES` of your server - you can search for an ip location website and check your server exact coordinates.
 
 **Optional env vars:**
-- `QUERY_FEE_REBATE_CLAIM_THRESHOLD`  - the minimum amount of GRT to claim per allocation
-- `REBATE_CLAIM_BATCH_THRESHOLD` - the minimum amount of Total GRT to batch claim for all allocations combined
-- `NETWORK_SUBGRAPH_DEPLOYMENT` - The Mainnet Network Subgraph IPFS hash, used if you want to rely on your own subgraph deployment rather than the gateways subgraphs 
-- `INDEXER_AGENT_OFFCHAIN_SUBGRAPHS` - Gives you the possibility of syncing subgraphs locally without allocating to them onchain
-- `GRAPHNODE_LOGLEVEL` - the log level of the graph-node (indexer/query) - trace/debug/info/warn/error - if you have a whackton of subgraphs, increasing the loglevel to warn/error helps lowering the indexing time
-- `ETHEREUM_TRACE_STREAM_STEP_SIZE` - this helps (or not) indexing times by very small margins - use at own risk
-- `ETHEREUM_TRACE_STREAM_STEP_SIZE` - this helps (or not) indexing times by very small margins - use at own risk
-- `ETHEREUM_BLOCK_BATCH_SIZE` - this helps (or not) indexing times by very small margins - use at own risk
-- `ETHEREUM_RPC_MAX_PARALLEL_REQUESTS` - this helps (or not) indexing times by very small margins - use at own risk
-- `GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE` - this helps (or not) indexing times by very small margins - use at own risk
-- `GRAPH_ETHEREUM_TARGET_TRIGGERS_PER_BLOCK_RANGE` - this helps (or not) indexing times by very small margins - use at own risk
-- `INDEXER_AGENT_GAS_PRICE_MAX` - the maximum Gas Price (GWEI) that the indexer-agent will attempt to send transactions with
-- `GRAPH_GRAPHQL_WARN_RESULT_SIZE` - these vars are disabled in docker-compose.yaml for the time being, do not uncomment and leave empty
-- `GRAPH_GRAPHQL_ERROR_RESULT_SIZE` - these vars are disabled in docker-compose.yaml for the time being, do not uncomment and leave empty
+- `AGENT_GUI_HOST` - your Agent GUI endpoint for controlling the Agent and allocations remotely
+- `NEXTAUTH_SECRET` - used by the Agent GUI to salt your password
 
-**Note:** If you want to use any of the optional env vars, you need to copy the line that you want to enable above the `docker-compose up...` part, and uncomment it. Do NOT uncomment lines below it, or comment lines above it.
+**Note:** If you want to use any of the optional env vars, you need to copy the line that you want to enable above the last line, and uncomment it.
 
 
-**Containers:**
-* Graph Node (query node)
-* Graph Node (index node)
-* Indexer Agent
-* Indexer Service
-* Indexer CLI
-* Postgres Database for the index/query nodes
-* Postgres Database for the agent/service nodes
-* Prometheus (metrics database) `http://<host-ip>:9090`
-* Prometheus-Pushgateway (push acceptor for ephemeral and batch jobs) `http://<host-ip>:9091`
-* AlertManager (alerts management) `http://<host-ip>:9093`
-* Grafana (visualize metrics) `http://<host-ip>:3000`
-* NodeExporter (host metrics collector)
-* cAdvisor (containers metrics collector)
-* Caddy (reverse proxy and basic auth provider for prometheus and alertmanager)
+## Supporting multiple chains
 
+To add support for multiple chains, you need to edit the [config.tmpl](https://github.com/StakeSquid/graphprotocol-testnet-docker/blob/master/graph-node-configs/config.tmpl) file yourself.
 
+For each chain you wish to support, you need to add the corresponding provider line.
+
+**Example:**
+
+By default, we only support one chain:
+```toml
+[chains.${CHAIN_0_NAME}]
+shard = "primary"
+provider = [ { label = "${CHAIN_0_NAME}", url = "${CHAIN_0_RPC}", features = ["archive", "traces"] } ]
+```
+
+To add another one, simply duplicate this, and increment the chain number:
+```toml
+[chains.${CHAIN_0_NAME}]
+shard = "primary"
+provider = [ { label = "${CHAIN_0_NAME}", url = "${CHAIN_0_RPC}", features = ["archive", "traces"] } ]
+
+[chains.${CHAIN_1_NAME}]
+shard = "primary"
+provider = [ { label = "${CHAIN_1_NAME}", url = "${CHAIN_1_RPC}", features = ["archive", "traces"] } ]
+```
+
+After this, all you have to do is to include in the [.env file](https://github.com/StakeSquid/graphprotocol-testnet-docker/blob/master/.env) your new environment variables.
+
+**Example:**
+```
+CHAIN_0_NAME="gnosis"
+CHAIN_0_RPC="http://ip:port"
+CHAIN_1_NAME="matic"
+CHAIN_1_RPC="http://ip:port"
+```
 
 **Additional configs and details:**
 
@@ -169,13 +165,66 @@ docker-compose up -d --remove-orphans --build $@
 - Graph-Node - [environment-variables.md](https://github.com/graphprotocol/graph-node/blob/master/docs/environment-variables.md)
 
 
+
+## Containers in each configuration:
+
+**Graphnode Stack:**
+
+- Index Node
+- Query Node
+- Postgres Database for the Graphnode Stack
+
+**Indexer Stack:**
+
+- Indexer Agent
+- Indexer Service
+- Indexer CLI
+- Nginx Proxy
+- Nginx SSL
+- Posgres Database for the Indexer Stack
+
+**Autoagora Stack:**
+
+- Indexer Service
+- Rabbitmq
+- Autoagora Processor
+- Autoagora
+- Nginx Proxy
+- Nginx SSL
+- Posgres Database for the Indexer Stack
+- Posgres Database for the Autoagora Stack
+
+**Monitoring Stack:**
+
+- Prometheus
+- Grafana
+- Alertmanager
+- Node exporter
+- Cadvisor
+- Pushgateway
+- Nginx Proxy
+- Nginx SSL
+
+**Optional Stack:**
+
+- Poifier client
+- Indexer Agent GUI
+- Nginx Proxy
+- Nginx SSL
+
+
+
+
 ## Start
 
-To start, all you need to do is to:
+Start by picking up the right stack that you want to spin up.
+
+There are several start files used to spin up different components.
+
+I would recommend to start with:
 
 ```bash
-bash start
-
+bash start-essential
 
 ```
 
@@ -185,17 +234,29 @@ Subsequent restarts will be much faster.
 
 In case something goes wrong, find the problem, edit the variables, and add `--force-recreate` at the end of the command, plus the container you want to recreate:
 
-```bash 
-bash start --force-recreate <container_name>
+```bash
+bash start-essential --force-recreate <container_name>
 
 ```
 
 Or to recreate the entire stack:
 
-```bash 
-bash start --force-recreate
+```bash
+bash start-essential --force-recreate
 
 ```
+
+### Start file variants:
+
+**start-essential** - starts up the graphnode, indexer and monitoring stack - all you need to get up and running on the network
+
+**start-optional** - starts up the optional stack (for components, read above)
+
+**start-autoagora** - starts up the autoagora stack  (for components, read above)
+
+**start-all** - starts up the entire stack
+
+
 
 
 ## Verify that it runs properly
