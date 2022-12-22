@@ -53,7 +53,6 @@ services:
     container_name: poifier
     command:
       - '--poifier-server=https://poifier.io'
-      - '--ethereum-endpoint=${TXN_RPC}'
       - '--graph-node-status-endpoint=http://index-node-0:8030/graphql'
       - '--mnemonic=${OPERATOR_SEED_PHRASE}'
       - '--indexer-address=${STAKING_WALLET_ADDRESS}'
