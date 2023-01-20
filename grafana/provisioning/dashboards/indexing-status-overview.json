@@ -1,4 +1,41 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_POSTGRES",
+      "label": "postgres",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.5.2"
+    },
+    {
+      "type": "panel",
+      "id": "logs",
+      "name": "Logs",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -24,18 +61,307 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
-  "iteration": 1671652853067,
+  "id": null,
+  "iteration": 1674208595188,
   "links": [],
   "liveNow": false,
   "panels": [
     {
-      "columns": [],
       "datasource": {
         "type": "postgres",
-        "uid": "PA942B37CCFAF5A81"
+        "uid": "${DS_POSTGRES}"
       },
-      "fontSize": "100%",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "blocks_behind_network"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Blocks behind"
+              },
+              {
+                "id": "unit",
+                "value": "locale"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "rgba(50, 172, 45, 0.97)",
+                      "value": null
+                    },
+                    {
+                      "color": "rgba(237, 129, 40, 0.89)"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "lag"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Lag"
+              },
+              {
+                "id": "unit",
+                "value": "m"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.align",
+                "value": "right"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "synced"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Synced"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "network"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Network"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "nodeid"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Node ID"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "schema"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Schema no."
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "deployment"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Subgraph ID"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "subgraph_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Deployment name"
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Deployment name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 291
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Subgraph ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 501
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Schema no."
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 88
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Node ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 116
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocks behind"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 131
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 13,
         "w": 24,
@@ -44,162 +370,30 @@
       },
       "id": 10,
       "links": [],
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 6,
-        "desc": true
+      "options": {
+        "footer": {
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
       },
-      "styles": [
-        {
-          "alias": "Blocks behind",
-          "align": "center",
-          "colors": [
-            "rgba(50, 172, 45, 0.97)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "blocks_behind_network",
-          "thresholds": [
-            ""
-          ],
-          "type": "number",
-          "unit": "locale"
-        },
-        {
-          "alias": "Lag",
-          "align": "right",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 1,
-          "pattern": "lag",
-          "thresholds": [],
-          "type": "number",
-          "unit": "m"
-        },
-        {
-          "alias": "Synced",
-          "align": "center",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "synced",
-          "sanitize": false,
-          "thresholds": [],
-          "type": "string",
-          "unit": "short",
-          "valueMaps": [
-            {
-              "text": "✓",
-              "value": "true"
-            },
-            {
-              "text": "—",
-              "value": "false"
-            }
-          ]
-        },
-        {
-          "alias": "Network",
-          "align": "center",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "network",
-          "thresholds": [],
-          "type": "string",
-          "unit": "none"
-        },
-        {
-          "alias": "Node ID",
-          "align": "center",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "nodeid",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Schema no.",
-          "align": "center",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "schema",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Subgraph ID",
-          "align": "left",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "deployment",
-          "sanitize": false,
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Deployment name",
-          "align": "left",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "subgraph_name",
-          "preserveFormat": false,
-          "thresholds": [],
-          "type": "string",
-          "unit": "none"
-        }
-      ],
+      "pluginVersion": "8.5.2",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_POSTGRES}"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "-- grafana ignore\r\nselect\r\n  g.name || (case\r\n        when g.pending_version = v.id then ' (P)'\r\n        when g.current_version = v.id then ' (C)'\r\n        else ' (U)' end) as subgraph_name,\r\n  d.deployment,\r\n  s.id as schema,\r\n  replace(a.node_id, '','') as nodeId,\r\n  d.synced::text,\r\n  n.name as network,\r\n  (n.head_block_number - d.latest_ethereum_block_number) as blocks_behind_network,\r\n  (case when n.name = 'mainnet' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'rinkeby' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'kovan' then ((n.head_block_number - d.latest_ethereum_block_number)/15)::text\r\n        when n.name = 'poa-core' then ((n.head_block_number - d.latest_ethereum_block_number)/12)::text\r\n        when n.name = 'ropsten' then ((n.head_block_number - d.latest_ethereum_block_number)/2)::text\r\n        else 'ø' end) as lag\r\nfrom subgraphs.subgraph_deployment as d,\r\n     subgraphs.subgraph_deployment_assignment as a,\r\n     subgraphs.subgraph_version as v,\r\n     subgraphs.subgraph as g,\r\n     ethereum_networks  as n,\r\n     deployment_schemas as s\r\nwhere g.id = v.subgraph\r\n  and v.id in (g.pending_version, g.current_version)\r\n  and a.id = s.id\r\n  and s.id = d.id\r\n  and v.deployment = d.deployment\r\n  and not d.failed\r\n  and n.name = s.network\r\n  and not a.node_id = 'removed'\r\norder by blocks_behind_network desc, subgraph_name;",
+          "rawSql": "-- grafana ignore\r\nselect\r\n  g.name || (case\r\n        when g.pending_version = v.id then ' (P)'\r\n        when g.current_version = v.id then ' (C)'\r\n        else ' (U)' end) as subgraph_name,\r\n  d.deployment,\r\n  s.id as schema,\r\n  replace(a.node_id, '','') as nodeId,\r\n  d.synced::text,\r\n  n.name as network,\r\n  (n.head_block_number - d.latest_ethereum_block_number) as blocks_behind_network,\r\n  (case when n.name = 'mainnet' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'gnosis' then ((n.head_block_number - d.latest_ethereum_block_number)/11.6)::text\r\n        when n.name = 'rinkeby' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'kovan' then ((n.head_block_number - d.latest_ethereum_block_number)/15)::text\r\n        when n.name = 'poa-core' then ((n.head_block_number - d.latest_ethereum_block_number)/12)::text\r\n        when n.name = 'ropsten' then ((n.head_block_number - d.latest_ethereum_block_number)/2)::text\r\n        else 'ø' end) as lag\r\nfrom subgraphs.subgraph_deployment as d,\r\n     subgraphs.subgraph_deployment_assignment as a,\r\n     subgraphs.subgraph_version as v,\r\n     subgraphs.subgraph as g,\r\n     ethereum_networks  as n,\r\n     deployment_schemas as s\r\nwhere g.id = v.subgraph\r\n  and v.id in (g.pending_version, g.current_version)\r\n  and a.id = s.id\r\n  and s.id = d.id\r\n  and v.deployment = d.deployment\r\n  and not d.failed\r\n  and n.name = s.network\r\n  and not a.node_id = 'removed'\r\norder by blocks_behind_network desc, subgraph_name;",
           "refId": "A",
           "select": [
             [
@@ -222,17 +416,301 @@
         }
       ],
       "title": "Indexing status",
-      "transform": "table",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
       "transparent": true,
-      "type": "table-old"
+      "type": "table"
     },
     {
-      "columns": [],
       "datasource": {
         "type": "postgres",
-        "uid": "PA942B37CCFAF5A81"
+        "uid": "${DS_POSTGRES}"
       },
-      "fontSize": "100%",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "blocks_behind_network"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Blocks behind"
+              },
+              {
+                "id": "unit",
+                "value": "locale"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "rgba(50, 172, 45, 0.97)",
+                      "value": null
+                    },
+                    {
+                      "color": "rgba(237, 129, 40, 0.89)"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "lag"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Lag"
+              },
+              {
+                "id": "unit",
+                "value": "m"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.align",
+                "value": "right"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "synced"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Sync"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "network"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Network"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "schema"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Schema no."
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "deployment"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Subgraph ID"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "subgraph_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Deployment name"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "nodeid"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Node ID"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Deployment name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 298
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Subgraph ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 497
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Schema no."
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 89
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Node ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 117
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
         "w": 24,
@@ -241,151 +719,19 @@
       },
       "id": 34,
       "links": [],
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "desc": false
+      "options": {
+        "footer": {
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
       },
-      "styles": [
-        {
-          "alias": "Blocks behind",
-          "align": "center",
-          "colors": [
-            "rgba(50, 172, 45, 0.97)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "blocks_behind_network",
-          "thresholds": [
-            ""
-          ],
-          "type": "number",
-          "unit": "locale"
-        },
-        {
-          "alias": "Lag",
-          "align": "right",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 1,
-          "pattern": "lag",
-          "thresholds": [],
-          "type": "number",
-          "unit": "m"
-        },
-        {
-          "alias": "Sync",
-          "align": "center",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "synced",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short",
-          "valueMaps": [
-            {
-              "text": "✓",
-              "value": "true"
-            },
-            {
-              "text": "—",
-              "value": "false"
-            }
-          ]
-        },
-        {
-          "alias": "Network",
-          "align": "center",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "network",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Schema no.",
-          "align": "center",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "schema",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Subgraph ID",
-          "align": "left",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "deployment",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Deployment name",
-          "align": "left",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "subgraph_name",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Node ID",
-          "align": "center",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "nodeid",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        }
-      ],
+      "pluginVersion": "8.5.2",
       "targets": [
         {
           "format": "table",
@@ -415,228 +761,21 @@
         }
       ],
       "title": "Paused Subgraphs",
-      "transform": "table",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
       "transparent": true,
-      "type": "table-old"
+      "type": "table"
     },
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PA942B37CCFAF5A81"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "filterable": false,
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "locale"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "vid"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 28
-              },
-              {
-                "id": "displayName",
-                "value": "No."
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "block_hash"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 303
-              },
-              {
-                "id": "displayName",
-                "value": "Block Hash"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "subgraph_id"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 380
-              },
-              {
-                "id": "displayName",
-                "value": "Subgraph ID"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "deterministic"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 99
-              },
-              {
-                "id": "displayName",
-                "value": "Deterministic"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "message"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "color-text"
-              },
-              {
-                "id": "displayName",
-                "value": "Error Message"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "handler"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Handler"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "created_at"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "dateTimeAsUS"
-              },
-              {
-                "id": "displayName",
-                "value": "Date"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Error Message"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 712
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Handler"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 287
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Date"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 257
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Block Hash"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 153
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Subgraph ID"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 402
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Deterministic"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 127
-              }
-            ]
-          }
-        ]
+        "uid": "${DS_POSTGRES}"
       },
       "gridPos": {
         "h": 8,
@@ -646,19 +785,22 @@
       },
       "id": 36,
       "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": []
+        "dedupStrategy": "exact",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
       },
       "pluginVersion": "8.5.2",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_POSTGRES}"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
@@ -681,14 +823,33 @@
         }
       ],
       "title": "Fatal errors",
-      "transformations": [],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "vid": true
+            },
+            "indexByName": {
+              "block_hash": 2,
+              "created_at": 6,
+              "deterministic": 5,
+              "handler": 4,
+              "message": 3,
+              "subgraph_id": 0,
+              "vid": 1
+            },
+            "renameByName": {}
+          }
+        }
+      ],
       "transparent": true,
-      "type": "table"
+      "type": "logs"
     },
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PA942B37CCFAF5A81"
+        "uid": "${DS_POSTGRES}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1039,6 +1200,7 @@
       "id": 37,
       "options": {
         "footer": {
+          "enablePagination": true,
           "fields": "",
           "reducer": [
             "sum"
@@ -1048,8 +1210,8 @@
         "showHeader": true,
         "sortBy": [
           {
-            "desc": true,
-            "displayName": "Bytes"
+            "desc": false,
+            "displayName": "Start Block"
           }
         ]
       },
@@ -1058,7 +1220,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PA942B37CCFAF5A81"
+            "uid": "${DS_POSTGRES}"
           },
           "format": "table",
           "group": [],
@@ -1133,12 +1295,130 @@
       "type": "table"
     },
     {
-      "columns": [],
       "datasource": {
         "type": "postgres",
-        "uid": "PA942B37CCFAF5A81"
+        "uid": "${DS_POSTGRES}"
       },
-      "fontSize": "80%",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "num_assigned"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Number"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "nodeid"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Node ID"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "deployments"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Deployment ID"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Node ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Number"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 93
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 4,
         "w": 12,
@@ -1147,63 +1427,18 @@
       },
       "id": 6,
       "links": [],
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 1,
-        "desc": true
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
       },
-      "styles": [
-        {
-          "alias": "Number",
-          "align": "center",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "num_assigned",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        },
-        {
-          "alias": "Node ID",
-          "align": "left",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "nodeid",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Deployment ID",
-          "align": "left",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "deployments",
-          "preserveFormat": true,
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        }
-      ],
+      "pluginVersion": "8.5.2",
       "targets": [
         {
           "format": "table",
@@ -1233,17 +1468,142 @@
         }
       ],
       "title": "Subgraph Node Assignments",
-      "transform": "table",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
       "transparent": true,
-      "type": "table-old"
+      "type": "table"
     },
     {
-      "columns": [],
       "datasource": {
         "type": "postgres",
-        "uid": "PA942B37CCFAF5A81"
+        "uid": "${DS_POSTGRES}"
       },
-      "fontSize": "80%",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Network"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "block_number"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Head block"
+              },
+              {
+                "id": "unit",
+                "value": "locale"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "block_hash"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Block hash"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Head block"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 129
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 4,
         "w": 12,
@@ -1252,62 +1612,18 @@
       },
       "id": 38,
       "links": [],
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 1,
-        "desc": true
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
       },
-      "styles": [
-        {
-          "alias": "Network",
-          "align": "center",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "name",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Head block",
-          "align": "center",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "block_number",
-          "thresholds": [],
-          "type": "number",
-          "unit": "locale"
-        },
-        {
-          "alias": "Block hash",
-          "align": "left",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "block_hash",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        }
-      ],
+      "pluginVersion": "8.5.2",
       "targets": [
         {
           "format": "table",
@@ -1337,9 +1653,16 @@
         }
       ],
       "title": "Networks",
-      "transform": "table",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
       "transparent": true,
-      "type": "table-old"
+      "type": "table"
     }
   ],
   "refresh": "",
@@ -1392,6 +1715,6 @@
   "timezone": "",
   "title": "Indexing Status Overview",
   "uid": "indexing-status-overview",
-  "version": 5,
+  "version": 12,
   "weekStart": ""
 }
