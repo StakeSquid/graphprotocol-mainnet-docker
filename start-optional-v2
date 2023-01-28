@@ -1,0 +1,3 @@
+set -o allexport; source .env; set +o allexport; envsubst < graph-node-configs/config.tmpl > graph-node-configs/config.toml
+
+docker compose -f compose-optional.yml up -d --build $@
