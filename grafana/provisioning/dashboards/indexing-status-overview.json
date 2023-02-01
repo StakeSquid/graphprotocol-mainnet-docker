@@ -1,41 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_POSTGRES",
-      "label": "postgres",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "postgres",
-      "pluginName": "PostgreSQL"
-    }
-  ],
-  "__elements": [],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.5.2"
-    },
-    {
-      "type": "panel",
-      "id": "logs",
-      "name": "Logs",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "postgres",
-      "name": "PostgreSQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -61,15 +24,15 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1674208595188,
+  "id": 6,
+  "iteration": 1675160285109,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRES}"
+        "uid": "PA942B37CCFAF5A81"
       },
       "fieldConfig": {
         "defaults": {
@@ -79,6 +42,7 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
+            "filterable": true,
             "inspect": false
           },
           "mappings": [],
@@ -387,7 +351,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRES}"
+            "uid": "PA942B37CCFAF5A81"
           },
           "format": "table",
           "group": [],
@@ -430,7 +394,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRES}"
+        "uid": "PA942B37CCFAF5A81"
       },
       "fieldConfig": {
         "defaults": {
@@ -734,11 +698,15 @@
       "pluginVersion": "8.5.2",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "PA942B37CCFAF5A81"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "-- grafana ignore\r\nselect\r\n  g.name || (case\r\n        when g.pending_version = v.id then ' (P)'\r\n        when g.current_version = v.id then ' (C)'\r\n        else ' (U)' end) as subgraph_name,\r\n  d.deployment,\r\n  s.id as schema,\r\n  replace(a.node_id,'','') as nodeid,\r\n  d.synced::text,\r\n  n.name as network,\r\n  (n.head_block_number - d.latest_ethereum_block_number) as blocks_behind_network,\r\n  (case when n.name = 'mainnet' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'rinkeby' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'kovan' then ((n.head_block_number - d.latest_ethereum_block_number)/15)::text\r\n        when n.name = 'poa-core' then ((n.head_block_number - d.latest_ethereum_block_number)/12)::text\r\n\t\twhen n.name = 'ropsten' then ((n.head_block_number - d.latest_ethereum_block_number)/2)::text\r\n        else 'ø' end) as lag\r\nfrom subgraphs.subgraph_deployment as d,\r\n     subgraphs.subgraph_deployment_assignment as a,\r\n     subgraphs.subgraph_version as v,\r\n     subgraphs.subgraph as g,\r\n     ethereum_networks  as n,\r\n     deployment_schemas as s\r\nwhere g.id = v.subgraph\r\n  and v.id in (g.pending_version, g.current_version)\r\n  and a.id = s.id\r\n  and s.id = d.id\r\n  and v.deployment = d.deployment\r\n  and not d.failed\r\n  and n.name = s.network\r\n  and a.node_id not like 'index_node_%'\r\norder by blocks_behind_network desc, subgraph_name;",
+          "rawSql": "-- grafana ignore\r\nselect\r\n  g.name || (case\r\n        when g.pending_version = v.id then ' (P)'\r\n        when g.current_version = v.id then ' (C)'\r\n        else ' (U)' end) as subgraph_name,\r\n  d.deployment,\r\n  s.id as schema,\r\n  replace(a.node_id,'','') as nodeid,\r\n  d.synced::text,\r\n  n.name as network,\r\n  (n.head_block_number - d.latest_ethereum_block_number) as blocks_behind_network,\r\n  (case when n.name = 'mainnet' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'gnosis' then ((n.head_block_number - d.latest_ethereum_block_number)/11.6)::text\r\n        when n.name = 'rinkeby' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'kovan' then ((n.head_block_number - d.latest_ethereum_block_number)/15)::text\r\n        when n.name = 'poa-core' then ((n.head_block_number - d.latest_ethereum_block_number)/12)::text\r\n\t\twhen n.name = 'ropsten' then ((n.head_block_number - d.latest_ethereum_block_number)/2)::text\r\n        else 'ø' end) as lag\r\nfrom subgraphs.subgraph_deployment as d,\r\n     subgraphs.subgraph_deployment_assignment as a,\r\n     subgraphs.subgraph_version as v,\r\n     subgraphs.subgraph as g,\r\n     ethereum_networks  as n,\r\n     deployment_schemas as s\r\nwhere g.id = v.subgraph\r\n  and v.id in (g.pending_version, g.current_version)\r\n  and a.id = s.id\r\n  and s.id = d.id\r\n  and v.deployment = d.deployment\r\n  and not d.failed\r\n  and n.name = s.network\r\n  and a.node_id not like 'index_node_%'\r\norder by blocks_behind_network desc, subgraph_name;",
           "refId": "A",
           "select": [
             [
@@ -775,7 +743,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRES}"
+        "uid": "PA942B37CCFAF5A81"
       },
       "gridPos": {
         "h": 8,
@@ -799,7 +767,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRES}"
+            "uid": "PA942B37CCFAF5A81"
           },
           "format": "table",
           "group": [],
@@ -849,7 +817,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRES}"
+        "uid": "PA942B37CCFAF5A81"
       },
       "fieldConfig": {
         "defaults": {
@@ -859,7 +827,7 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": false,
+            "filterable": true,
             "inspect": false
           },
           "mappings": [],
@@ -1210,8 +1178,8 @@
         "showHeader": true,
         "sortBy": [
           {
-            "desc": false,
-            "displayName": "Start Block"
+            "desc": true,
+            "displayName": "Bytes"
           }
         ]
       },
@@ -1220,7 +1188,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRES}"
+            "uid": "PA942B37CCFAF5A81"
           },
           "format": "table",
           "group": [],
@@ -1297,7 +1265,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRES}"
+        "uid": "PA942B37CCFAF5A81"
       },
       "fieldConfig": {
         "defaults": {
@@ -1482,7 +1450,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRES}"
+        "uid": "PA942B37CCFAF5A81"
       },
       "fieldConfig": {
         "defaults": {
@@ -1715,6 +1683,6 @@
   "timezone": "",
   "title": "Indexing Status Overview",
   "uid": "indexing-status-overview",
-  "version": 12,
+  "version": 16,
   "weekStart": ""
 }
