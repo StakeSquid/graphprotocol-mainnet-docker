@@ -25,10 +25,101 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 6,
-  "iteration": 1675160285109,
+  "iteration": 1675585805835,
   "links": [],
   "liveNow": false,
   "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
+      "description": "If ingestion falls to zero there is an issue with the graph nodes processing new blocks. Check health of blockchain nodes",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 40,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
+          "expr": "rate(ethereum_chain_head_number[5m])",
+          "legendFormat": "{{job}}-{{network}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Block ingestion rate",
+      "transparent": true,
+      "type": "timeseries"
+    },
     {
       "datasource": {
         "type": "postgres",
@@ -330,7 +421,7 @@
         "h": 13,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 10,
       "links": [],
@@ -679,7 +770,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 21
       },
       "id": 34,
       "links": [],
@@ -749,7 +840,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 29
       },
       "id": 36,
       "options": {
@@ -835,8 +926,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
-                "value": null
+                "color": "super-light-blue"
               },
               {
                 "color": "dark-green",
@@ -1163,7 +1253,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 37
       },
       "id": 37,
       "options": {
@@ -1282,8 +1372,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1391,7 +1480,7 @@
         "h": 4,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 44
       },
       "id": 6,
       "links": [],
@@ -1467,8 +1556,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1576,7 +1664,7 @@
         "h": 4,
         "w": 12,
         "x": 12,
-        "y": 36
+        "y": 44
       },
       "id": 38,
       "links": [],
@@ -1683,6 +1771,6 @@
   "timezone": "",
   "title": "Indexing Status Overview",
   "uid": "indexing-status-overview",
-  "version": 16,
+  "version": 18,
   "weekStart": ""
 }
