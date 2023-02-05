@@ -110,7 +110,7 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "editorMode": "code",
-          "expr": "rate(ethereum_chain_head_number[5m])",
+          "expr": "deriv(ethereum_chain_head_number[10m]) * 60",
           "legendFormat": "{{job}}-{{network}}",
           "range": true,
           "refId": "A"
@@ -1794,6 +1794,6 @@
   "timezone": "",
   "title": "Indexing Status Overview",
   "uid": "indexing-status-overview",
-  "version": 23,
+  "version": 24,
   "weekStart": ""
 }
