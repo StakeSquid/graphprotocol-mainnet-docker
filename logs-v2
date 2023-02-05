@@ -1,0 +1,6 @@
+if [ ! -z $1 ] 
+then
+	docker compose -f compose-all-services.yml logs "${1}" -f --tail 10
+else
+	docker compose -f compose-all-services.yml logs -f --tail 10
+fi
