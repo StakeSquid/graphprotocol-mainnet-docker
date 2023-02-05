@@ -49,6 +49,11 @@ scrape_configs:
     static_configs:
       - targets: ['indexer-service:7300']
 
+  - job_name: 'autoagora'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['ag:8000']
+
   - job_name: 'grafana'
     scrape_interval: 5s
     static_configs:
