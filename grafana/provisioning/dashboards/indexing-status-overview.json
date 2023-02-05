@@ -25,7 +25,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 6,
-  "iteration": 1675595319681,
+  "iteration": 1675606979274,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -119,6 +119,191 @@
       "title": "Block ingestion rate",
       "transparent": true,
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "PA942B37CCFAF5A81"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Network"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "block_number"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Head block"
+              },
+              {
+                "id": "unit",
+                "value": "locale"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "block_hash"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Block hash"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Head block"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 129
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 38,
+      "links": [],
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.5.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  name,\n  head_block_number AS \"block_number\",\n  head_block_hash AS \"block_hash\"\nFROM ethereum_networks\nORDER BY name;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Networks",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
     },
     {
       "datasource": {
@@ -421,7 +606,7 @@
         "h": 13,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 13
       },
       "id": 10,
       "links": [],
@@ -770,7 +955,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 26
       },
       "id": 34,
       "links": [],
@@ -840,7 +1025,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 34
       },
       "id": 36,
       "options": {
@@ -1251,10 +1436,10 @@
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 10,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 42
       },
       "id": 37,
       "options": {
@@ -1285,7 +1470,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT \n\tds.name as deployment_schema,\n\tsg.name as deployment_name,\n\tsd.id as deployment_id,\n\tsubstring(sm.repository,20,31) as git_repo,\n\tsda.node_id as node_id,\n\tsd.health as sub_health,\n\tsd.failed as sub_failed,\n\tsd.synced as sub_sync,\n\tsd.latest_ethereum_block_number as last_block,\n\tsd.entity_count as sub_entity,\n\tsize.total_bytes as size_total, \n\tsize.total_bytes as size_total_bytes, \n\tsm.start_block_number as start_block, \n\tencode(sm.start_block_hash, 'hex') as start_hash, \n\tencode(sd.latest_ethereum_block_hash, 'hex') as last_hash,\n\tsd.reorg_count as reorg_count, \n\tsd.current_reorg_depth as curr_reorg_count, \n\tsd.max_reorg_depth as max_reorg\nFROM subgraphs.\"subgraph_deployment\" as sd\njoin subgraphs.\"subgraph_manifest\" as sm on (sm.id = sd.id)\njoin public.\"deployment_schemas\" as ds on (ds.subgraph = sd.deployment)\njoin subgraphs.\"subgraph_version\" as sv on (sv.deployment = sd.deployment)\njoin subgraphs.\"subgraph\" as sg on (sv.id in (sg.current_version, sg.pending_version))\nleft join subgraphs.\"subgraph_deployment_assignment\" as sda on (sda.id = sd.id)\nleft join info.subgraph_sizes as size on (ds.name = size.name)\norder by sd.id",
+          "rawSql": "SELECT \n\tds.name as deployment_schema,\n\tsg.name as deployment_name,\n\tsd.id as deployment_id,\n\tsubstring(sm.repository,20,31) as git_repo,\n\tsda.node_id as node_id,\n\tsd.health as sub_health,\n\tsd.failed as sub_failed,\n\tsd.synced as sub_sync,\n\tsd.latest_ethereum_block_number as last_block,\n\tsd.entity_count as sub_entity,\n\tsize.total_bytes as size_total, \n\tsize.total_bytes as size_total_bytes, \n\tsm.start_block_number as start_block, \n\tencode(sm.start_block_hash, 'hex') as start_hash, \n\tencode(sd.latest_ethereum_block_hash, 'hex') as last_hash,\n\tsd.reorg_count as reorg_count, \n\tsd.current_reorg_depth as curr_reorg_count, \n\tsd.max_reorg_depth as max_reorg,\n\tds.network as network\nFROM subgraphs.\"subgraph_deployment\" as sd\njoin subgraphs.\"subgraph_manifest\" as sm on (sm.id = sd.id)\njoin public.\"deployment_schemas\" as ds on (ds.subgraph = sd.deployment)\njoin subgraphs.\"subgraph_version\" as sv on (sv.deployment = sd.deployment)\njoin subgraphs.\"subgraph\" as sg on (sv.id in (sg.current_version, sg.pending_version))\nleft join subgraphs.\"subgraph_deployment_assignment\" as sda on (sda.id = sd.id)\nleft join info.subgraph_sizes as size on (ds.name = size.name)\norder by sd.id",
           "refId": "A",
           "select": [
             [
@@ -1310,7 +1495,27 @@
             "excludeByName": {
               "num": true
             },
-            "indexByName": {},
+            "indexByName": {
+              "curr_reorg_count": 17,
+              "deployment_id": 2,
+              "deployment_name": 1,
+              "deployment_schema": 0,
+              "git_repo": 3,
+              "last_block": 9,
+              "last_hash": 15,
+              "max_reorg": 18,
+              "network": 5,
+              "node_id": 4,
+              "reorg_count": 16,
+              "size_total": 11,
+              "size_total_bytes": 12,
+              "start_block": 13,
+              "start_hash": 14,
+              "sub_entity": 10,
+              "sub_failed": 7,
+              "sub_health": 6,
+              "sub_sync": 8
+            },
             "renameByName": {
               "curr_reorg_count": "Curr Reorg Count",
               "deployment_id": "Deployment ID",
@@ -1479,10 +1684,10 @@
         ]
       },
       "gridPos": {
-        "h": 4,
-        "w": 12,
+        "h": 5,
+        "w": 24,
         "x": 0,
-        "y": 44
+        "y": 52
       },
       "id": 6,
       "links": [],
@@ -1527,191 +1732,6 @@
         }
       ],
       "title": "Subgraph Node Assignments",
-      "transformations": [
-        {
-          "id": "merge",
-          "options": {
-            "reducers": []
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "PA942B37CCFAF5A81"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "name"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Network"
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "block_number"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Head block"
-              },
-              {
-                "id": "unit",
-                "value": "locale"
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "block_hash"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Block hash"
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "left"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Network"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 100
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Head block"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 129
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 12,
-        "x": 12,
-        "y": 44
-      },
-      "id": 38,
-      "links": [],
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "8.5.2",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  name,\n  head_block_number AS \"block_number\",\n  head_block_hash AS \"block_hash\"\nFROM ethereum_networks\nORDER BY name;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Networks",
       "transformations": [
         {
           "id": "merge",
@@ -1774,6 +1794,6 @@
   "timezone": "",
   "title": "Indexing Status Overview",
   "uid": "indexing-status-overview",
-  "version": 20,
+  "version": 23,
   "weekStart": ""
 }
