@@ -184,7 +184,6 @@ services:
     restart: unless-stopped
     networks:
       - monitor-net
-    restart: unless-stopped
     environment:
       NGINX_PROXY_CONTAINER: nginx-proxy
       DEFAULT_EMAIL: ${EMAIL}
