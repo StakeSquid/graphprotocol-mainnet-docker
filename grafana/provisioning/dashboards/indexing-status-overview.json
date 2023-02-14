@@ -25,7 +25,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 6,
-  "iteration": 1675606979274,
+  "iteration": 1676404991256,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -94,7 +94,9 @@
       "id": 40,
       "options": {
         "legend": {
-          "calcs": [],
+          "calcs": [
+            "mean"
+          ],
           "displayMode": "list",
           "placement": "bottom"
         },
@@ -633,7 +635,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "-- grafana ignore\r\nselect\r\n  g.name || (case\r\n        when g.pending_version = v.id then ' (P)'\r\n        when g.current_version = v.id then ' (C)'\r\n        else ' (U)' end) as subgraph_name,\r\n  d.deployment,\r\n  s.id as schema,\r\n  replace(a.node_id, '','') as nodeId,\r\n  d.synced::text,\r\n  n.name as network,\r\n  (n.head_block_number - d.latest_ethereum_block_number) as blocks_behind_network,\r\n  (case when n.name = 'mainnet' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'gnosis' then ((n.head_block_number - d.latest_ethereum_block_number)/11.6)::text\r\n        when n.name = 'rinkeby' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'kovan' then ((n.head_block_number - d.latest_ethereum_block_number)/15)::text\r\n        when n.name = 'poa-core' then ((n.head_block_number - d.latest_ethereum_block_number)/12)::text\r\n        when n.name = 'ropsten' then ((n.head_block_number - d.latest_ethereum_block_number)/2)::text\r\n        else 'ø' end) as lag\r\nfrom subgraphs.subgraph_deployment as d,\r\n     subgraphs.subgraph_deployment_assignment as a,\r\n     subgraphs.subgraph_version as v,\r\n     subgraphs.subgraph as g,\r\n     ethereum_networks  as n,\r\n     deployment_schemas as s\r\nwhere g.id = v.subgraph\r\n  and v.id in (g.pending_version, g.current_version)\r\n  and a.id = s.id\r\n  and s.id = d.id\r\n  and v.deployment = d.deployment\r\n  and not d.failed\r\n  and n.name = s.network\r\n  and not a.node_id = 'removed'\r\norder by blocks_behind_network desc, subgraph_name;",
+          "rawSql": "-- grafana ignore\r\nselect\r\n  g.name || (case\r\n        when g.pending_version = v.id then ' (P)'\r\n        when g.current_version = v.id then ' (C)'\r\n        else ' (U)' end) as subgraph_name,\r\n  d.deployment,\r\n  s.id as schema,\r\n  replace(a.node_id, '','') as nodeId,\r\n  d.synced::text,\r\n  n.name as network,\r\n  (n.head_block_number - d.latest_ethereum_block_number) as blocks_behind_network,\r\n  (case when n.name = 'mainnet' then ((n.head_block_number - d.latest_ethereum_block_number)/5)::text\r\n        when n.name = 'gnosis' then ((n.head_block_number - d.latest_ethereum_block_number)/11.6)::text\r\n        when n.name = 'celo' then ((n.head_block_number - d.latest_ethereum_block_number)/12)::text\r\n        when n.name = 'arbitrum-one' then ((n.head_block_number - d.latest_ethereum_block_number)/200)::text\r\n        when n.name = 'avalanche' then ((n.head_block_number - d.latest_ethereum_block_number)/30)::text\r\n        else 'ø' end) as lag\r\nfrom subgraphs.subgraph_deployment as d,\r\n     subgraphs.subgraph_deployment_assignment as a,\r\n     subgraphs.subgraph_version as v,\r\n     subgraphs.subgraph as g,\r\n     ethereum_networks  as n,\r\n     deployment_schemas as s\r\nwhere g.id = v.subgraph\r\n  and v.id in (g.pending_version, g.current_version)\r\n  and a.id = s.id\r\n  and s.id = d.id\r\n  and v.deployment = d.deployment\r\n  and not d.failed\r\n  and n.name = s.network\r\n  and not a.node_id = 'removed'\r\norder by blocks_behind_network desc, subgraph_name;",
           "refId": "A",
           "select": [
             [
@@ -1764,7 +1766,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {
@@ -1794,6 +1796,6 @@
   "timezone": "",
   "title": "Indexing Status Overview",
   "uid": "indexing-status-overview",
-  "version": 24,
+  "version": 28,
   "weekStart": ""
 }
