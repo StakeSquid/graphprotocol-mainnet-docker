@@ -285,7 +285,7 @@ services:
 
 
   index-node-0:
-    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.29.0}
+    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.30.0}
     container_name: index-node-0
     depends_on:
       - postgres
@@ -333,7 +333,7 @@ services:
 
 
   query-node-0:
-    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.29.0}
+    image: ${GRAPH_NODE_VERSION:-graphprotocol/graph-node:v0.30.0}
     container_name: query-node-0
     depends_on:
       - postgres
