@@ -455,6 +455,7 @@ services:
       POSTGRES_USER: ${DB_USER:-graph-node}
       POSTGRES_PASSWORD: ${DB_PASS:-db-password}
       POSTGRES_DB: ${GRAPH_NODE_DB_NAME:-graph-node}
+      POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./postgres-socket:/var/run/postgresql
