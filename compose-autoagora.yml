@@ -28,7 +28,7 @@ services:
 ######################################################################################
 
   indexer-service:
-    image: ${INDEXER_SERVICE_VERSION:-ghcr.io/semiotic-ai/autoagora-indexer-service:v0.1.2-v0.20.11}
+    image: ${INDEXER_SERVICE_VERSION:-ghcr.io/semiotic-ai/autoagora-indexer-service:v0.1.2-v0.20.12}
     container_name: indexer-service
     depends_on:
       - postgres2
