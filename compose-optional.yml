@@ -19,6 +19,25 @@ volumes:
 
 services:
 
+######################################################################################
+#####################           POI RADIO CONTAINER            #######################
+######################################################################################
+
+  poi-radio:
+    image: ghcr.io/graphops/poi-radio:0.1
+    container_name: poi-radio
+    restart: unless-stopped
+    environment:
+      GRAPHCAST_NETWORK: "mainnet"
+      REGISTRY_SUBGRAPH: "https://api.thegraph.com/subgraphs/name/hopeyen/graphcast-registry-mainnet"
+      NETWORK_SUBGRAPH: "https://gateway.thegraph.com/network"
+      PRIVATE_KEY: "${GRAPHCAST_ID_PRIVATE_KEY}"
+      GRAPH_NODE_STATUS_ENDPOINT: "http://index-node-0:8030/graphql"
+      RUST_LOG: "warn,hyper=warn,graphcast_sdk=info,poi_radio=info"
+    networks:
+      - monitor-net
+    logging: *default-logging
+
 
 ######################################################################################
 #####################           POIFIER CONTAINER              #######################
