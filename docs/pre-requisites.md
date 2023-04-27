@@ -114,7 +114,7 @@ On a fresh Ubuntu server login via ssh and execute the following commands:
 ```bash
 apt update -y && apt upgrade -y && apt autoremove -y
 
-apt install docker.io docker-compose httpie curl wget git jq nano -y
+apt install docker.io docker-compose httpie curl wget git jq nano apparmor -y
 
 
 ```
