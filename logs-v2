@@ -1,6 +1,6 @@
 if [ ! -z $1 ] 
 then
-	docker compose -f compose-all-services.yml logs "${1}" -f --tail 10
+	docker compose -f compose-autoagora.yml -f compose-graphnode.yml -f compose-monitoring.yml -f compose-optional.yml logs "${1}" -f --tail 10
 else
-	docker compose -f compose-all-services.yml logs -f --tail 10
+	docker compose -f compose-autoagora.yml -f compose-graphnode.yml -f compose-monitoring.yml -f compose-optional.yml logs -f --tail 10
 fi

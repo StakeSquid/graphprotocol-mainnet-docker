@@ -14,73 +14,9 @@ networks:
 volumes:
     prometheus_data: {}
     grafana_data: {}
-    nginx_certs: {}
-    nginx_vhost: {}
-    nginx_html: {}
-    nginx_acme: {}
+
 
 services:
-
-
-######################################################################################
-#####################          NGINX PROXY CONTAINER           #######################
-######################################################################################
-
-
-
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    container_name: nginx-proxy
-    depends_on:
-      - grafana
-    #environment:
-    #  PROMETHEUS_HOST: ${PROMETHEUS_HOST}
-    #  HTTP_AUTH_LOGIN: ${HTTP_AUTH_USER}
-    #  HTTP_AUTH_PASSWORD: ${HTTP_AUTH_PASSWORD}
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - nginx_certs:/etc/nginx/certs
-      - nginx_vhost:/etc/nginx/vhost.d
-      - nginx_html:/usr/share/nginx/html
-    #  - ./nginx-proxy/htpasswd:/etc/nginx/htpasswd
-      - ./nginx-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
-    networks:
-      - monitor-net
-    restart: unless-stopped
-    logging: *default-logging
-
-
-######################################################################################
-#####################            NGINX SSL CONTAINER           #######################
-######################################################################################
-
-
-  nginx-ssl:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: nginx-ssl
-    depends_on:
-      - grafana
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - nginx_certs:/etc/nginx/certs
-      - nginx_vhost:/etc/nginx/vhost.d
-      - nginx_html:/usr/share/nginx/html
-      - nginx_acme:/etc/acme.sh
-    #  - ./nginx-proxy/htpasswd:/etc/nginx/htpasswd
-      - ./nginx-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
-    restart: unless-stopped
-    networks:
-      - monitor-net
-    restart: unless-stopped
-    environment:
-      NGINX_PROXY_CONTAINER: nginx-proxy
-      DEFAULT_EMAIL: ${EMAIL}
-    logging: *default-logging
-
-
 
 
 ######################################################################################
@@ -92,10 +28,6 @@ services:
   prometheus:
     image: prom/prometheus
     container_name: prometheus
-    #environment:
-    #  VIRTUAL_HOST: ${PROMETHEUS_HOST}
-    #  VIRTUAL_PORT: 9090
-    #  LETSENCRYPT_HOST: ${PROMETHEUS_HOST}
     volumes:
       - ./prometheus:/etc/prometheus
       - prometheus_data:/prometheus
@@ -222,7 +154,7 @@ services:
       - VIRTUAL_PORT=3000
       - LETSENCRYPT_HOST=${GRAFANA_HOST}
       - GF_INSTALL_PLUGINS=fifemon-graphql-datasource
-      - subgraph_endpoint=${SUBGRAPH_ENDPOINT:-https://gateway.thegraph.com/network}
+      - subgraph_endpoint=${SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet}
     restart: unless-stopped
     expose:
       - 3000
@@ -251,3 +183,42 @@ services:
     labels:
       org.label-schema.group: "monitoring"
     logging: *default-logging
+
+
+######################################################################################
+#####################         TRAEFIK PROXY CONTAINER          #######################
+######################################################################################      
+
+
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: always
+    expose:
+      - "8082"
+    ports:
+      - "443:443"
+      - "80:80"
+    command:
+      - "--api=true"
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--log.level=DEBUG"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.filename=/dynamic_config.yml"
+      - "--entrypoints.websecure.address=:443"
+      - "--entryPoints.metrics.address=:8082"
+      - "--metrics.prometheus.entryPoint=metrics"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      # TESTING
+      - "--certificatesresolvers.myresolver.acme.email=$EMAIL"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    volumes:
+      - "./traefik/letsencrypt:/letsencrypt"
+      - "./traefik/config/dynamic_config.yml:/dynamic_config.yml"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - monitor-net
+    labels:
+      - "traefik.enable=true"

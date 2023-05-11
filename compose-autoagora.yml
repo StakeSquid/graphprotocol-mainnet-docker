@@ -14,21 +14,68 @@ networks:
 volumes:
     postgres2_data: {}
     postgres_agora_data: {}
-    nginx_certs: {}
-    nginx_vhost: {}
-    nginx_html: {}
-    nginx_acme: {}
     rabbitmq_etc: {}
     rabbitmq_data: {}
 
 services:
+
+
+######################################################################################
+#####################        INDEXER AGENT CONTAINER           #######################
+######################################################################################
+
+  indexer-agent:
+    image: ${INDEXER_AGENT_VERSION:-ghcr.io/graphprotocol/indexer-agent:v0.20.16}
+    container_name: indexer-agent
+    depends_on:
+      - postgres2
+    expose:
+      - 7300
+      - 8000
+      - 8001
+      - 8002
+    environment:
+      INDEXER_AGENT_MNEMONIC: ${OPERATOR_SEED_PHRASE}
+      INDEXER_AGENT_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
+      INDEXER_AGENT_INDEX_NODE_IDS: "index_node_0"
+      INDEXER_AGENT_INJECT_DAI: "true"
+      INDEXER_AGENT_REBATE_CLAIM_THRESHOLD: ${REBATE_CLAIM_THRESHOLD:-200}
+      INDEXER_AGENT_REBATE_CLAIM_BATCH_THRESHOLD: ${REBATE_CLAIM_BATCH_THRESHOLD:-2000}
+      INDEXER_AGENT_REBATE_CLAIM_MAX_BATCH_SIZE: ${REBATE_CLAIM_MAX_BATCH_SIZE:-100}
+      INDEXER_AGENT_VOUCHER_REDEMPTION_THRESHOLD: ${VOUCHER_REDEMPTION_THRESHOLD:-200}
+      INDEXER_AGENT_VOUCHER_REDEMPTION_BATCH_THRESHOLD: ${VOUCHER_REDEMPTION_BATCH_THRESHOLD:-2000}
+      INDEXER_AGENT_VOUCHER_REDEMPTION_MAX_BATCH_SIZE: ${VOUCHER_REDEMPTION_MAX_BATCH_SIZE:-100}
+      INDEXER_AGENT_ETHEREUM_NETWORK: mainnet
+      INDEXER_AGENT_ETHEREUM: ${TXN_RPC}
+      INDEXER_AGENT_GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
+      INDEXER_AGENT_GRAPH_NODE_STATUS_ENDPOINT: http://index-node-0:8030/graphql
+      INDEXER_AGENT_GRAPH_NODE_ADMIN_ENDPOINT: http://index-node-0:8020
+      INDEXER_AGENT_PUBLIC_INDEXER_URL: 'https://${INDEX_HOST}/'
+      INDEXER_AGENT_INDEXER_GEO_COORDINATES: ${GEO_COORDINATES:-60.16952 24.93545}
+      INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT: ${INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet}
+      INDEXER_AGENT_NETWORK_SUBGRAPH_DEPLOYMENT: ${NETWORK_SUBGRAPH_DEPLOYMENT}
+      INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT: ${INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/mainnet-epoch-block-oracle}
+      INDEXER_AGENT_POSTGRES_HOST: ${AGENT_DB_HOST:-postgres2}
+      INDEXER_AGENT_POSTGRES_USERNAME: ${DB_USER:-graph-node}
+      INDEXER_AGENT_POSTGRES_PASSWORD: ${DB_PASS:-db-password}
+      INDEXER_AGENT_POSTGRES_DATABASE: ${AGENT_DB_NAME:-indexer-agent}
+      INDEXER_AGENT_DAI_CONTRACT: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      INDEXER_AGENT_COLLECT_RECEIPTS_ENDPOINT: https://gateway.thegraph.com/collect-receipts
+      INDEXER_AGENT_OFFCHAIN_SUBGRAPHS: ${INDEXER_AGENT_OFFCHAIN_SUBGRAPHS}
+      INDEXER_AGENT_GAS_PRICE_MAX: ${INDEXER_AGENT_GAS_PRICE_MAX:-50}
+      INDEXER_AGENT_ALLOCATION_MANAGEMENT: auto
+    networks:
+      - monitor-net
+    restart: unless-stopped
+    logging: *default-logging
+
 
 ######################################################################################
 #####################         INDEXER SERVICE CONTAINER        #######################
 ######################################################################################
 
   indexer-service:
-    image: ${INDEXER_SERVICE_VERSION:-ghcr.io/semiotic-ai/autoagora-indexer-service:v0.1.2-v0.20.12}
+    image: ${INDEXER_SERVICE_VERSION:-ghcr.io/semiotic-ai/autoagora-indexer-service:v0.1.2-v0.20.16}
     container_name: indexer-service
     depends_on:
       - postgres2
@@ -41,7 +88,7 @@ services:
       INDEXER_SERVICE_ETHEREUM: ${TXN_RPC}
       INDEXER_SERVICE_GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
       INDEXER_SERVICE_GRAPH_NODE_STATUS_ENDPOINT: http://index-node-0:8030/graphql
-      INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT: ${INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT:-https://gateway.thegraph.com/network}
+      INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT: ${INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet}
       INDEXER_SERVICE_NETWORK_SUBGRAPH_DEPLOYMENT: ${NETWORK_SUBGRAPH_DEPLOYMENT}
       INDEXER_SERVICE_POSTGRES_HOST: postgres2
       INDEXER_SERVICE_POSTGRES_USERNAME: ${DB_USER:-graph-node}
@@ -59,9 +106,6 @@ services:
       SERVER_DB_USER: ${DB_USER:-graph-node}
       SERVER_DB_PASSWORD: ${DB_PASS:-db-password}
       SERVER_DB_NAME: ${AGENT_DB_NAME:-indexer-agent}
-      VIRTUAL_HOST: ${INDEX_HOST}
-      VIRTUAL_PORT: 7600
-      LETSENCRYPT_HOST: ${INDEX_HOST}
     expose:
       - 7300
       - 7600
@@ -69,7 +113,12 @@ services:
       - monitor-net
     restart: unless-stopped
     logging: *default-logging
-
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.indexer-service.loadbalancer.server.port=7600"
+      - "traefik.http.routers.indexer-service.entrypoints=websecure"
+      - "traefik.http.routers.indexer-service.tls.certresolver=myresolver"
+      - "traefik.http.routers.indexer-service.rule=Host(`$INDEX_HOST`)"
 
 ######################################################################################
 #####################           RABBITMQ CONTAINER             #######################
@@ -154,65 +203,6 @@ services:
     logging: *default-logging
 
 
-######################################################################################
-#####################          NGINX PROXY CONTAINER           #######################
-######################################################################################
-
-
-
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    container_name: nginx-proxy
-    depends_on:
-      - indexer-service
-    #environment:
-    #  PROMETHEUS_HOST: ${PROMETHEUS_HOST}
-    #  HTTP_AUTH_LOGIN: ${HTTP_AUTH_USER}
-    #  HTTP_AUTH_PASSWORD: ${HTTP_AUTH_PASSWORD}
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - nginx_certs:/etc/nginx/certs
-      - nginx_vhost:/etc/nginx/vhost.d
-      - nginx_html:/usr/share/nginx/html
-    #  - ./nginx-proxy/htpasswd:/etc/nginx/htpasswd
-      - ./nginx-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
-    networks:
-      - monitor-net
-    restart: unless-stopped
-    logging: *default-logging
-
-
-######################################################################################
-#####################            NGINX SSL CONTAINER           #######################
-######################################################################################
-
-
-  nginx-ssl:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: nginx-ssl
-    depends_on:
-      - indexer-service
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - nginx_certs:/etc/nginx/certs
-      - nginx_vhost:/etc/nginx/vhost.d
-      - nginx_html:/usr/share/nginx/html
-      - nginx_acme:/etc/acme.sh
-    #  - ./nginx-proxy/htpasswd:/etc/nginx/htpasswd
-      - ./nginx-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
-    restart: unless-stopped
-    networks:
-      - monitor-net
-    restart: unless-stopped
-    environment:
-      NGINX_PROXY_CONTAINER: nginx-proxy
-      DEFAULT_EMAIL: ${EMAIL}
-    logging: *default-logging
-
-
 
 ######################################################################################
 #####################       POSTGRES AGENT CONTAINER           #######################
@@ -259,3 +249,41 @@ services:
     expose:
       - 5432
     logging: *default-logging
+
+######################################################################################
+#####################         TRAEFIK PROXY CONTAINER          #######################
+######################################################################################      
+
+
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: always
+    expose:
+      - "8082"
+    ports:
+      - "443:443"
+      - "80:80"
+    command:
+      - "--api=true"
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--log.level=DEBUG"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.filename=/dynamic_config.yml"
+      - "--entrypoints.websecure.address=:443"
+      - "--entryPoints.metrics.address=:8082"
+      - "--metrics.prometheus.entryPoint=metrics"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      # TESTING
+      - "--certificatesresolvers.myresolver.acme.email=$EMAIL"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    volumes:
+      - "./traefik/letsencrypt:/letsencrypt"
+      - "./traefik/config/dynamic_config.yml:/dynamic_config.yml"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - monitor-net
+    labels:
+      - "traefik.enable=true"
