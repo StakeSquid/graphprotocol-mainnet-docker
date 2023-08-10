@@ -122,29 +122,29 @@ groups:
       summary: "{{ $labels.instance }} high memory usage"
       description: "{{ $labels.instance }} memory consumption is at {{ humanize $value}}."
 
-  - alert: nginx_down
-    expr: absent((time() - container_last_seen{name="nginx-proxy"}) < 10)
+  - alert: traefik_down
+    expr: absent((time() - container_last_seen{name="traefik"}) < 10)
     for: 30s
     labels:
       severity: critical
     annotations:
-      summary: "Nginx down"
-      description: "Nginx container is down for more than 30 seconds."
+      summary: "Traefik down"
+      description: "Traefik container is down for more than 30 seconds."
 
-  - alert: nginx_high_cpu
-    expr: sum(rate(container_cpu_usage_seconds_total{name="nginx-proxy"}[1m])) / count(node_cpu_seconds_total{mode="system"}) * 100 > 10
+  - alert: traefik_high_cpu
+    expr: sum(rate(container_cpu_usage_seconds_total{name="traefik"}[1m])) / count(node_cpu_seconds_total{mode="system"}) * 100 > 10
     for: 30s
     labels:
       severity: warning
     annotations:
-      summary: "Nginx high CPU usage"
-      description: "PostNginxgres CPU usage is {{ humanize $value}}%."
+      summary: "Traefik high CPU usage"
+      description: "Traefik CPU usage is {{ humanize $value}}%."
 
-  - alert: nginx_high_memory
-    expr: sum(container_memory_usage_bytes{name="nginx-proxy"}) > 1200000000
+  - alert: traefik_high_memory
+    expr: sum(container_memory_usage_bytes{name="traefik"}) > 1200000000
     for: 30s
     labels:
       severity: warning
     annotations:
-      summary: "Nginx high memory usage"
-      description: "Nginx memory consumption is at {{ humanize $value}}."
+      summary: "traefik high memory usage"
+      description: "traefik memory consumption is at {{ humanize $value}}."
