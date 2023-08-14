@@ -1,10 +1,9 @@
-version: '2.1'
+version: "2.1"
 
-x-logging:
-  &default-logging
+x-logging: &default-logging
   options:
-    max-file: '1'
-    compress: 'false'
+    max-file: "1"
+    compress: "false"
   driver: local
 
 networks:
@@ -12,51 +11,58 @@ networks:
     driver: bridge
 
 services:
+  ######################################################################################
+  #####################           SUBGRAPH RADIO CONTAINER            ##################
+  ######################################################################################
 
-######################################################################################
-#####################           POI RADIO CONTAINER            #######################
-######################################################################################
-
-  poi-radio:
-    image: ghcr.io/graphops/poi-radio:0.2
-    container_name: poi-radio
+  subgraph-radio:
+    image: ghcr.io/graphops/subgraph-radio:0.1
+    container_name: subgraph-radio
+    expose:
+      - 3010
+      - 3012
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
-      GRAPHCAST_NETWORK: "mainnet"
-      REGISTRY_SUBGRAPH: "https://api.thegraph.com/subgraphs/name/hopeyen/graphcast-registry-mainnet"
-      NETWORK_SUBGRAPH: "https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet"
-      #ETH_NODE: "http://${TXN_RPC}:8545"
-      PRIVATE_KEY: "${GRAPHCAST_ID_PRIVATE_KEY}"
-      GRAPH_NODE_STATUS_ENDPOINT: "http://index-node-0:8030/graphql"
-      RUST_LOG: "warn,hyper=warn,graphcast_sdk=info,poi_radio=info"
-      COVERAGE: comprehensive
+      GRAPHCAST_NETWORK: ${GRAPHCAST_NETWORK:-mainnet}
+      REGISTRY_SUBGRAPH: ${REGISTRY_SUBGRAPH:-https://api.thegraph.com/subgraphs/name/hopeyen/graphcast-registry-mainnet}
+      NETWORK_SUBGRAPH: ${NETWORK_SUBGRAPH:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet}
+      MNEMONIC: ${OPERATOR_SEED_PHRASE}
+      GRAPH_NODE_STATUS_ENDPOINT: ${GRAPH_NODE_STATUS_ENDPOINT:-http://index-node-0:8030/graphql}
+      RUST_LOG: ${RUST_LOG:-warn,hyper=warn,graphcast_sdk=info,subgraph_radio=info}
+      INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
+      METRICS_HOST: ${METRICS_HOST:-0.0.0.0}
+      METRICS_PORT: ${METRICS_PORT:-3010}
+      SERVER_PORT: ${SERVER_PORT:-3012}
+      ID_VALIDATION: ${ID_VALIDATION:-indexer}
+      COVERAGE: ${COVERAGE:-comprehensive}
+      PERSISTENCE_FILE_PATH: ${PERSISTENCE_FILE_PATH:-./state.json}
     networks:
       - monitor-net
     logging: *default-logging
 
-
-######################################################################################
-#####################           POIFIER CONTAINER              #######################
-######################################################################################
+  ######################################################################################
+  #####################           POIFIER CONTAINER              #######################
+  ######################################################################################
 
   poifier:
     image: grassets/poifier-client:v2.0.3
     container_name: poifier
     command:
-      - '--poifier-server=https://poifier.io'
-      - '--graph-node-status-endpoint=http://index-node-0:8030/graphql'
-      - '--mnemonic=${OPERATOR_SEED_PHRASE}'
-      - '--indexer-address=${STAKING_WALLET_ADDRESS}'
-      - '--indexer-agent-epoch-subgraph-endpoint=${INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/mainnet-epoch-block-oracle}'
+      - "--poifier-server=https://poifier.io"
+      - "--graph-node-status-endpoint=http://index-node-0:8030/graphql"
+      - "--mnemonic=${OPERATOR_SEED_PHRASE}"
+      - "--indexer-address=${STAKING_WALLET_ADDRESS}"
+      - "--indexer-agent-epoch-subgraph-endpoint=${INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/mainnet-epoch-block-oracle}"
     tty: true
     networks:
-       - monitor-net
+      - monitor-net
     restart: unless-stopped
 
-
-######################################################################################
-#####################            INDEXER AGENT GUI             #######################
-######################################################################################
+  ######################################################################################
+  #####################            INDEXER AGENT GUI             #######################
+  ######################################################################################
 
   indexer-agent-gui:
     image: ${INDEXER_AGENT_GUI:-ghcr.io/stakemachine/indexer-agent-ui:v0.1.14}
@@ -81,10 +87,9 @@ services:
       - "traefik.http.routers.indexer-agent-gui.tls.certresolver=myresolver"
       - "traefik.http.routers.indexer-agent-gui.rule=Host(`$AGENT_GUI_HOST`)"
 
-######################################################################################
-#####################         TRAEFIK PROXY CONTAINER          #######################
-######################################################################################      
-
+  ######################################################################################
+  #####################         TRAEFIK PROXY CONTAINER          #######################
+  ######################################################################################
 
   traefik:
     image: traefik:latest
