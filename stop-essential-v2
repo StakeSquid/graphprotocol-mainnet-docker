@@ -1,1 +1,0 @@
-docker compose -f compose-graphnode.yml -f compose-indexer.yml -f compose-monitoring.yml down $@

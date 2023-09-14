@@ -1,3 +1,0 @@
-set -o allexport; source .env; set +o allexport; envsubst < graph-node-configs/config.tmpl > graph-node-configs/config.toml
-
-docker compose -f compose-autoagora.yml -f compose-graphnode.yml -f compose-monitoring.yml -f compose-optional.yml up -d --build $@

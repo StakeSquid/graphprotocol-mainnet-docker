@@ -13,23 +13,33 @@ networks:
 
 services:
 
-######################################################################################
-#####################           POI RADIO CONTAINER            #######################
-######################################################################################
+  ######################################################################################
+  #####################           SUBGRAPH RADIO CONTAINER            ##################
+  ######################################################################################
 
-  poi-radio:
-    image: ghcr.io/graphops/poi-radio:0.2
-    container_name: poi-radio
+  subgraph-radio:
+    image: ghcr.io/graphops/subgraph-radio:0.1.3
+    container_name: subgraph-radio
+    expose:
+      - 3010
+      - 3012
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
-      GRAPHCAST_NETWORK: "mainnet"
-      REGISTRY_SUBGRAPH: "https://api.thegraph.com/subgraphs/name/hopeyen/graphcast-registry-mainnet"
-      NETWORK_SUBGRAPH: "https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet"
-      #ETH_NODE: "http://${TXN_RPC}:8545"
-      PRIVATE_KEY: "${GRAPHCAST_ID_PRIVATE_KEY}"
-      GRAPH_NODE_STATUS_ENDPOINT: "http://index-node-0:8030/graphql"
-      RUST_LOG: "warn,hyper=warn,graphcast_sdk=info,poi_radio=info"
-      COVERAGE: comprehensive
+      GRAPHCAST_NETWORK: ${GRAPHCAST_NETWORK:-mainnet}
+      REGISTRY_SUBGRAPH: ${REGISTRY_SUBGRAPH:-https://api.thegraph.com/subgraphs/name/hopeyen/graphcast-registry-mainnet}
+      NETWORK_SUBGRAPH: ${NETWORK_SUBGRAPH:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet}
+      MNEMONIC: ${OPERATOR_SEED_PHRASE_MAINNET}
+      GRAPH_NODE_STATUS_ENDPOINT: ${GRAPH_NODE_STATUS_ENDPOINT:-http://index-node-0:8030/graphql}
+      RUST_LOG: ${RUST_LOG:-warn,hyper=warn,graphcast_sdk=info,subgraph_radio=info}
+      INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS_MAINNET}
+      METRICS_HOST: ${METRICS_HOST:-0.0.0.0}
+      METRICS_PORT: ${METRICS_PORT:-3010}
+      SERVER_PORT: ${SERVER_PORT:-3012}
+      ID_VALIDATION: ${ID_VALIDATION:-indexer}
+      COVERAGE: ${COVERAGE:-comprehensive}
+      PERSISTENCE_FILE_PATH: ${PERSISTENCE_FILE_PATH:-./state.json}
     networks:
       - monitor-net
     logging: *default-logging
@@ -59,7 +69,7 @@ services:
 ######################################################################################
 
   indexer-agent-gui:
-    image: ${INDEXER_AGENT_GUI:-ghcr.io/stakemachine/indexer-agent-ui:v0.1.14}
+    image: ${INDEXER_AGENT_GUI:-ghcr.io/stakemachine/indexer-agent-ui:v0.1.15}
     container_name: indexer-agent-gui
     expose:
       - 3000
