@@ -23,9 +23,9 @@ transactionMonitoring:
 subgraphs:
   networkSubgraph:
     url: ${INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT_MAINNET:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet}
-  # deployment: ${NETWORK_SUBGRAPH_DEPLOYMENT_GOERLI}
+  # deployment: ${NETWORK_SUBGRAPH_DEPLOYMENT_MAINNET}
   epochSubgraph:
-    url: ${INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT_GOERLI:-https://api.thegraph.com/subgraphs/name/graphprotocol/mainnet-epoch-block-oracle}
+    url: ${INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT_MAINNET:-https://api.thegraph.com/subgraphs/name/graphprotocol/mainnet-epoch-block-oracle}
 
 networkProvider:
   url: "${TXN_RPC_MAINNET}"
