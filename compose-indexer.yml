@@ -72,7 +72,7 @@ services:
       - "traefik.http.services.indexer-service-mainnet.loadbalancer.server.port=7600"
       - "traefik.http.routers.indexer-service-mainnet.entrypoints=websecure"
       - "traefik.http.routers.indexer-service-mainnet.tls.certresolver=myresolver"
-      - "traefik.http.routers.indexer-service-mainnet.rule=Host(`$INDEX_HOST`)"
+      - "traefik.http.routers.indexer-service-mainnet.rule=Host(`$INDEX_HOST_MAINNET`)"
 
 
 ######################################################################################
@@ -111,7 +111,7 @@ services:
       - "traefik.http.services.indexer-service-arbi.loadbalancer.server.port=7600"
       - "traefik.http.routers.indexer-service-arbi.entrypoints=websecure"
       - "traefik.http.routers.indexer-service-arbi.tls.certresolver=myresolver"
-      - "traefik.http.routers.indexer-service-arbi.rule=Host(`$INDEX_HOST`)"
+      - "traefik.http.routers.indexer-service-arbi.rule=Host(`$INDEX_HOST_ARBI`)"
 
 
 ######################################################################################
@@ -148,7 +148,7 @@ services:
       INDEXER_AGENT_GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
       INDEXER_AGENT_GRAPH_NODE_STATUS_ENDPOINT: http://index-node-0:8030/graphql
       INDEXER_AGENT_GRAPH_NODE_ADMIN_ENDPOINT: http://index-node-0:8020
-      INDEXER_AGENT_PUBLIC_INDEXER_URL: 'https://${INDEX_HOST}/'
+      INDEXER_AGENT_PUBLIC_INDEXER_URL: 'https://${INDEX_HOST_MAINNET}/'
       INDEXER_AGENT_INDEXER_GEO_COORDINATES: ${GEO_COORDINATES:-60.16952 24.93545}
       INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT: ${INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT_MAINNET:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet}
       INDEXER_AGENT_NETWORK_SUBGRAPH_DEPLOYMENT: ${NETWORK_SUBGRAPH_DEPLOYMENT}
