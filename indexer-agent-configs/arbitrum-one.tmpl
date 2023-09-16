@@ -1,7 +1,7 @@
 networkIdentifier: arbitrum-one 
 
 gateway:
-  url: https://gateway-arbitrum.network.thegraph.com
+  url: https://gateway-arbitrum.thegraph.com
 
 indexerOptions:
   address: "${STAKING_WALLET_ADDRESS_ARBI}"
@@ -22,7 +22,7 @@ transactionMonitoring:
 
 subgraphs:
   networkSubgraph:
-    url: ${INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT_ARBI:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-arbitrum-arbitrum}
+    url: ${INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT_ARBI:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-arbitrum}
   # deployment: ${NETWORK_SUBGRAPH_DEPLOYMENT}
   epochSubgraph:
     url: ${INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT_ARBI:-https://api.thegraph.com/subgraphs/name/graphprotocol/arbitrum-epoch-block-oracle}
