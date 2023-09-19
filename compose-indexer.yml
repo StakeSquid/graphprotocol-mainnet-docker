@@ -34,6 +34,7 @@ services:
     logging: *default-logging
     volumes:
       - ./cli/scripts:/home/graph/scripts
+      - ./cli/history:/history
 
 
 ######################################################################################
