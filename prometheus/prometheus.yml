@@ -74,11 +74,6 @@ scrape_configs:
     static_configs:
       - targets: ["subgraph-radio:3010"]
 
-  - job_name: "subgraph-radio"
-    scrape_interval: 5s
-    static_configs:
-      - targets: ["subgraph-radio:3010"]
-
 alerting:
   alertmanagers:
     - scheme: http
