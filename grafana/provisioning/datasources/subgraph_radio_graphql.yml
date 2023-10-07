@@ -1,0 +1,10 @@
+---
+apiVersion: 1
+datasources:
+  - access: proxy
+    editable: true
+    name: SubgraphRadioGraphQL
+    orgId: 1
+    type: fifemon-graphql-datasource
+    url: http://subgraph-radio:3012/api/v1/graphql
+    version: 1
