@@ -4,10 +4,10 @@ set -o allexport; source .env; set +o allexport; envsubst < indexer-agent-config
 
 set -o allexport; source .env; set +o allexport; envsubst < indexer-agent-configs/arbitrum-one.tmpl > indexer-agent-configs/arbitrum-one.yaml
 
-grep -q 'INDEXER_AGENT_MULTINETWORK_MODE=true' .env && awk '/geoCoordinates: \[\$\{GEO_COORDINATES:-[0-9.]* [0-9.]*\}\]/ {gsub(/([0-9.]+) ([0-9.]+)/, "\\1, \\2")} 1' indexer-agent-configs/mainnet.yaml > tmp.yaml && mv tmp.yaml indexer-agent-configs/mainnet.yaml
+grep -q 'INDEXER_AGENT_MULTINETWORK_MODE=true' .env && sed -i -E '/geoCoordinates:/s/([0-9.]+) +([0-9.]+)/\1, \2/g' indexer-agent-configs/mainnet.yaml
 
-grep -q 'INDEXER_AGENT_MULTINETWORK_MODE=true' .env && awk '/geoCoordinates: \[\$\{GEO_COORDINATES:-[0-9.]* [0-9.]*\}\]/ {gsub(/([0-9.]+) ([0-9.]+)/, "\\1, \\2")} 1' indexer-agent-configs/arbitrum-one.yaml > tmp.yaml && mv tmp.yaml indexer-agent-configs/arbitrum-one.yaml
+grep -q 'INDEXER_AGENT_MULTINETWORK_MODE=true' .env && sed -i -E '/geoCoordinates:/s/([0-9.]+) +([0-9.]+)/\1, \2/g' indexer-agent-configs/arbitrum-one.yaml
 
 docker-compose -f compose-graphnode.yml -f compose-indexer.yml -f compose-monitoring.yml up -d --build $@
 
-grep -q "^INDEXER_AGENT_MULTINETWORK_MODE=false$" .env && docker kill indexer-service-arbi-goerli
+grep -q "^INDEXER_AGENT_MULTINETWORK_MODE=false$" .env && docker kill indexer-service-arbi

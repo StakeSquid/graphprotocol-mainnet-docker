@@ -41,7 +41,7 @@ services:
 #####################      INDEXER SERVICE CONTAINER MAINNET   #######################
 ######################################################################################
 
-  indexer-service:
+  indexer-service-mainnet:
     image: ${INDEXER_SERVICE_VERSION_MAINNET:-ghcr.io/graphprotocol/indexer-service:v0.20.22}
     container_name: indexer-service-mainnet
     depends_on:
@@ -80,7 +80,7 @@ services:
 #####################      INDEXER SERVICE CONTAINER ARBI      #######################
 ######################################################################################
 
-  indexer-service:
+  indexer-service-arbi:
     image: ${INDEXER_SERVICE_VERSION_ARBI:-ghcr.io/graphprotocol/indexer-service:v0.20.22}
     container_name: indexer-service-arbi
     depends_on:

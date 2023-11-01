@@ -155,8 +155,6 @@ services:
       - 3000
     networks:
       - monitor-net
-    labels:
-      org.label-schema.group: "monitoring"
     logging: *default-logging
     labels:
       - "org.label-schema.group=monitoring"
