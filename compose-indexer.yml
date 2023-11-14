@@ -174,8 +174,6 @@ services:
 #####################       POSTGRES AGENT CONTAINER           #######################
 ######################################################################################
 
-
-
   postgres2:
     image: postgres:13.6
     container_name: postgres2
@@ -193,10 +191,42 @@ services:
       - 5432
     logging: *default-logging
 
+
+services:
+  ######################################################################################
+  #####################           SUBGRAPH RADIO CONTAINER            ##################
+  ######################################################################################
+
+  subgraph-radio:
+    image: ghcr.io/graphops/subgraph-radio:0.1
+    container_name: subgraph-radio
+    expose:
+      - 3010
+      - 3012
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      GRAPHCAST_NETWORK: ${GRAPHCAST_NETWORK:-mainnet}
+      REGISTRY_SUBGRAPH: ${REGISTRY_SUBGRAPH:-https://api.thegraph.com/subgraphs/name/hopeyen/graphcast-registry-mainnet}
+      NETWORK_SUBGRAPH: ${NETWORK_SUBGRAPH:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet}
+      MNEMONIC: ${OPERATOR_SEED_PHRASE_MAINNET}
+      GRAPH_NODE_STATUS_ENDPOINT: ${GRAPH_NODE_STATUS_ENDPOINT:-http://index-node-0:8030/graphql}
+      RUST_LOG: ${RUST_LOG:-warn,hyper=warn,graphcast_sdk=info,subgraph_radio=info}
+      INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS_MAINNET}
+      METRICS_HOST: ${METRICS_HOST:-0.0.0.0}
+      METRICS_PORT: ${METRICS_PORT:-3010}
+      SERVER_PORT: ${SERVER_PORT:-3012}
+      ID_VALIDATION: ${ID_VALIDATION:-indexer}
+      COVERAGE: ${COVERAGE:-comprehensive}
+      PERSISTENCE_FILE_PATH: ${PERSISTENCE_FILE_PATH:-./state.json}
+    networks:
+      - monitor-net
+    logging: *default-logging
+
 ######################################################################################
 #####################         TRAEFIK PROXY CONTAINER          #######################
 ######################################################################################      
-
 
   traefik:
     image: traefik:latest
