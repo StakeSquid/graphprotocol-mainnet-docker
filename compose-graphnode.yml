@@ -34,15 +34,9 @@ services:
       - ./postgres-socket:/var/run/postgresql
     environment:
       GRAPH_NODE_CONFIG: /root/graph-node-configs/config.toml
-      postgres_host: ${DB_HOST:-postgres}
-      postgres_user: ${DB_USER:-graph-node}
-      postgres_pass: ${DB_PASS:-db-password}
-      postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com/ipfs/}'
       node_role: index-node
       node_id: index_node_0
-      BLOCK_INGESTOR: index_node_0
-      RUST_LOG: INFO
       GRAPH_LOG: ${GRAPHNODE_LOGLEVEL:-DEBUG}
       GRAPH_ETH_CALL_GAS: 50000000
       GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
@@ -78,14 +72,9 @@ services:
       - ./postgres-socket:/var/run/postgresql
     environment:
       GRAPH_NODE_CONFIG: /root/graph-node-configs/config.toml
-      postgres_host: ${DB_HOST:-postgres}
-      postgres_user: ${DB_USER:-graph-node}
-      postgres_pass: ${DB_PASS:-db-password}
-      postgres_db: ${GRAPH_NODE_DB_NAME:-graph-node}
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com/ipfs/}'
       node_role: query-node
       node_id: query_node_0
-      RUST_LOG: INFO
       GRAPH_LOG: INFO
       GRAPH_ETH_CALL_GAS: 50000000
       GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
