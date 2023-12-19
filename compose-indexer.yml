@@ -13,6 +13,7 @@ networks:
 
 volumes:
     postgres2_data: {}
+    subgraph_radio: {}
 
 
 services:
@@ -202,8 +203,6 @@ services:
       - 3010
       - 3012
     restart: unless-stopped
-    env_file:
-      - .env
     environment:
       GRAPHCAST_NETWORK: ${GRAPHCAST_NETWORK:-mainnet}
       REGISTRY_SUBGRAPH: ${REGISTRY_SUBGRAPH:-https://api.thegraph.com/subgraphs/name/hopeyen/graphcast-registry-mainnet}
@@ -217,7 +216,9 @@ services:
       SERVER_PORT: ${SERVER_PORT:-3012}
       ID_VALIDATION: ${ID_VALIDATION:-indexer}
       COVERAGE: ${COVERAGE:-comprehensive}
-      PERSISTENCE_FILE_PATH: ${PERSISTENCE_FILE_PATH:-./state.json}
+      PERSISTENCE_FILE_PATH: ${PERSISTENCE_FILE_PATH:-/data/state.json}
+    volumes:
+      - subgraph_radio_data:/data
     networks:
       - monitor-net
     logging: *default-logging
