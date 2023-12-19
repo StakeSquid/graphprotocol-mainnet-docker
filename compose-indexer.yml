@@ -13,7 +13,7 @@ networks:
 
 volumes:
     postgres2_data: {}
-    subgraph_radio: {}
+    subgraph_radio_data: {}
 
 
 services:
@@ -197,7 +197,7 @@ services:
   ######################################################################################
 
   subgraph-radio:
-    image: ghcr.io/graphops/subgraph-radio:0.1
+    image: ghcr.io/graphops/subgraph-radio:1.0
     container_name: subgraph-radio
     expose:
       - 3010
@@ -215,8 +215,8 @@ services:
       METRICS_PORT: ${METRICS_PORT:-3010}
       SERVER_PORT: ${SERVER_PORT:-3012}
       ID_VALIDATION: ${ID_VALIDATION:-indexer}
-      COVERAGE: ${COVERAGE:-comprehensive}
-      PERSISTENCE_FILE_PATH: ${PERSISTENCE_FILE_PATH:-/data/state.json}
+      GOSSIP_TOPIC_COVERAGE: ${COVERAGE:-comprehensive}
+      SQLITE_FILE_PATH: ${SQLITE_FILE_PATH:-/data/state.sqlite}
     volumes:
       - subgraph_radio_data:/data
     networks:
