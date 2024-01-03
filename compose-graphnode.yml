@@ -37,6 +37,7 @@ services:
       ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com/ipfs/}'
       node_role: index-node
       node_id: index_node_0
+      BLOCK_INGESTOR: index_node_0
       GRAPH_LOG: ${GRAPHNODE_LOGLEVEL:-DEBUG}
       GRAPH_ETH_CALL_GAS: 50000000
       GRAPH_GETH_ETH_CALL_ERRORS: "out of gas"
