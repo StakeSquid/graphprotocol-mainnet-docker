@@ -1,1 +1,1 @@
-docker-compose -f compose-optional.yml down $@
+docker compose -f compose-optional.yml down $@

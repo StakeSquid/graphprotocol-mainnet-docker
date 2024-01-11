@@ -8,6 +8,6 @@ grep -q 'INDEXER_AGENT_MULTINETWORK_MODE=true' .env && sed -i -E '/geoCoordinate
 
 grep -q 'INDEXER_AGENT_MULTINETWORK_MODE=true' .env && sed -i -E '/geoCoordinates:/s/([0-9.]+) +([0-9.]+)/\1, \2/g' indexer-agent-configs/arbitrum-one.yaml
 
-docker-compose -f compose-graphnode.yml -f compose-indexer.yml -f compose-monitoring.yml up -d --build $@
+docker compose -f compose-graphnode.yml -f compose-indexer.yml -f compose-monitoring.yml up -d --build $@
 
 grep -q "^INDEXER_AGENT_MULTINETWORK_MODE=false$" .env && docker kill indexer-service-arbi

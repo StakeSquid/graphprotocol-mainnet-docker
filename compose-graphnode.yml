@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.7'
 
 x-logging:
   &default-logging
@@ -47,6 +47,7 @@ services:
       GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: ${GRAPH_ALLOW_NON_DETERMINISTIC_IPFS:-true}
       EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE: synced
       ETHEREUM_POLLING_INTERVAL: ${RPC_POLLING_RATE:-500}
+      GRAPH_ETH_CALL_NO_GAS: "421613,42161"
     restart: unless-stopped
     expose:
       - 8001
@@ -104,7 +105,7 @@ services:
 
 
   postgres:
-    image: postgres:13.10
+    image: postgres:16.1
     container_name: postgres
     command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
     restart: unless-stopped

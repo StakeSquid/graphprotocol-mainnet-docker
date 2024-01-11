@@ -1,1 +1,1 @@
-docker-compose -f compose-autoagora.yml down $@
+docker compose -f compose-autoagora.yml down $@

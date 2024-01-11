@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.7'
 
 x-logging:
   &default-logging
@@ -39,63 +39,24 @@ services:
 
 
 ######################################################################################
-#####################      INDEXER SERVICE CONTAINER MAINNET   #######################
+#####################          INDEXER SERVICE CONTAINER       #######################
 ######################################################################################
 
-  indexer-service-mainnet:
-    image: ${INDEXER_SERVICE_VERSION_MAINNET:-ghcr.io/graphprotocol/indexer-service:v0.20.23}
-    container_name: indexer-service-mainnet
+  indexer-service:
+    image: ${INDEXER_SERVICE_VERSION:-ghcr.io/graphprotocol/indexer-service:v0.20.23}
+    container_name: indexer-service
     depends_on:
       - postgres2
     environment:
-      INDEXER_SERVICE_MNEMONIC: ${OPERATOR_SEED_PHRASE_MAINNET}
-      INDEXER_SERVICE_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS_MAINNET}
+      INDEXER_SERVICE_MNEMONIC: ${OPERATOR_SEED_PHRASE}
+      INDEXER_SERVICE_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
       INDEXER_SERVICE_PORT: 7600
-      INDEXER_SERVICE_ETHEREUM_NETWORK: mainnet
-      INDEXER_SERVICE_ETHEREUM: ${TXN_RPC_MAINNET}
+      INDEXER_SERVICE_ETHEREUM_NETWORK: arbitrum
+      INDEXER_SERVICE_ETHEREUM: ${TXN_RPC}
       INDEXER_SERVICE_GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
       INDEXER_SERVICE_GRAPH_NODE_STATUS_ENDPOINT: http://index-node-0:8030/graphql
-      INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT: ${INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT_MAINNET:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet}
-      INDEXER_SERVICE_NETWORK_SUBGRAPH_DEPLOYMENT: ${NETWORK_SUBGRAPH_DEPLOYMENT_MAINNET}
-      INDEXER_SERVICE_POSTGRES_HOST: postgres2
-      INDEXER_SERVICE_POSTGRES_USERNAME: ${DB_USER:-graph-node}
-      INDEXER_SERVICE_POSTGRES_PASSWORD: ${DB_PASS:-db-password}
-      INDEXER_SERVICE_POSTGRES_DATABASE: ${AGENT_DB_NAME:-indexer-agent}
-      INDEXER_SERVICE_CLIENT_SIGNER_ADDRESS: "0x982D10c56b8BBbD6e09048F5c5f01b43C65D5aE0"
-    expose:
-      - 7300
-      - 7600
-    networks:
-      - monitor-net
-    restart: unless-stopped
-    logging: *default-logging
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.indexer-service-mainnet.loadbalancer.server.port=7600"
-      - "traefik.http.routers.indexer-service-mainnet.entrypoints=websecure"
-      - "traefik.http.routers.indexer-service-mainnet.tls.certresolver=myresolver"
-      - "traefik.http.routers.indexer-service-mainnet.rule=Host(`$INDEX_HOST_MAINNET`)"
-
-
-######################################################################################
-#####################      INDEXER SERVICE CONTAINER ARBI      #######################
-######################################################################################
-
-  indexer-service-arbi:
-    image: ${INDEXER_SERVICE_VERSION_ARBI:-ghcr.io/graphprotocol/indexer-service:v0.20.23}
-    container_name: indexer-service-arbi
-    depends_on:
-      - postgres2
-    environment:
-      INDEXER_SERVICE_MNEMONIC: ${OPERATOR_SEED_PHRASE_ARBI}
-      INDEXER_SERVICE_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS_ARBI}
-      INDEXER_SERVICE_PORT: 7600
-      INDEXER_SERVICE_ETHEREUM_NETWORK: arbitrum-one
-      INDEXER_SERVICE_ETHEREUM: ${TXN_RPC_ARBI}
-      INDEXER_SERVICE_GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
-      INDEXER_SERVICE_GRAPH_NODE_STATUS_ENDPOINT: http://index-node-0:8030/graphql
-      INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT: ${INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT_ARBI:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-arbitrum}
-      INDEXER_SERVICE_NETWORK_SUBGRAPH_DEPLOYMENT: ${NETWORK_SUBGRAPH_DEPLOYMENT_ARBI}
+      INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT: ${INDEXER_SERVICE_NETWORK_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-arbitrum}
+      INDEXER_SERVICE_NETWORK_SUBGRAPH_DEPLOYMENT: ${NETWORK_SUBGRAPH_DEPLOYMENT}
       INDEXER_SERVICE_POSTGRES_HOST: postgres2
       INDEXER_SERVICE_POSTGRES_USERNAME: ${DB_USER:-graph-node}
       INDEXER_SERVICE_POSTGRES_PASSWORD: ${DB_PASS:-db-password}
@@ -110,10 +71,12 @@ services:
     logging: *default-logging
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.indexer-service-arbi.loadbalancer.server.port=7600"
-      - "traefik.http.routers.indexer-service-arbi.entrypoints=websecure"
-      - "traefik.http.routers.indexer-service-arbi.tls.certresolver=myresolver"
-      - "traefik.http.routers.indexer-service-arbi.rule=Host(`$INDEX_HOST_ARBI`)"
+      - "traefik.http.services.indexer-service-mainnet.loadbalancer.server.port=7600"
+      - "traefik.http.routers.indexer-service-mainnet.entrypoints=websecure"
+      - "traefik.http.routers.indexer-service-mainnet.tls.certresolver=myresolver"
+      - "traefik.http.routers.indexer-service-mainnet.rule=Host(`$INDEX_HOST`)"
+
+
 
 
 ######################################################################################
@@ -135,26 +98,26 @@ services:
     environment:
       INDEXER_AGENT_MULTINETWORK_MODE: ${INDEXER_AGENT_MULTINETWORK_MODE:-false}
       INDEXER_AGENT_NETWORK_SPECIFICATIONS_DIRECTORY: /root/indexer-agent-configs/
-      INDEXER_AGENT_MNEMONIC: ${OPERATOR_SEED_PHRASE_MAINNET}
-      INDEXER_AGENT_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS_MAINNET}
+      INDEXER_AGENT_MNEMONIC: ${OPERATOR_SEED_PHRASE}
+      INDEXER_AGENT_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
       INDEXER_AGENT_INDEX_NODE_IDS: "index_node_0"
       INDEXER_AGENT_INJECT_DAI: "true"
-      INDEXER_AGENT_REBATE_CLAIM_THRESHOLD: ${REBATE_CLAIM_THRESHOLD_MAINNET:-200}
-      INDEXER_AGENT_REBATE_CLAIM_BATCH_THRESHOLD: ${REBATE_CLAIM_BATCH_THRESHOLD_MAINNET:-2000}
-      INDEXER_AGENT_REBATE_CLAIM_MAX_BATCH_SIZE: ${REBATE_CLAIM_MAX_BATCH_SIZE_MAINNET:-100}
-      INDEXER_AGENT_VOUCHER_REDEMPTION_THRESHOLD: ${VOUCHER_REDEMPTION_THRESHOLD_MAINNET:-200}
-      INDEXER_AGENT_VOUCHER_REDEMPTION_BATCH_THRESHOLD: ${VOUCHER_REDEMPTION_BATCH_THRESHOLD_MAINNET:-2000}
-      INDEXER_AGENT_VOUCHER_REDEMPTION_MAX_BATCH_SIZE: ${VOUCHER_REDEMPTION_MAX_BATCH_SIZE_MAINNET:-100}
-      INDEXER_AGENT_ETHEREUM_NETWORK: mainnet
-      INDEXER_AGENT_ETHEREUM: ${TXN_RPC_MAINNET}
+      INDEXER_AGENT_REBATE_CLAIM_THRESHOLD: ${REBATE_CLAIM_THRESHOLD:-200}
+      INDEXER_AGENT_REBATE_CLAIM_BATCH_THRESHOLD: ${REBATE_CLAIM_BATCH_THRESHOLD:-2000}
+      INDEXER_AGENT_REBATE_CLAIM_MAX_BATCH_SIZE: ${REBATE_CLAIM_MAX_BATCH_SIZE:-100}
+      INDEXER_AGENT_VOUCHER_REDEMPTION_THRESHOLD: ${VOUCHER_REDEMPTION_THRESHOLD:-200}
+      INDEXER_AGENT_VOUCHER_REDEMPTION_BATCH_THRESHOLD: ${VOUCHER_REDEMPTION_BATCH_THRESHOLD:-2000}
+      INDEXER_AGENT_VOUCHER_REDEMPTION_MAX_BATCH_SIZE: ${VOUCHER_REDEMPTION_MAX_BATCH_SIZE:-100}
+      INDEXER_AGENT_ETHEREUM_NETWORK: arbitrum
+      INDEXER_AGENT_ETHEREUM: ${TXN_RPC}
       INDEXER_AGENT_GRAPH_NODE_QUERY_ENDPOINT: http://query-node-0:8000
       INDEXER_AGENT_GRAPH_NODE_STATUS_ENDPOINT: http://index-node-0:8030/graphql
       INDEXER_AGENT_GRAPH_NODE_ADMIN_ENDPOINT: http://index-node-0:8020
-      INDEXER_AGENT_PUBLIC_INDEXER_URL: 'https://${INDEX_HOST_MAINNET}/'
-      INDEXER_AGENT_INDEXER_GEO_COORDINATES: ${GEO_COORDINATES:-60.16952 24.93545}
-      INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT: ${INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT_MAINNET:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet}
+      INDEXER_AGENT_PUBLIC_INDEXER_URL: 'https://${INDEX_HOST}/'
+      INDEXER_AGENT_INDEXER_GEO_COORDINATES: ${GEO_COORDINATES:-69.420 69.420}
+      INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT: ${INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-arbitrum}
       INDEXER_AGENT_NETWORK_SUBGRAPH_DEPLOYMENT: ${NETWORK_SUBGRAPH_DEPLOYMENT}
-      INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT: ${INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT_MAINNET:-https://api.thegraph.com/subgraphs/name/graphprotocol/mainnet-epoch-block-oracle}
+      INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT: ${INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/arbitrum-epoch-block-oracle}
       INDEXER_AGENT_POSTGRES_HOST: ${AGENT_DB_HOST:-postgres2}
       INDEXER_AGENT_POSTGRES_USERNAME: ${DB_USER:-graph-node}
       INDEXER_AGENT_POSTGRES_PASSWORD: ${DB_PASS:-db-password}
@@ -176,7 +139,7 @@ services:
 ######################################################################################
 
   postgres2:
-    image: postgres:13.6
+    image: postgres:16.1
     container_name: postgres2
     command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
     restart: unless-stopped
@@ -206,11 +169,11 @@ services:
     environment:
       GRAPHCAST_NETWORK: ${GRAPHCAST_NETWORK:-mainnet}
       REGISTRY_SUBGRAPH: ${REGISTRY_SUBGRAPH:-https://api.thegraph.com/subgraphs/name/hopeyen/graphcast-registry-mainnet}
-      NETWORK_SUBGRAPH: ${NETWORK_SUBGRAPH:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet}
-      MNEMONIC: ${OPERATOR_SEED_PHRASE_MAINNET}
+      NETWORK_SUBGRAPH: ${NETWORK_SUBGRAPH:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-arbitrum}
+      MNEMONIC: ${OPERATOR_SEED_PHRASE}
       GRAPH_NODE_STATUS_ENDPOINT: ${GRAPH_NODE_STATUS_ENDPOINT:-http://index-node-0:8030/graphql}
       RUST_LOG: ${RUST_LOG:-warn,hyper=warn,graphcast_sdk=info,subgraph_radio=info}
-      INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS_MAINNET}
+      INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}
       METRICS_HOST: ${METRICS_HOST:-0.0.0.0}
       METRICS_PORT: ${METRICS_PORT:-3010}
       SERVER_PORT: ${SERVER_PORT:-3012}

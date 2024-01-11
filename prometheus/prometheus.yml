@@ -1,6 +1,6 @@
 global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
+  scrape_interval: 115s
+  evaluation_interval: 115s
 
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
@@ -14,63 +14,58 @@ rule_files:
 # A scrape configuration containing exactly one endpoint to scrape.
 scrape_configs:
   - job_name: "nodeexporter"
-    scrape_interval: 5s
+    scrape_interval: 115s
     static_configs:
       - targets: ["nodeexporter:9100"]
 
   - job_name: "cadvisor"
-    scrape_interval: 5s
+    scrape_interval: 15s
     static_configs:
       - targets: ["cadvisor:8080"]
 
   - job_name: "prometheus"
-    scrape_interval: 10s
+    scrape_interval: 15s
     static_configs:
       - targets: ["localhost:9090"]
 
   - job_name: "pushgateway"
-    scrape_interval: 10s
+    scrape_interval: 15s
     honor_labels: true
     static_configs:
       - targets: ["pushgateway:9091"]
 
   - job_name: "index-node"
-    scrape_interval: 5s
+    scrape_interval: 15s
     static_configs:
       - targets: ["index-node-0:8040"]
 
   - job_name: "query-node"
-    scrape_interval: 5s
+    scrape_interval: 15s
     static_configs:
       - targets: ["query-node-0:8040"]
 
-  - job_name: "indexer-service-goerli"
-    scrape_interval: 5s
+  - job_name: "indexer-service"
+    scrape_interval: 15s
     static_configs:
-      - targets: ["indexer-service-goerli:7300"]
-
-  - job_name: "indexer-service-arbi-goerli"
-    scrape_interval: 5s
-    static_configs:
-      - targets: ["indexer-service-arbi:7300"]
+      - targets: ["indexer-service:7300"]
 
   - job_name: "autoagora"
-    scrape_interval: 5s
+    scrape_interval: 15s
     static_configs:
       - targets: ["ag:8000"]
 
   - job_name: "grafana"
-    scrape_interval: 5s
+    scrape_interval: 15s
     static_configs:
       - targets: ["grafana:3000"]
 
   - job_name: "traefik"
-    scrape_interval: 5s
+    scrape_interval: 15s
     static_configs:
       - targets: ["traefik:8082"]
 
   - job_name: "subgraph-radio"
-    scrape_interval: 5s
+    scrape_interval: 15s
     static_configs:
       - targets: ["subgraph-radio:3010"]
 
@@ -81,11 +76,11 @@ alerting:
         - targets:
             - "alertmanager:9093"
 #  - job_name: 'nginx'
-#    scrape_interval: 10s
+#    scrape_interval: 15s
 #    static_configs:
 #      - targets: ['nginxexporter:9113']
 
 #  - job_name: 'aspnetcore'
-#    scrape_interval: 10s
+#    scrape_interval: 15s
 #    static_configs:
 #      - targets: ['eventlog-proxy:5000', 'eventlog:5000']
