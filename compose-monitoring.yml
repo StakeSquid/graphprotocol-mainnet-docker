@@ -146,6 +146,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SECURITY_DISABLE_BRUTE_FORCE_LOGIN_PROTECTION=true
+      - GF_INSTALL_PLUGINS=fifemon-graphql-datasource
       - postgres_host=${DB_HOST:-postgres}
       - postgres_user=${DB_USER:-graph-node}
       - postgres_pass=${DB_PASS:-db-password}
