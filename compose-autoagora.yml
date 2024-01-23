@@ -64,6 +64,7 @@ services:
       INDEXER_AGENT_OFFCHAIN_SUBGRAPHS: ${INDEXER_AGENT_OFFCHAIN_SUBGRAPHS}
       INDEXER_AGENT_GAS_PRICE_MAX: ${INDEXER_AGENT_GAS_PRICE_MAX:-50}
       INDEXER_AGENT_ALLOCATION_MANAGEMENT: auto
+      INDEXER_AGENT_SUBGRAPH_MAX_BLOCK_DISTANCE: 1000
     networks:
       - monitor-net
     restart: unless-stopped
@@ -249,41 +250,3 @@ services:
     expose:
       - 5432
     logging: *default-logging
-
-######################################################################################
-#####################         TRAEFIK PROXY CONTAINER          #######################
-######################################################################################      
-
-
-  traefik:
-    image: traefik:latest
-    container_name: traefik
-    restart: always
-    expose:
-      - "8082"
-    ports:
-      - "443:443"
-      - "80:80"
-    command:
-      - "--api=true"
-      - "--api.insecure=true"
-      - "--api.dashboard=true"
-      - "--log.level=DEBUG"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--providers.file.filename=/dynamic_config.yml"
-      - "--entrypoints.websecure.address=:443"
-      - "--entryPoints.metrics.address=:8082"
-      - "--metrics.prometheus.entryPoint=metrics"
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      # TESTING
-      - "--certificatesresolvers.myresolver.acme.email=$EMAIL"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-    volumes:
-      - "./traefik/letsencrypt:/letsencrypt"
-      - "./traefik/config/dynamic_config.yml:/dynamic_config.yml"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    networks:
-      - monitor-net
-    labels:
-      - "traefik.enable=true"
