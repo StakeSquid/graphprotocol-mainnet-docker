@@ -1,11 +1,4 @@
-version: '3.7'
-
-x-logging:
-  &default-logging
-  options:
-    max-file: '1'
-    compress: 'false'
-  driver: local
+version: '3.8'
 
 networks:
   monitor-net:
@@ -15,8 +8,44 @@ volumes:
     prometheus_data: {}
     grafana_data: {}
 
-
 services:
+
+
+######################################################################################
+#####################             LOKI CONTAINER               #######################
+######################################################################################
+
+  loki:
+    image: grafana/loki
+    container_name: loki
+    volumes:
+      - ./loki/loki.yaml:/etc/loki/config.yaml
+      - loki_data:/data
+    command: -config.file=/etc/loki/config.yaml --print-config-stderr 
+    expose:
+      - 3100
+    restart: unless-stopped
+    networks:
+      - monitor-net
+
+
+######################################################################################
+#####################          PROMTAIL CONTAINER              #######################
+######################################################################################
+
+
+  promtail:
+    image:  grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - ./promtail/promtail.yaml:/etc/promtail/docker-config.yaml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/log:/var/log:ro
+    command: -config.file=/etc/promtail/docker-config.yaml
+    restart: unless-stopped
+    networks:
+      - monitor-net
 
 
 ######################################################################################
@@ -43,9 +72,8 @@ services:
       - 9090
     networks:
       - monitor-net
-    labels:
-      org.label-schema.group: "monitoring"
-    logging: *default-logging
+
+
 
 
 
@@ -68,9 +96,8 @@ services:
       - 9093
     networks:
       - monitor-net
-    labels:
-      org.label-schema.group: "monitoring"
-    logging: *default-logging
+
+
 
 
 
@@ -97,9 +124,8 @@ services:
       - 9100
     networks:
       - monitor-net
-    labels:
-      org.label-schema.group: "monitoring"
-    logging: *default-logging
+
+
 
 
 
@@ -130,6 +156,9 @@ services:
 
 
 
+
+
+
 ######################################################################################
 #####################           GRAFANA CONTAINER              #######################
 ######################################################################################
@@ -157,7 +186,6 @@ services:
       - 3000
     networks:
       - monitor-net
-    logging: *default-logging
     labels:
       - "org.label-schema.group=monitoring"
       - "traefik.enable=true"
@@ -165,6 +193,7 @@ services:
       - "traefik.http.routers.grafana.entrypoints=websecure"
       - "traefik.http.routers.grafana.tls.certresolver=myresolver"
       - "traefik.http.routers.grafana.rule=Host(`$GRAFANA_HOST`)"
+
 
 
 ######################################################################################
@@ -181,6 +210,3 @@ services:
       - 9091
     networks:
       - monitor-net
-    labels:
-      org.label-schema.group: "monitoring"
-    logging: *default-logging

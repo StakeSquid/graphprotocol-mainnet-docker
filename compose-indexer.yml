@@ -1,12 +1,5 @@
 version: '3.7'
 
-x-logging:
-  &default-logging
-  options:
-    max-file: '1'
-    compress: 'false'
-  driver: local
-
 networks:
   monitor-net:
     driver: bridge
@@ -32,7 +25,6 @@ services:
     tty: true
     networks:
       - monitor-net
-    logging: *default-logging
     volumes:
       - ./cli/scripts:/home/graph/scripts
       - ./cli/history:/history
@@ -68,7 +60,6 @@ services:
     networks:
       - monitor-net
     restart: unless-stopped
-    logging: *default-logging
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.indexer-service-mainnet.loadbalancer.server.port=7600"
@@ -131,7 +122,6 @@ services:
     networks:
       - monitor-net
     restart: unless-stopped
-    logging: *default-logging
 
 
 
@@ -154,7 +144,6 @@ services:
       - monitor-net
     expose:
       - 5432
-    logging: *default-logging
 
   ######################################################################################
   #####################           SUBGRAPH RADIO CONTAINER            ##################
@@ -185,7 +174,6 @@ services:
       - subgraph_radio_data:/data
     networks:
       - monitor-net
-    logging: *default-logging
 
 ######################################################################################
 #####################         TRAEFIK PROXY CONTAINER          #######################

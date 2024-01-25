@@ -1,11 +1,5 @@
 version: '3.7'
 
-x-logging: &default-logging
-  options:
-    max-file: "1"
-    compress: "false"
-  driver: local
-
 networks:
   monitor-net:
     driver: bridge

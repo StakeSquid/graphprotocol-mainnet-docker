@@ -1,0 +1,127 @@
+# Configuration: https://grafana.com/docs/loki/latest/configuration/
+
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  log_level: warn
+  http_server_read_timeout: 60s
+  http_server_write_timeout: 30s
+  # FIX: ResourceExhausted desc = grpc: received message larger than max
+  grpc_server_max_recv_msg_size: 52428800
+  grpc_server_max_send_msg_size: 52428800
+  grpc_server_max_concurrent_streams: 100
+
+common:
+  path_prefix: /data/loki
+  storage:
+    filesystem:
+      chunks_directory: /data/chunks
+      rules_directory: /data/rules
+  replication_factor: 1
+
+frontend:
+  max_outstanding_per_tenant: 2048
+
+frontend_worker:
+  grpc_client_config:
+    max_recv_msg_size: 52428800
+    max_send_msg_size: 52428800
+    
+ingester:
+  lifecycler:
+    ring:
+      kvstore:
+        store: inmemory
+      # The heartbeat timeout after which ingesters are skipped for reads/writes.
+      # 0 = never (timeout disabled).
+      # CLI flag: -ring.heartbeat-timeout
+      #[heartbeat_timeout: <duration> | default = 1m]
+      
+      # The number of ingesters to write to and read from.
+      # CLI flag: -distributor.replication-factor
+      #[replication_factor: <int> | default = 3]
+      
+    # Heartbeat timeout after which instance is assumed to be unhealthy. 0 =
+    # disabled.
+    # CLI flag: -ingester.heartbeat-timeout
+    heartbeat_timeout: 5m
+  
+  # A target _compressed_ size in bytes for chunks. This is a desired size not an
+  # exact size, chunks may be slightly bigger or significantly smaller if they get
+  # flushed for other reasons (e.g. chunk_idle_period). A value of 0 creates
+  # chunks with a fixed 10 blocks, a non zero value will create chunks with a
+  # variable number of blocks to meet the target size.
+  # CLI flag: -ingester.chunk-target-size
+  # [chunk_target_size: <int> | default = 1572864]
+  
+  # The algorithm to use for compressing chunk. (none, gzip, lz4-64k, snappy,
+  # lz4-256k, lz4-1M, lz4, flate, zstd)
+  # CLI flag: -ingester.chunk-encoding
+  #[chunk_encoding: <string> | default = "gzip"]
+  chunk_encoding: "snappy"
+  
+  # The maximum duration of a timeseries chunk in memory. If a timeseries runs for
+  # longer than this, the current chunk will be flushed to the store and a new
+  # chunk created.
+  # CLI flag: -ingester.max-chunk-age
+  #[max_chunk_age: <duration> | default = 2h]
+  
+  # How long chunks should sit in-memory with no updates before being flushed if
+  # they don't hit the max block size. This means that half-empty chunks will
+  # still be flushed after a certain period as long as they receive no further
+  # activity.
+  # CLI flag: -ingester.chunks-idle-period
+  #[chunk_idle_period: <duration> | default = 30m]
+
+ingester_client:
+  grpc_client_config:
+    max_recv_msg_size: 52428800
+    max_send_msg_size: 52428800
+    
+limits_config:
+  ingestion_rate_mb: 30  # Adjust this value according to your requirements
+  ingestion_burst_size_mb: 100  # This should be larger than ingestion_rate_mb
+  split_queries_by_interval: 24h
+  per_stream_rate_limit: 6000000
+  per_stream_rate_limit_burst: 12000000
+  
+ruler:
+  alertmanager_url: http://alertmanager:9093
+
+querier:
+  max_concurrent: 2048
+
+query_range:
+  # make queries more cache-able by aligning them with their step intervals
+  align_queries_with_step: true
+  max_retries: 5
+  cache_results: true
+  
+query_scheduler:
+  grpc_client_config:
+    max_recv_msg_size: 52428800
+    max_send_msg_size: 52428800
+    
+schema_config:
+  configs:
+    - from: 2020-10-24
+      store: boltdb-shipper
+      object_store: filesystem
+      schema: v11
+      index:
+        prefix: index_
+        period: 24h
+        
+# By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
+# analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/
+#
+# Statistics help us better understand how Loki is used, and they show us performance
+# levels for most users. This helps us prioritize features and documentation.
+# For more information on what's sent, look at
+# https://github.com/grafana/loki/blob/main/pkg/usagestats/stats.go
+# Refer to the buildReport method to see what goes into a report.
+#
+# If you would like to disable reporting, uncomment the following lines:
+analytics:
+  reporting_enabled: false

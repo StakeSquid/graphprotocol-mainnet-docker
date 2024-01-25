@@ -1,12 +1,5 @@
 version: '3.7'
 
-x-logging:
-  &default-logging
-  options:
-    max-file: '1'
-    compress: 'false'
-  driver: local
-
 networks:
   monitor-net:
     driver: bridge
@@ -56,7 +49,6 @@ services:
       - 8040
     networks:
       - monitor-net
-    logging: *default-logging
 
 
 ######################################################################################
@@ -121,4 +113,3 @@ services:
       - monitor-net
     expose:
       - 5432
-    logging: *default-logging

@@ -1,12 +1,5 @@
 version: '3.7'
 
-x-logging:
-  &default-logging
-  options:
-    max-file: '1'
-    compress: 'false'
-  driver: local
-
 networks:
   monitor-net:
     driver: bridge
@@ -68,7 +61,6 @@ services:
     networks:
       - monitor-net
     restart: unless-stopped
-    logging: *default-logging
 
 
 ######################################################################################
@@ -113,7 +105,6 @@ services:
     networks:
       - monitor-net
     restart: unless-stopped
-    logging: *default-logging
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.indexer-service.loadbalancer.server.port=7600"
@@ -171,7 +162,6 @@ services:
       POSTGRES_PASSWORD: autoagora-password
     networks:
       - monitor-net
-    logging: *default-logging
 
 
 ######################################################################################
@@ -201,7 +191,6 @@ services:
       JSON_LOGS: "true"
     networks:
       - monitor-net
-    logging: *default-logging
 
 
 
@@ -226,7 +215,6 @@ services:
       - monitor-net
     expose:
       - 5432
-    logging: *default-logging
 
 
 
@@ -249,4 +237,3 @@ services:
       - monitor-net
     expose:
       - 5432
-    logging: *default-logging
