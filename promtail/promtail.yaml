@@ -22,7 +22,7 @@ scrape_configs:
         refresh_interval: 10s
         filters:
           - name: network
-            values: ['graphprotocol-testnet-docker_monitor-net']
+            values: ['graphprotocol-mainnet-docker_monitor-net']
     relabel_configs:
       - source_labels: ['__meta_docker_container_name']
         target_label: 'container_name'
