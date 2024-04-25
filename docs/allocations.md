@@ -57,7 +57,7 @@ Once you read those links above and you know exactly what your plan is, and what
 Now, to allocate towards your chosen subgraph, inside the cli container, run the following command:
 
 ```bash
-graph indexer rules set <IPFS_HASH> allocationAmount <GRT> decisionBasis always
+graph indexer rules set <IPFS_HASH> allocationAmount <GRT> decisionBasis always --network <CHAIN_NAME>
 
 
 ```
