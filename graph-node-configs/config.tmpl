@@ -1,6 +1,6 @@
 [store]
 [store.primary]
-connection = "postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}:5432/${GRAPH_NODE_DB_NAME}?host=/var/run/postgresql"
+connection = "postgresql://${GRAPH_NODE_DB_USER}:${GRAPH_NODE_DB_PASS}@${GRAPH_NODE_DB_HOST}:5432/${GRAPH_NODE_DB_NAME}"
 pool_size = 10
 
 [chains]

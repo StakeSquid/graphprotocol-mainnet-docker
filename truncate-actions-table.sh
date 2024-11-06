@@ -1,0 +1,1 @@
+set -o allexport; source .env; set +o allexport; docker exec -it postgres-agent psql -U ${AGENT_DB_USER} ${AGENT_DB_NAME} -c 'truncate "Actions"'

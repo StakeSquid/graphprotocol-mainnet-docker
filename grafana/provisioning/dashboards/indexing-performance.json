@@ -24,13 +24,37 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 5,
-  "iteration": 1675595690870,
-  "links": [],
-  "liveNow": false,
+  "id": 7,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Deployment Details",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/SjWDBHSGz/deployment-details-graph?from=now-6h&to=now&var-account=indexer-agent&var-deployment=${deployment}&var-shard=PA942B37CCFAF5A81&var-horizon=1y"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Logs",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/a9T5kG7dF/logs-explorer?from=now-5m&to=now&var-source=%2Findex-node-0&var-filter=${deployment}"
+    }
+  ],
   "panels": [
     {
       "datasource": {
+        "default": false,
         "type": "prometheus",
         "uid": "P1809F7CD0C75ACF3"
       },
@@ -40,9 +64,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "opacity",
@@ -51,6 +79,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -101,6 +130,7 @@
           ],
           "displayMode": "table",
           "placement": "right",
+          "showLegend": true,
           "sortBy": "Last *",
           "sortDesc": true
         },
@@ -109,15 +139,20 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "deriv(deployment_head[10m]) * 60",
+          "expr": "deriv(deployment_head{deployment=~\"$deployment\", network=~\"$network\", shard=~\"$shard\"}[10m]) * 60",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ deployment }}",
+          "legendFormat": "{{deployment}}",
           "refId": "A"
         }
       ],
@@ -127,6 +162,7 @@
     },
     {
       "datasource": {
+        "default": false,
         "type": "prometheus",
         "uid": "P1809F7CD0C75ACF3"
       },
@@ -136,9 +172,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "opacity",
@@ -147,6 +187,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -212,21 +253,28 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
           "exemplar": true,
           "expr": "sum(deriv(deployment_head[10m]) * 60)",
           "hide": false,
           "interval": "",
           "legendFormat": "Total Sync Rate",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -236,6 +284,7 @@
     },
     {
       "datasource": {
+        "default": false,
         "type": "prometheus",
         "uid": "P1809F7CD0C75ACF3"
       },
@@ -245,9 +294,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -256,6 +309,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -305,6 +359,7 @@
           ],
           "displayMode": "table",
           "placement": "right",
+          "showLegend": true,
           "sortBy": "Last *",
           "sortDesc": true
         },
@@ -313,25 +368,22 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "abs(deployment_head{instance=\"index-node-0:8040\"} - on (network) group_left ethereum_chain_head_number{instance=\"index-node-0:8040\"})",
+          "expr": "abs(deployment_head{deployment=~\"$deployment\", network=~\"$network\", shard=~\"$shard\"} - on (network) group_left max by (network) (ethereum_chain_head_number))",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{deployment}}",
           "refId": "A"
-        },
-        {
-          "exemplar": true,
-          "expr": "abs(deployment_head{instance=\"index-node-1:8040\"} - on (network) group_left ethereum_chain_head_number{instance=\"index-node-1:8040\"})",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "{{deployment}}",
-          "refId": "B"
         }
       ],
       "title": "Blocks behind over time",
@@ -339,42 +391,8 @@
       "type": "timeseries"
     },
     {
-      "alert": {
-        "alertRuleTags": {},
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                30
-              ],
-              "type": "gt"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "A",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "for": "5m",
-        "frequency": "1m",
-        "handler": 1,
-        "name": "Eth RPC Request Duration per Subgraph alert",
-        "noDataState": "no_data",
-        "notifications": []
-      },
       "datasource": {
+        "default": false,
         "type": "prometheus",
         "uid": "P1809F7CD0C75ACF3"
       },
@@ -384,9 +402,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -395,6 +417,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -430,8 +453,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 10,
+        "w": 24,
         "x": 0,
         "y": 27
       },
@@ -439,25 +462,29 @@
       "options": {
         "legend": {
           "calcs": [
-            "mean",
-            "max",
-            "min"
+            "mean"
           ],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single",
+          "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
-          "expr": "avg_over_time(deployment_eth_rpc_request_duration[15m])",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
+          "expr": "avg_over_time(deployment_eth_rpc_request_duration{deployment=~\"$deployment\", provider=~\"$provider\"}[15m])",
           "instant": false,
           "interval": "1m",
-          "legendFormat": "{{deployment}}",
+          "legendFormat": "{{ deployment }} | {{ provider }} | {{ method }}",
           "refId": "A"
         }
       ],
@@ -466,42 +493,8 @@
       "type": "timeseries"
     },
     {
-      "alert": {
-        "alertRuleTags": {},
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                20
-              ],
-              "type": "gt"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "A",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "for": "5m",
-        "frequency": "1m",
-        "handler": 1,
-        "name": "Eth RPC Errors per minute All Subgraphs alert",
-        "noDataState": "no_data",
-        "notifications": []
-      },
       "datasource": {
+        "default": false,
         "type": "prometheus",
         "uid": "P1809F7CD0C75ACF3"
       },
@@ -511,9 +504,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -522,6 +519,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -532,7 +530,7 @@
             "spanNulls": true,
             "stacking": {
               "group": "A",
-              "mode": "normal"
+              "mode": "none"
             },
             "thresholdsStyle": {
               "mode": "line+area"
@@ -558,33 +556,37 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 27
+        "w": 24,
+        "x": 0,
+        "y": 37
       },
       "id": 43,
       "options": {
         "legend": {
           "calcs": [
-            "mean",
-            "max",
-            "min"
+            "mean"
           ],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
-          "expr": "sum(increase(eth_rpc_errors[1m]))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
+          "expr": "rate(eth_rpc_errors{provider=~\"$provider\", job=~\"$job\"}[1m])*60",
           "instant": false,
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "{{entity}} | {{provider}} | {{method}}",
           "refId": "A"
         }
       ],
@@ -593,27 +595,124 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 36,
-  "style": "dark",
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
       {
-        "datasource": {
-          "uid": "Elasticsearch"
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
-        "filters": [],
-        "hide": 0,
-        "label": "",
-        "name": "Filters",
-        "skipUrlSync": false,
-        "type": "adhoc"
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "label_values(deployment_head,deployment)",
+        "includeAll": true,
+        "multi": true,
+        "name": "deployment",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(deployment_head,deployment)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "label_values(ethereum_chain_head_number,network)",
+        "includeAll": true,
+        "multi": true,
+        "name": "network",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(ethereum_chain_head_number,network)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "label_values(deployment_head,shard)",
+        "includeAll": true,
+        "multi": true,
+        "name": "shard",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(deployment_head,shard)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P1809F7CD0C75ACF3"
+        },
+        "definition": "label_values(deployment_eth_rpc_request_duration,provider)",
+        "includeAll": true,
+        "multi": true,
+        "name": "provider",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(deployment_eth_rpc_request_duration,provider)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -627,22 +726,11 @@
       "1h",
       "2h",
       "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
     ]
   },
   "timezone": "",
-  "title": "Indexing Performance Metrics",
-  "uid": "indexing-performance-metrics",
-  "version": 9,
+  "title": "Indexing Performance",
+  "uid": "indexing-performance",
+  "version": 3,
   "weekStart": ""
 }

@@ -1,5 +1,3 @@
-version: '3.8'
-
 networks:
   monitor-net:
     driver: bridge
@@ -16,20 +14,30 @@ services:
 #####################             LOKI CONTAINER               #######################
 ######################################################################################
 
+  init-loki:
+    image: busybox:latest
+    command: sh -c "chown -R 10001:10001 /data"
+    volumes:
+      - loki_data:/data
+    entrypoint: ""
+    deploy:
+      restart_policy:
+        condition: none
+
   loki:
     image: grafana/loki
     container_name: loki
-    user: "10001"
     volumes:
+      - loki_data:/data
       - ./loki/loki.yaml:/etc/loki/config.yaml
-      - loki_data:/data # need to sudo chown -R 10001:10001 /var/lib/docker/volumes/<loki_volume>
-    command: -config.file=/etc/loki/config.yaml --print-config-stderr 
+    command: -config.file=/etc/loki/config.yaml --print-config-stderr
     expose:
       - 3100
     restart: unless-stopped
+    depends_on:
+      - init-loki
     networks:
       - monitor-net
-
 
 ######################################################################################
 #####################          PROMTAIL CONTAINER              #######################
@@ -168,7 +176,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SECURITY_DISABLE_BRUTE_FORCE_LOGIN_PROTECTION=true
-      - GF_INSTALL_PLUGINS=fifemon-graphql-datasource
+      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
       - postgres_host=${DB_HOST:-postgres}
       - postgres_user=${DB_USER:-graph-node}
       - postgres_pass=${DB_PASS:-db-password}

@@ -1,24 +1,47 @@
-FROM node:16.15-bullseye-slim as build
+# Accept the full base image URL as a build argument
+ARG INDEXER_CLI_VERSION=ghcr.io/graphprotocol/indexer-cli:v0.21.6-2
+FROM ${INDEXER_CLI_VERSION}
 
-ENV NODE_ENV production
+# Switch to root user to run apt-get commands
+USER root
 
-RUN apt-get update && apt-get install -y build-essential bc git curl httpie jq nano wget bsdmainutils base58 netcat net-tools libsecret-1-dev python2.7 clang cmake
+# Update and install necessary packages, specify netcat-openbsd explicitly
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    bc \
+    git \
+    curl \
+    httpie \
+    jq \
+    nano \
+    wget \
+    bsdmainutils \
+    base58 \
+    netcat-openbsd \
+    net-tools \
+    libsecret-1-dev \
+    python3
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > /tmp/rustup.sh && sh /tmp/rustup.sh -y
-ENV PATH="/root/.cargo/bin:$PATH"
+# Create /history directory for bash history persistence
+RUN mkdir -p /history && chmod 777 /history
 
-WORKDIR /root/
-RUN git clone -b v0.20.23 https://github.com/graphprotocol/indexer /root/.npm-global/lib/node_modules/@graphprotocol/indexer-cli
+# Add Rust to the PATH manually
+ENV PATH="/usr/local/cargo/bin:$PATH"
 
-WORKDIR /root/.npm-global/lib/node_modules/@graphprotocol/indexer-cli
-RUN yarn --global --frozen-lockfile --non-interactive --production=false
-
-RUN ln -s /root/.npm-global/lib/node_modules/@graphprotocol/indexer-cli/packages/indexer-cli/bin/graph-indexer /usr/bin/graph
-
+# Create necessary directory for graph-cli configuration
 RUN mkdir -p "/root/.config/graph-cli/"
+
+# Add the API configuration to the indexing.toml file
 RUN echo "api = \"http://indexer-agent:8000/\"" >> "/root/.config/graph-cli/indexing.toml"
 
+# Append history command to bashrc for history persistence
 RUN echo "export PROMPT_COMMAND='history -a' && export HISTFILE=/history/.bash_history" >> "/root/.bashrc"
 
-WORKDIR /root/
-ENTRYPOINT ["cat"]
+RUN mkdir -p /root/scripts
+WORKDIR /root/scripts
+
+# Override entrypoint to /bin/bash
+ENTRYPOINT ["/bin/bash"]
+
+# Default command to keep the container running
+CMD ["-c", "tail -f /dev/null"]

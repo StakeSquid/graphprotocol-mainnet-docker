@@ -24,13 +24,12 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
-  "iteration": 1676404991256,
+  "id": 3,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
+        "default": false,
         "type": "prometheus",
         "uid": "P1809F7CD0C75ACF3"
       },
@@ -41,9 +40,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -52,11 +55,13 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
-              "type": "linear"
+              "log": 2,
+              "type": "symlog"
             },
             "showPoints": "auto",
             "spanNulls": false,
@@ -95,27 +100,37 @@
       "options": {
         "legend": {
           "calcs": [
-            "mean"
+            "mean",
+            "last"
           ],
-          "displayMode": "list",
-          "placement": "bottom"
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Last",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "multi",
           "sort": "desc"
         }
       },
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "P1809F7CD0C75ACF3"
           },
+          "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "deriv(ethereum_chain_head_number[10m]) * 60",
-          "legendFormat": "{{job}}-{{network}}",
+          "exemplar": false,
+          "expr": "deriv(ethereum_chain_head_number{job=\"index-node-0\"}[1m]) * 60",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "legendFormat": "{{network}}",
           "range": true,
-          "refId": "A"
+          "refId": "A",
+          "useBackend": false
         }
       ],
       "title": "Block ingestion rate",
@@ -134,7 +149,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -229,7 +246,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 100
+                "value": 149
               }
             ]
           },
@@ -248,15 +265,16 @@
         ]
       },
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 24,
         "x": 0,
         "y": 8
       },
       "id": 38,
-      "links": [],
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -266,7 +284,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "format": "table",
@@ -309,7 +327,8 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "default": false,
+        "type": "grafana-postgresql-datasource",
         "uid": "PA942B37CCFAF5A81"
       },
       "fieldConfig": {
@@ -318,8 +337,10 @@
             "mode": "thresholds"
           },
           "custom": {
-            "align": "auto",
-            "displayMode": "auto",
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": true,
             "inspect": false
           },
@@ -342,48 +363,9 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "blocks_behind_network"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Blocks behind"
-              },
-              {
-                "id": "unit",
-                "value": "locale"
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "rgba(50, 172, 45, 0.97)",
-                      "value": null
-                    },
-                    {
-                      "color": "rgba(237, 129, 40, 0.89)"
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "lag"
             },
             "properties": [
-              {
-                "id": "displayName",
-                "value": "Lag"
-              },
               {
                 "id": "unit",
                 "value": "m"
@@ -391,106 +373,6 @@
               {
                 "id": "decimals",
                 "value": 1
-              },
-              {
-                "id": "custom.align",
-                "value": "right"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "synced"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Synced"
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "network"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Network"
-              },
-              {
-                "id": "unit",
-                "value": "none"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "nodeid"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Node ID"
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "schema"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Schema no."
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
               }
             ]
           },
@@ -501,80 +383,148 @@
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "Subgraph ID"
-              },
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/indexing-performance-metrics/indexing-performance-metrics?orgId=1&var-job=All&var-deployment=${__value.raw}&var-entity=All&var-shard=All&var-network=All&var-provider=All\r"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "is_synced"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "false": {
+                        "index": 1,
+                        "text": "✖"
+                      },
+                      "true": {
+                        "index": 0,
+                        "text": "✔"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "blocks_behind_network"
+            },
+            "properties": [
               {
                 "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "left"
+                "value": "locale"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "subgraph_name"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Deployment name"
-              },
-              {
-                "id": "unit",
-                "value": "none"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "left"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Deployment name"
+              "options": "ID"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 291
+                "value": 46
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Subgraph ID"
+              "options": "Deployment"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 501
+                "value": 500
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Schema no."
+              "options": "Subgraph Name"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 88
+                "value": 256
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Shard"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Active"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 169
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 157
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Synced"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocks Behind"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 254
               }
             ]
           },
@@ -586,19 +536,19 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 116
+                "value": 145
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Blocks behind"
+              "options": "Created at"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 131
+                "value": 179
               }
             ]
           }
@@ -608,12 +558,13 @@
         "h": 13,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 14
       },
       "id": 10,
-      "links": [],
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "enablePagination": true,
           "fields": "",
           "reducer": [
@@ -624,18 +575,19 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
             "uid": "PA942B37CCFAF5A81"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "-- grafana ignore\r\nselect\r\n  g.name || (case\r\n        when g.pending_version = v.id then ' (P)'\r\n        when g.current_version = v.id then ' (C)'\r\n        else ' (U)' end) as subgraph_name,\r\n  d.deployment,\r\n  s.id as schema,\r\n  replace(a.node_id, '','') as nodeId,\r\n  d.synced::text,\r\n  n.name as network,\r\n  (n.head_block_number - d.latest_ethereum_block_number) as blocks_behind_network,\r\n  (case when n.name = 'mainnet' then ((n.head_block_number - d.latest_ethereum_block_number)/5)::text\r\n        when n.name = 'gnosis' then ((n.head_block_number - d.latest_ethereum_block_number)/11.6)::text\r\n        when n.name = 'celo' then ((n.head_block_number - d.latest_ethereum_block_number)/12)::text\r\n        when n.name = 'arbitrum-one' then ((n.head_block_number - d.latest_ethereum_block_number)/200)::text\r\n        when n.name = 'avalanche' then ((n.head_block_number - d.latest_ethereum_block_number)/30)::text\r\n        else 'ø' end) as lag\r\nfrom subgraphs.subgraph_deployment as d,\r\n     subgraphs.subgraph_deployment_assignment as a,\r\n     subgraphs.subgraph_version as v,\r\n     subgraphs.subgraph as g,\r\n     ethereum_networks  as n,\r\n     deployment_schemas as s\r\nwhere g.id = v.subgraph\r\n  and v.id in (g.pending_version, g.current_version)\r\n  and a.id = s.id\r\n  and s.id = d.id\r\n  and v.deployment = d.deployment\r\n  and not d.failed\r\n  and n.name = s.network\r\n  and not a.node_id = 'removed'\r\norder by blocks_behind_network desc, subgraph_name;",
+          "rawSql": "SELECT\r\n  subgraph.name || \r\n    CASE \r\n      WHEN subgraph.pending_version = version.id THEN ' (P)'\r\n      WHEN subgraph.current_version = version.id THEN ' (C)'\r\n      ELSE ' (Unknown)' \r\n    END AS subgraph_name,\r\n  deployment.deployment,\r\n  schema.id as schema_id,\r\n  schema.created_at as created,\r\n  shard as shard,\r\n  active as active,\r\n  REPLACE(assignment.node_id, '', '') AS node_id,\r\n  deployment.synced::text AS is_synced,\r\n  network.name AS network_name,\r\n  (network.head_block_number - deployment.latest_ethereum_block_number) AS blocks_behind_network,\r\n  CASE \r\n    WHEN network.name = 'mainnet' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 5)::text\r\n    WHEN network.name = 'rinkeby' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 4)::text\r\n    WHEN network.name = 'kovan' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 15)::text\r\n    WHEN network.name = 'poa-core' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'ropsten' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 2)::text\r\n    WHEN network.name = 'arbitrum-one' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 230)::text\r\n    WHEN network.name = 'arbitrum-sepolia' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 230)::text\r\n    WHEN network.name = 'matic' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'base' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'optimism' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'avalanche' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'fantom' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 40)::text\r\n    WHEN network.name = 'celo' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'gnosis' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'bsc' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 20)::text\r\n    WHEN network.name = 'linea' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'scroll' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 20)::text\r\n    WHEN network.name = 'boba' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'boba-bnb' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 5)::text\r\n    WHEN network.name = 'moonbeam' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 10)::text\r\n    ELSE 'N/A' \r\n  END AS lag\r\nFROM\r\n  subgraphs.subgraph_deployment AS deployment,\r\n  subgraphs.subgraph_deployment_assignment AS assignment,\r\n  subgraphs.subgraph_version AS version,\r\n  subgraphs.subgraph AS subgraph,\r\n  ethereum_networks AS network,\r\n  deployment_schemas AS schema\r\nWHERE\r\n  subgraph.id = version.subgraph\r\n  AND version.id IN (subgraph.pending_version, subgraph.current_version)\r\n  AND assignment.id = schema.id\r\n  AND schema.id = deployment.id\r\n  AND version.deployment = deployment.deployment\r\n  AND NOT deployment.failed\r\n  AND network.name = schema.network\r\n  AND assignment.node_id != 'removed'\r\nORDER BY\r\n  blocks_behind_network DESC,\r\n  subgraph_name;\r\n",
           "refId": "A",
           "select": [
             [
@@ -647,6 +599,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "timeColumn": "time",
           "where": [
             {
@@ -657,12 +626,45 @@
           ]
         }
       ],
-      "title": "Indexing status",
+      "title": "Healthy Subgraphs Status",
       "transformations": [
         {
           "id": "merge",
           "options": {
             "reducers": []
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "active": 4,
+              "blocks_behind_network": 9,
+              "created": 5,
+              "deployment": 1,
+              "is_synced": 7,
+              "lag": 10,
+              "network_name": 8,
+              "node_id": 6,
+              "schema_id": 0,
+              "shard": 3,
+              "subgraph_name": 2
+            },
+            "renameByName": {
+              "active": "Active",
+              "blocks_behind_network": "Blocks Behind",
+              "created": "Created at",
+              "deployment": "Deployment",
+              "is_synced": "Synced",
+              "lag": "Lag",
+              "network_name": "Network",
+              "node_id": "Node ID",
+              "schema_id": "ID",
+              "shard": "Shard",
+              "subgraph_name": "Subgraph Name"
+            }
           }
         }
       ],
@@ -671,7 +673,8 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "default": false,
+        "type": "grafana-postgresql-datasource",
         "uid": "PA942B37CCFAF5A81"
       },
       "fieldConfig": {
@@ -680,8 +683,11 @@
             "mode": "thresholds"
           },
           "custom": {
-            "align": "auto",
-            "displayMode": "auto",
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
             "inspect": false
           },
           "mappings": [],
@@ -703,48 +709,9 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "blocks_behind_network"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Blocks behind"
-              },
-              {
-                "id": "unit",
-                "value": "locale"
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "rgba(50, 172, 45, 0.97)",
-                      "value": null
-                    },
-                    {
-                      "color": "rgba(237, 129, 40, 0.89)"
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "lag"
             },
             "properties": [
-              {
-                "id": "displayName",
-                "value": "Lag"
-              },
               {
                 "id": "unit",
                 "value": "m"
@@ -752,82 +719,6 @@
               {
                 "id": "decimals",
                 "value": 1
-              },
-              {
-                "id": "custom.align",
-                "value": "right"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "synced"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Sync"
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "network"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Network"
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "schema"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Schema no."
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
               }
             ]
           },
@@ -838,104 +729,148 @@
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "Subgraph ID"
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "left"
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/indexing-performance-metrics/indexing-performance-metrics?orgId=1&var-job=All&var-deployment=${__value.raw}&var-entity=All&var-shard=All&var-network=All&var-provider=All\r"
+                  }
+                ]
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "subgraph_name"
+              "options": "is_synced"
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "Deployment name"
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "left"
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "false": {
+                        "index": 1,
+                        "text": "✖"
+                      },
+                      "true": {
+                        "index": 0,
+                        "text": "✔"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "nodeid"
+              "options": "blocks_behind_network"
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "Node ID"
-              },
-              {
                 "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
+                "value": "locale"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Deployment name"
+              "options": "ID"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 298
+                "value": 46
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Subgraph ID"
+              "options": "Deployment"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 497
+                "value": 500
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Schema no."
+              "options": "Subgraph Name"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 89
+                "value": 256
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Shard"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Active"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 169
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 157
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Synced"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocks Behind"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 254
               }
             ]
           },
@@ -947,22 +882,35 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 117
+                "value": 145
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Created at"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 179
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 13,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 27
       },
-      "id": 34,
-      "links": [],
+      "id": 41,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "enablePagination": true,
           "fields": "",
           "reducer": [
@@ -973,18 +921,19 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
             "uid": "PA942B37CCFAF5A81"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "-- grafana ignore\r\nselect\r\n  g.name || (case\r\n        when g.pending_version = v.id then ' (P)'\r\n        when g.current_version = v.id then ' (C)'\r\n        else ' (U)' end) as subgraph_name,\r\n  d.deployment,\r\n  s.id as schema,\r\n  replace(a.node_id,'','') as nodeid,\r\n  d.synced::text,\r\n  n.name as network,\r\n  (n.head_block_number - d.latest_ethereum_block_number) as blocks_behind_network,\r\n  (case when n.name = 'mainnet' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'gnosis' then ((n.head_block_number - d.latest_ethereum_block_number)/11.6)::text\r\n        when n.name = 'rinkeby' then ((n.head_block_number - d.latest_ethereum_block_number)/4)::text\r\n        when n.name = 'kovan' then ((n.head_block_number - d.latest_ethereum_block_number)/15)::text\r\n        when n.name = 'poa-core' then ((n.head_block_number - d.latest_ethereum_block_number)/12)::text\r\n\t\twhen n.name = 'ropsten' then ((n.head_block_number - d.latest_ethereum_block_number)/2)::text\r\n        else 'ø' end) as lag\r\nfrom subgraphs.subgraph_deployment as d,\r\n     subgraphs.subgraph_deployment_assignment as a,\r\n     subgraphs.subgraph_version as v,\r\n     subgraphs.subgraph as g,\r\n     ethereum_networks  as n,\r\n     deployment_schemas as s\r\nwhere g.id = v.subgraph\r\n  and v.id in (g.pending_version, g.current_version)\r\n  and a.id = s.id\r\n  and s.id = d.id\r\n  and v.deployment = d.deployment\r\n  and not d.failed\r\n  and n.name = s.network\r\n  and a.node_id not like 'index_node_%'\r\norder by blocks_behind_network desc, subgraph_name;",
+          "rawSql": "SELECT\r\n  subgraph.name || \r\n    CASE \r\n      WHEN subgraph.pending_version = version.id THEN ' (P)'\r\n      WHEN subgraph.current_version = version.id THEN ' (C)'\r\n      ELSE ' (Unknown)' \r\n    END AS subgraph_name,\r\n  deployment.deployment,\r\n  schema.id as schema_id,\r\n  schema.created_at as created,\r\n  shard as shard,\r\n  active as active,\r\n  REPLACE(assignment.node_id, '', '') AS node_id,\r\n  deployment.synced::text AS is_synced,\r\n  network.name AS network_name,\r\n  (network.head_block_number - deployment.latest_ethereum_block_number) AS blocks_behind_network,\r\n  CASE \r\n    WHEN network.name = 'mainnet' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 5)::text\r\n    WHEN network.name = 'rinkeby' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 4)::text\r\n    WHEN network.name = 'kovan' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 15)::text\r\n    WHEN network.name = 'poa-core' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'ropsten' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 2)::text\r\n    WHEN network.name = 'arbitrum-one' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 230)::text\r\n    WHEN network.name = 'arbitrum-sepolia' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 230)::text\r\n    WHEN network.name = 'matic' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'base' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'optimism' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'avalanche' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'fantom' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 40)::text\r\n    WHEN network.name = 'celo' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'gnosis' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'bsc' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 20)::text\r\n    WHEN network.name = 'linea' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'scroll' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 20)::text\r\n    WHEN network.name = 'boba' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'boba-bnb' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 5)::text\r\n    WHEN network.name = 'moonbeam' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 10)::text\r\n    ELSE 'N/A' \r\n  END AS lag\r\nFROM\r\n  subgraphs.subgraph_deployment AS deployment,\r\n  subgraphs.subgraph_deployment_assignment AS assignment,\r\n  subgraphs.subgraph_version AS version,\r\n  subgraphs.subgraph AS subgraph,\r\n  ethereum_networks AS network,\r\n  deployment_schemas AS schema\r\nWHERE\r\n  subgraph.id = version.subgraph\r\n  AND version.id IN (subgraph.pending_version, subgraph.current_version)\r\n  AND assignment.id = schema.id\r\n  AND schema.id = deployment.id\r\n  AND version.deployment = deployment.deployment\r\n  AND NOT deployment.failed\r\n  AND network.name = schema.network\r\n  AND assignment.node_id not like 'index_node_%'\r\nORDER BY\r\n  blocks_behind_network DESC,\r\n  subgraph_name;\r\n",
           "refId": "A",
           "select": [
             [
@@ -996,6 +945,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "timeColumn": "time",
           "where": [
             {
@@ -1006,12 +972,45 @@
           ]
         }
       ],
-      "title": "Paused Subgraphs",
+      "title": "Paused Subgraphs Status",
       "transformations": [
         {
           "id": "merge",
           "options": {
             "reducers": []
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "active": 4,
+              "blocks_behind_network": 9,
+              "created": 5,
+              "deployment": 1,
+              "is_synced": 7,
+              "lag": 10,
+              "network_name": 8,
+              "node_id": 6,
+              "schema_id": 0,
+              "shard": 3,
+              "subgraph_name": 2
+            },
+            "renameByName": {
+              "active": "Active",
+              "blocks_behind_network": "Blocks Behind",
+              "created": "Created at",
+              "deployment": "Deployment",
+              "is_synced": "Synced",
+              "lag": "Lag",
+              "network_name": "Network",
+              "node_id": "Node ID",
+              "schema_id": "ID",
+              "shard": "Shard",
+              "subgraph_name": "Subgraph Name"
+            }
           }
         }
       ],
@@ -1020,14 +1019,19 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "default": false,
+        "type": "grafana-postgresql-datasource",
         "uid": "PA942B37CCFAF5A81"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 8,
         "x": 0,
-        "y": 34
+        "y": 40
       },
       "id": 36,
       "options": {
@@ -1040,18 +1044,19 @@
         "sortOrder": "Descending",
         "wrapLogMessage": true
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
             "uid": "PA942B37CCFAF5A81"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  vid, encode(block_hash, 'hex') as Block_hash, subgraph_id, message, handler, deterministic, created_at\nFROM subgraphs.subgraph_error\nORDER BY vid DESC",
+          "rawSql": "WITH ranked_errors AS (\n    SELECT \n        subgraph_id, \n        vid, \n        encode(block_hash, 'hex') AS block_hash, \n        message, \n        handler, \n        deterministic, \n        created_at,\n        ROW_NUMBER() OVER (PARTITION BY subgraph_id ORDER BY vid DESC) AS rnk\n    FROM subgraphs.subgraph_error\n    WHERE deterministic = true\n)\nSELECT \n    subgraph_id, \n    vid, \n    block_hash, \n    message, \n    handler, \n    deterministic, \n    created_at\nFROM ranked_errors\nWHERE rnk = 1\nORDER BY vid DESC;\n",
           "refId": "A",
           "select": [
             [
@@ -1063,12 +1068,29 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "subgraphs.subgraph_error",
           "timeColumn": "time",
           "where": []
         }
       ],
-      "title": "Fatal errors",
+      "title": "Deterministic Errors",
       "transformations": [
         {
           "id": "organize",
@@ -1094,7 +1116,202 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "default": false,
+        "type": "grafana-postgresql-datasource",
+        "uid": "PA942B37CCFAF5A81"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 40
+      },
+      "id": 42,
+      "options": {
+        "dedupStrategy": "exact",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "PA942B37CCFAF5A81"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH ranked_errors AS (\n    SELECT \n        subgraph_id, \n        vid, \n        encode(block_hash, 'hex') AS block_hash, \n        message, \n        handler, \n        deterministic, \n        created_at,\n        ROW_NUMBER() OVER (PARTITION BY subgraph_id ORDER BY vid DESC) AS rnk\n    FROM subgraphs.subgraph_error\n    WHERE deterministic = false\n)\nSELECT \n    subgraph_id, \n    vid, \n    block_hash, \n    message, \n    handler, \n    deterministic, \n    created_at\nFROM ranked_errors\nWHERE rnk = 1\nORDER BY vid DESC;\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "subgraphs.subgraph_error",
+          "timeColumn": "time",
+          "where": []
+        }
+      ],
+      "title": "Non-Deterministic Errors",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "vid": true
+            },
+            "indexByName": {
+              "block_hash": 2,
+              "created_at": 6,
+              "deterministic": 5,
+              "handler": 4,
+              "message": 3,
+              "subgraph_id": 0,
+              "vid": 1
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "grafana-postgresql-datasource",
+        "uid": "PA942B37CCFAF5A81"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 40
+      },
+      "id": 43,
+      "options": {
+        "dedupStrategy": "exact",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "PA942B37CCFAF5A81"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH ranked_errors AS (\n    SELECT \n        subgraph_id, \n        vid, \n        encode(block_hash, 'hex') AS block_hash, \n        message, \n        handler, \n        deterministic, \n        created_at,\n        ROW_NUMBER() OVER (PARTITION BY subgraph_id ORDER BY vid DESC) AS rnk\n    FROM subgraphs.subgraph_error\n)\nSELECT \n    subgraph_id, \n    vid, \n    block_hash, \n    message, \n    handler, \n    deterministic, \n    created_at\nFROM ranked_errors\nWHERE rnk = 1\nORDER BY vid DESC;\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "subgraphs.subgraph_error",
+          "timeColumn": "time",
+          "where": []
+        }
+      ],
+      "title": "All Errors",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "vid": true
+            },
+            "indexByName": {
+              "block_hash": 2,
+              "created_at": 6,
+              "deterministic": 5,
+              "handler": 4,
+              "message": 3,
+              "subgraph_id": 0,
+              "vid": 1
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "grafana-postgresql-datasource",
         "uid": "PA942B37CCFAF5A81"
       },
       "fieldConfig": {
@@ -1103,8 +1320,10 @@
             "mode": "thresholds"
           },
           "custom": {
-            "align": "auto",
-            "displayMode": "auto",
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": true,
             "inspect": false
           },
@@ -1132,12 +1351,114 @@
           {
             "matcher": {
               "id": "byName",
+              "options": "Deployment ID"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/indexing-performance-metrics/indexing-performance-metrics?orgId=1&var-job=All&var-deployment=${__value.raw}&var-entity=All&var-shard=All&var-network=All&var-provider=All"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 466
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Health"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "failed": {
+                        "index": 1,
+                        "text": "🚩"
+                      },
+                      "healthy": {
+                        "index": 2,
+                        "text": "✅"
+                      },
+                      "unhealthy": {
+                        "index": 0,
+                        "text": "⚠️"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 89
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sync"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "false": {
+                        "index": 1,
+                        "text": "✖"
+                      },
+                      "true": {
+                        "index": 0,
+                        "text": "✔"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 82
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Size"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
               "options": "Schema"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 72
+                "value": 57
               }
             ]
           },
@@ -1149,19 +1470,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 260
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Deployment ID"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 125
+                "value": 244
               }
             ]
           },
@@ -1173,7 +1482,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 259
+                "value": 278
               }
             ]
           },
@@ -1185,47 +1494,31 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 106
+                "value": 126
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Health"
+              "options": "Shard"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 90
-              },
+                "value": 98
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Created At"
+            },
+            "properties": [
               {
-                "id": "unit",
-                "value": "none"
-              },
-              {
-                "id": "custom.displayMode",
-                "value": "color-text"
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "failed": {
-                        "color": "dark-red",
-                        "index": 1,
-                        "text": "FAILED"
-                      },
-                      "healthy": {
-                        "color": "dark-green",
-                        "index": 0,
-                        "text": "healthy"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
+                "id": "custom.width",
+                "value": 177
               }
             ]
           },
@@ -1237,77 +1530,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 78
-              },
-              {
-                "id": "custom.displayMode",
-                "value": "auto"
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "match": "false",
-                      "result": {
-                        "color": "dark-green",
-                        "index": 0,
-                        "text": "-"
-                      }
-                    },
-                    "type": "special"
-                  },
-                  {
-                    "options": {
-                      "match": "true",
-                      "result": {
-                        "color": "dark-red",
-                        "index": 1,
-                        "text": "FAILED"
-                      }
-                    },
-                    "type": "special"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Sync"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 43
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "match": "true",
-                      "result": {
-                        "color": "dark-green",
-                        "index": 0,
-                        "text": "✓"
-                      }
-                    },
-                    "type": "special"
-                  },
-                  {
-                    "options": {
-                      "match": "false",
-                      "result": {
-                        "color": "dark-red",
-                        "index": 1,
-                        "text": "✗"
-                      }
-                    },
-                    "type": "special"
-                  }
-                ]
+                "value": 83
               }
             ]
           },
@@ -1319,7 +1542,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 91
+                "value": 139
               }
             ]
           },
@@ -1331,47 +1554,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 92
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Size"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 101
-              },
-              {
-                "id": "unit",
-                "value": "bytes"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Bytes"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 117
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Start Block"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 103
+                "value": 122
               }
             ]
           },
@@ -1382,20 +1565,7 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 97
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Last Hash"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 100
+                "id": "custom.width"
               }
             ]
           },
@@ -1407,7 +1577,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 93
+                "value": 114
               }
             ]
           },
@@ -1419,19 +1589,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 126
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Max Reorg"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 88
+                "value": 104
               }
             ]
           }
@@ -1441,11 +1599,13 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 48
       },
       "id": 37,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "enablePagination": true,
           "fields": "",
           "reducer": [
@@ -1461,18 +1621,19 @@
           }
         ]
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
             "uid": "PA942B37CCFAF5A81"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT \n\tds.name as deployment_schema,\n\tsg.name as deployment_name,\n\tsd.id as deployment_id,\n\tsubstring(sm.repository,20,31) as git_repo,\n\tsda.node_id as node_id,\n\tsd.health as sub_health,\n\tsd.failed as sub_failed,\n\tsd.synced as sub_sync,\n\tsd.latest_ethereum_block_number as last_block,\n\tsd.entity_count as sub_entity,\n\tsize.total_bytes as size_total, \n\tsize.total_bytes as size_total_bytes, \n\tsm.start_block_number as start_block, \n\tencode(sm.start_block_hash, 'hex') as start_hash, \n\tencode(sd.latest_ethereum_block_hash, 'hex') as last_hash,\n\tsd.reorg_count as reorg_count, \n\tsd.current_reorg_depth as curr_reorg_count, \n\tsd.max_reorg_depth as max_reorg,\n\tds.network as network\nFROM subgraphs.\"subgraph_deployment\" as sd\njoin subgraphs.\"subgraph_manifest\" as sm on (sm.id = sd.id)\njoin public.\"deployment_schemas\" as ds on (ds.subgraph = sd.deployment)\njoin subgraphs.\"subgraph_version\" as sv on (sv.deployment = sd.deployment)\njoin subgraphs.\"subgraph\" as sg on (sv.id in (sg.current_version, sg.pending_version))\nleft join subgraphs.\"subgraph_deployment_assignment\" as sda on (sda.id = sd.id)\nleft join info.subgraph_sizes as size on (ds.name = size.name)\norder by sd.id",
+          "rawSql": "SELECT \n    ds.name as deployment_schema,\n    ds.shard as deployment_shard,\n    ds.created_at as deployment_created_at,\n    sg.name as deployment_name,\n    sd.deployment as deployment,\n    substring(sm.repository, 20, 31) as git_repo,\n    sda.node_id as node_id,\n    sd.health as sub_health,\n    sd.failed as sub_failed,\n    sd.synced as sub_sync,\n    sd.latest_ethereum_block_number as last_block,\n    sd.entity_count as sub_entity,\n    size.total_bytes as size_total, \n    size.total_bytes as size_total_bytes, \n    sm.start_block_number as start_block, \n    encode(sm.start_block_hash, 'hex') as start_hash, \n    encode(sd.latest_ethereum_block_hash, 'hex') as last_hash,\n    sd.reorg_count as reorg_count, \n    sd.current_reorg_depth as curr_reorg_count, \n    sd.max_reorg_depth as max_reorg,\n    ds.network as network,\n    -- Removed subgraph_name, is_synced, and network_name\n    (network.head_block_number - sd.latest_ethereum_block_number) AS blocks_behind_network,\n    CASE \n        WHEN network.name = 'mainnet' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 5)::text\n        WHEN network.name = 'rinkeby' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 4)::text\n        WHEN network.name = 'kovan' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 15)::text\n        WHEN network.name = 'poa-core' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 12)::text\n        WHEN network.name = 'ropsten' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 2)::text\n        WHEN network.name = 'arbitrum-one' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 230)::text\n        WHEN network.name = 'arbitrum-sepolia' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 230)::text\n        WHEN network.name = 'matic' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 30)::text\n        WHEN network.name = 'base' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 30)::text\n        WHEN network.name = 'optimism' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 30)::text\n        WHEN network.name = 'avalanche' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 30)::text\n        WHEN network.name = 'fantom' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 40)::text\n        WHEN network.name = 'celo' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 12)::text\n        WHEN network.name = 'gnosis' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 12)::text\n        WHEN network.name = 'bsc' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 20)::text\n        WHEN network.name = 'linea' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 30)::text\n        WHEN network.name = 'scroll' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 20)::text\n        WHEN network.name = 'boba' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 30)::text\n        WHEN network.name = 'boba-bnb' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 5)::text\n        WHEN network.name = 'moonbeam' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 10)::text\n        ELSE 'N/A' \n    END AS lag\nFROM subgraphs.subgraph_deployment AS sd\nJOIN subgraphs.subgraph_manifest AS sm ON (sm.id = sd.id)\nJOIN public.deployment_schemas AS ds ON (ds.subgraph = sd.deployment)\nJOIN subgraphs.subgraph_version AS sv ON (sv.deployment = sd.deployment)\nJOIN subgraphs.subgraph AS sg ON (sv.id IN (sg.current_version, sg.pending_version)) -- Added subgraph JOIN\nLEFT JOIN subgraphs.subgraph_deployment_assignment AS sda ON (sda.id = sd.id)\nLEFT JOIN info.subgraph_sizes AS size ON (ds.name = size.name)\nJOIN ethereum_networks AS network ON (network.name = ds.network)\nORDER BY sd.id;\n",
           "refId": "A",
           "select": [
             [
@@ -1484,6 +1645,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "subgraphs.subgraph_error",
           "timeColumn": "time",
           "where": []
@@ -1497,36 +1675,47 @@
             "excludeByName": {
               "num": true
             },
+            "includeByName": {},
             "indexByName": {
-              "curr_reorg_count": 17,
-              "deployment_id": 2,
+              "blocks_behind_network": 12,
+              "curr_reorg_count": 21,
+              "deployment": 2,
+              "deployment_created_at": 7,
               "deployment_name": 1,
               "deployment_schema": 0,
+              "deployment_shard": 5,
               "git_repo": 3,
-              "last_block": 9,
-              "last_hash": 15,
-              "max_reorg": 18,
-              "network": 5,
+              "lag": 13,
+              "last_block": 11,
+              "last_hash": 19,
+              "max_reorg": 22,
+              "network": 6,
               "node_id": 4,
-              "reorg_count": 16,
-              "size_total": 11,
-              "size_total_bytes": 12,
-              "start_block": 13,
-              "start_hash": 14,
-              "sub_entity": 10,
-              "sub_failed": 7,
-              "sub_health": 6,
-              "sub_sync": 8
+              "reorg_count": 20,
+              "size_total": 15,
+              "size_total_bytes": 16,
+              "start_block": 17,
+              "start_hash": 18,
+              "sub_entity": 14,
+              "sub_failed": 9,
+              "sub_health": 8,
+              "sub_sync": 10
             },
             "renameByName": {
+              "blocks_behind_network": "Blocks Behind",
               "curr_reorg_count": "Curr Reorg Count",
+              "deployment": "Deployment ID",
+              "deployment_created_at": "Created At",
               "deployment_id": "Deployment ID",
               "deployment_name": "Deployment Name",
               "deployment_schema": "Schema",
+              "deployment_shard": "Shard",
               "git_repo": "Repository",
+              "lag": "Lag",
               "last_block": "Last Block",
               "last_hash": "Last Hash",
               "max_reorg": "Max Reorg",
+              "network": "Network",
               "node_id": "Node ID",
               "reorg_count": "Reorg Count",
               "size_total": "Size",
@@ -1572,7 +1761,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -1689,12 +1880,13 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 58
       },
       "id": 6,
-      "links": [],
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -1704,7 +1896,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "format": "table",
@@ -1744,29 +1936,413 @@
       ],
       "transparent": true,
       "type": "table"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "grafana-postgresql-datasource",
+        "uid": "PA942B37CCFAF5A81"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "lag"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "m"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "deployment"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/indexing-performance-metrics/indexing-performance-metrics?orgId=1&var-job=All&var-deployment=${__value.raw}&var-entity=All&var-shard=All&var-network=All&var-provider=All\r"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "is_synced"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "false": {
+                        "index": 1,
+                        "text": "✖"
+                      },
+                      "true": {
+                        "index": 0,
+                        "text": "✔"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "blocks_behind_network"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "locale"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 46
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Deployment"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 500
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Subgraph Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 256
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Shard"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Active"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 169
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 157
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Synced"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocks Behind"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 197
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Node ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 145
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Created at"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 179
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "failed"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "false": {
+                        "index": 1,
+                        "text": "-"
+                      },
+                      "true": {
+                        "index": 0,
+                        "text": "🚩"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Failed"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 63
+      },
+      "id": 44,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "PA942B37CCFAF5A81"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  subgraph.name || \r\n    CASE \r\n      WHEN subgraph.pending_version = version.id THEN ' (P)'\r\n      WHEN subgraph.current_version = version.id THEN ' (C)'\r\n      ELSE ' (Unknown)' \r\n    END AS subgraph_name,\r\n  deployment.deployment,\r\n  schema.id as schema_id,\r\n  schema.created_at as created,\r\n  shard as shard,\r\n  active as active,\r\n  failed as failed,\r\n  REPLACE(assignment.node_id, '', '') AS node_id,\r\n  deployment.synced::text AS is_synced,\r\n  network.name AS network_name,\r\n  (network.head_block_number - deployment.latest_ethereum_block_number) AS blocks_behind_network,\r\n  CASE \r\n    WHEN network.name = 'mainnet' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 5)::text\r\n    WHEN network.name = 'rinkeby' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 4)::text\r\n    WHEN network.name = 'kovan' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 15)::text\r\n    WHEN network.name = 'poa-core' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'ropsten' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 2)::text\r\n    WHEN network.name = 'arbitrum-one' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 230)::text\r\n    WHEN network.name = 'arbitrum-sepolia' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 230)::text\r\n    WHEN network.name = 'matic' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'base' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'optimism' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'avalanche' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'fantom' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 40)::text\r\n    WHEN network.name = 'celo' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'gnosis' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'bsc' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 20)::text\r\n    WHEN network.name = 'linea' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'scroll' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 20)::text\r\n    WHEN network.name = 'boba' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'boba-bnb' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 5)::text\r\n    WHEN network.name = 'moonbeam' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 10)::text\r\n    ELSE 'N/A' \r\n  END AS lag\r\nFROM\r\n  subgraphs.subgraph_deployment AS deployment,\r\n  subgraphs.subgraph_deployment_assignment AS assignment,\r\n  subgraphs.subgraph_version AS version,\r\n  subgraphs.subgraph AS subgraph,\r\n  ethereum_networks AS network,\r\n  deployment_schemas AS schema\r\nWHERE\r\n  subgraph.id = version.subgraph\r\n  AND version.id IN (subgraph.pending_version, subgraph.current_version)\r\n  AND assignment.id = schema.id\r\n  AND schema.id = deployment.id\r\n  AND version.deployment = deployment.deployment\r\n  AND network.name = schema.network\r\nORDER BY\r\n  blocks_behind_network DESC,\r\n  subgraph_name;\r\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "All Subgraphs Status",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "active": 4,
+              "blocks_behind_network": 10,
+              "created": 5,
+              "deployment": 1,
+              "failed": 8,
+              "is_synced": 7,
+              "lag": 11,
+              "network_name": 9,
+              "node_id": 6,
+              "schema_id": 0,
+              "shard": 3,
+              "subgraph_name": 2
+            },
+            "renameByName": {
+              "active": "Active",
+              "blocks_behind_network": "Blocks Behind",
+              "created": "Created at",
+              "deployment": "Deployment",
+              "failed": "Failed",
+              "is_synced": "Synced",
+              "lag": "Lag",
+              "network_name": "Network",
+              "node_id": "Node ID",
+              "schema_id": "ID",
+              "shard": "Shard",
+              "subgraph_name": "Subgraph Name"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 36,
-  "style": "dark",
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
       {
+        "baseFilters": [],
         "datasource": {
           "uid": "Elasticsearch"
         },
         "filters": [],
-        "hide": 0,
-        "label": "",
         "name": "Filters",
-        "skipUrlSync": false,
         "type": "adhoc"
       }
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -1780,22 +2356,11 @@
       "1h",
       "2h",
       "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
     ]
   },
   "timezone": "",
   "title": "Indexing Status Overview",
   "uid": "indexing-status-overview",
-  "version": 28,
+  "version": 4,
   "weekStart": ""
 }

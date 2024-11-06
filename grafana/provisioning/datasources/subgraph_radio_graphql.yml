@@ -5,6 +5,6 @@ datasources:
     editable: true
     name: SubgraphRadioGraphQL
     orgId: 1
-    type: fifemon-graphql-datasource
+    type: yesoreyeram-infinity-datasource
     url: http://subgraph-radio:3012/api/v1/graphql
     version: 1

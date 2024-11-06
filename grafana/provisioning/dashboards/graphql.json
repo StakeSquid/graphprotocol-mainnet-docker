@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -13,13 +16,16 @@
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 3,
   "links": [],
   "panels": [
     {
-      "datasource": "graphql",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "PAED31C11881F20F3"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -27,8 +33,11 @@
           },
           "custom": {
             "align": "center",
-            "displayMode": "auto",
-            "filterable": false
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -56,6 +65,10 @@
               {
                 "id": "decimals",
                 "value": 0
+              },
+              {
+                "id": "custom.width",
+                "value": 223
               }
             ]
           },
@@ -122,6 +135,42 @@
                 "value": 0
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IPFS Hash"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 443
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Deployment Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 176
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "STSR"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 177
+              }
+            ]
           }
         ]
       },
@@ -133,35 +182,60 @@
       },
       "id": 2,
       "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "frameIndex": 1,
         "showHeader": true,
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Indexing Rewards"
+            "displayName": "Signalled Tokens"
           }
         ]
       },
-      "pluginVersion": "8.0.1",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "aliasBy": "",
           "annotationTags": "",
           "annotationText": "",
           "annotationTitle": "",
+          "columns": [],
           "constant": 6.5,
           "dataPath": "subgraphDeployments",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "PAED31C11881F20F3"
+          },
           "endTimePath": "endTime",
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
           "groupBy": "",
           "hide": false,
           "queryText": "query MyQuery {\n  subgraphDeployments(orderBy: signalledTokens, orderDirection: desc) {\n    ipfsHash\n    signalledTokens\n    stakedTokens\n    originalName\n    indexingRewardAmount\n    queryFeesAmount\n    queryFeeRebates\n  }\n}",
           "refId": "B",
-          "timeFormat": null,
-          "timePath": ""
+          "root_selector": "$.data.[*]",
+          "source": "url",
+          "timePath": "",
+          "type": "json",
+          "url": "http://query-node-0:8000/subgraphs/id/QmXnGVrg6DvscnvJd86aHAPLGyGrkM17weMrAsFAEMmQLL",
+          "url_options": {
+            "body_content_type": "text/plain",
+            "body_graphql_query": "query {\r\n  data:subgraphDeployments(orderBy: signalledTokens, orderDirection: desc) {\r\n    ipfsHash\r\n    signalledTokens\r\n    stakedTokens\r\n    originalName\r\n    indexingRewardAmount\r\n    queryFeesAmount\r\n    queryFeeRebates\r\n  }\r\n}\r\n",
+            "body_type": "graphql",
+            "data": "",
+            "method": "POST"
+          }
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Avaliable subgraphs",
       "transformations": [
         {
@@ -308,9 +382,9 @@
       "type": "table"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 30,
-  "style": "dark",
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": []
@@ -323,5 +397,6 @@
   "timezone": "",
   "title": "GraphQL",
   "uid": "LAczYo6Mk",
-  "version": 11
+  "version": 4,
+  "weekStart": ""
 }
