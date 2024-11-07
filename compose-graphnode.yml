@@ -106,7 +106,6 @@ services:
       POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./postgres-socket:/var/run/postgresql
     networks:
       - monitor-net
     expose:
