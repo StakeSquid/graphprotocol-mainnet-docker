@@ -15,7 +15,7 @@ x-indexer-environment: &indexer-environment
   INDEXER_GRAPH_NODE__STATUS_URL: "http://index-node-0:8030/graphql"
 
   # Subgraphs - Network Configuration
-  INDEXER_SUBGRAPHS__NETWORK__QUERY_URL: ${NETWORK_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-arbitrum-sepolia}
+  INDEXER_SUBGRAPHS__NETWORK__QUERY_URL: ${NETWORK_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-arbitrum}
   # INDEXER_SUBGRAPHS__NETWORK__QUERY_AUTH_TOKEN: ${FREE_QUERY_AUTH_TOKEN}
   INDEXER_SUBGRAPHS__NETWORK__DEPLOYMENT_ID: ${NETWORK_SUBGRAPH_DEPLOYMENT}
   INDEXER_SUBGRAPHS__NETWORK__SYNCING_INTERVAL_SECS: ${NETWORK_SYNCING_INTERVAL_SECS:-60}
