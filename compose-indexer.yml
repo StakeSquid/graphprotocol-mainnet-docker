@@ -82,7 +82,7 @@ services:
     image: ${INDEXER_AGENT_VERSION:-ghcr.io/graphprotocol/indexer-agent:v0.21.6-2}
     container_name: indexer-agent
     depends_on:
-      - postgres2
+      - postgres-agent
     expose:
       - 7300
       - 8000
