@@ -15,7 +15,7 @@ x-indexer-environment: &indexer-environment
   INDEXER_GRAPH_NODE__STATUS_URL: "http://index-node-0:8030/graphql"
 
   # Subgraphs - Network Configuration
-  INDEXER_SUBGRAPHS__NETWORK__QUERY_URL: ${NETWORK_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-arbitrum}
+  INDEXER_SUBGRAPHS__NETWORK__QUERY_URL: ${NETWORK_SUBGRAPH_ENDPOINT}
   # INDEXER_SUBGRAPHS__NETWORK__QUERY_AUTH_TOKEN: ${FREE_QUERY_AUTH_TOKEN}
   INDEXER_SUBGRAPHS__NETWORK__DEPLOYMENT_ID: ${NETWORK_SUBGRAPH_DEPLOYMENT}
   INDEXER_SUBGRAPHS__NETWORK__SYNCING_INTERVAL_SECS: ${NETWORK_SYNCING_INTERVAL_SECS:-60}
@@ -109,9 +109,9 @@ services:
       INDEXER_AGENT_GRAPH_NODE_ADMIN_ENDPOINT: http://index-node-0:8020
       INDEXER_AGENT_PUBLIC_INDEXER_URL: 'https://${INDEX_HOST}/'
       INDEXER_AGENT_INDEXER_GEO_COORDINATES: ${GEO_COORDINATES:-69.420 69.420}
-      INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT: ${NETWORK_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-arbitrum}
+      INDEXER_AGENT_NETWORK_SUBGRAPH_ENDPOINT: ${NETWORK_SUBGRAPH_ENDPOINT}
       INDEXER_AGENT_NETWORK_SUBGRAPH_DEPLOYMENT: ${NETWORK_SUBGRAPH_DEPLOYMENT}
-      INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT: ${EPOCH_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/arbitrum-epoch-block-oracle}
+      INDEXER_AGENT_EPOCH_SUBGRAPH_ENDPOINT: ${EPOCH_SUBGRAPH_ENDPOINT}
       INDEXER_AGENT_POSTGRES_HOST: ${AGENT_DB_HOST:-postgres-agent}
       INDEXER_AGENT_POSTGRES_USERNAME: ${AGENT_DB_USER:-your_db_user}
       INDEXER_AGENT_POSTGRES_PASSWORD: ${AGENT_DB_PASS:-your_db_password}
@@ -202,7 +202,7 @@ services:
     environment:
       GRAPHCAST_NETWORK: ${GRAPHCAST_NETWORK:-mainnet}
       REGISTRY_SUBGRAPH: ${REGISTRY_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/hopeyen/graphcast-registry-mainnet}
-      NETWORK_SUBGRAPH: ${NETWORK_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-arbitrum}
+      NETWORK_SUBGRAPH: ${NETWORK_SUBGRAPH_ENDPOINT}
       MNEMONIC: ${OPERATOR_SEED_PHRASE}
       GRAPH_NODE_STATUS_ENDPOINT: ${GRAPH_NODE_STATUS_ENDPOINT:-http://index-node-0:8030/graphql}
       RUST_LOG: ${RUST_LOG:-warn,hyper=warn,graphcast_sdk=info,subgraph_radio=info}
