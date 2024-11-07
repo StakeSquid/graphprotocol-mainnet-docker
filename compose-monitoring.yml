@@ -177,10 +177,10 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SECURITY_DISABLE_BRUTE_FORCE_LOGIN_PROTECTION=true
       - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
-      - postgres_host=${DB_HOST:-postgres}
-      - postgres_user=${DB_USER:-graph-node}
-      - postgres_pass=${DB_PASS:-db-password}
-      - postgres_db=${GRAPH_NODE_DB_NAME:-graph-node}
+      - postgres_host=${GRAPH_NODE_DB_HOST:-postgres}
+      - postgres_user=${GRAPH_NODE_DB_USER:-your_db_user}
+      - postgres_pass=${GRAPH_NODE_DB_PASS:-your_db_password}
+      - postgres_db=${GRAPH_NODE_DB_NAME:-your_graphnode_db_name}
     restart: unless-stopped
     expose:
       - 3000
