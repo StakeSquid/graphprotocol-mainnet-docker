@@ -199,7 +199,7 @@ services:
     restart: unless-stopped
     environment:
       GRAPHCAST_NETWORK: ${GRAPHCAST_NETWORK:-mainnet}
-      REGISTRY_SUBGRAPH: ${REGISTRY_SUBGRAPH_ENDPOINT:-https://api.thegraph.com/subgraphs/name/hopeyen/graphcast-registry-mainnet}
+      REGISTRY_SUBGRAPH: ${REGISTRY_SUBGRAPH_ENDPOINT}
       NETWORK_SUBGRAPH: ${NETWORK_SUBGRAPH_ENDPOINT}
       MNEMONIC: ${OPERATOR_SEED_PHRASE}
       GRAPH_NODE_STATUS_ENDPOINT: ${GRAPH_NODE_STATUS_ENDPOINT:-http://index-node-0:8030/graphql}
