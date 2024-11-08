@@ -88,8 +88,6 @@ services:
       - 8000
       - 8001
       - 8002
-    volumes:
-      - ./indexer-agent-configs:/root/indexer-agent-configs/
     environment:
       INDEXER_AGENT_MNEMONIC: ${OPERATOR_SEED_PHRASE}
       INDEXER_AGENT_INDEXER_ADDRESS: ${STAKING_WALLET_ADDRESS}

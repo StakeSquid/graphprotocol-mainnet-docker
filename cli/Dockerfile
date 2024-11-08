@@ -25,9 +25,6 @@ RUN apt-get update && apt-get install -y \
 # Create /history directory for bash history persistence
 RUN mkdir -p /history && chmod 777 /history
 
-# Add Rust to the PATH manually
-ENV PATH="/usr/local/cargo/bin:$PATH"
-
 # Create necessary directory for graph-cli configuration
 RUN mkdir -p "/root/.config/graph-cli/"
 
