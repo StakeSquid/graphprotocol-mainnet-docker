@@ -1,1 +1,1 @@
-docker compose -f compose-autoagora.yml -f compose-graphnode.yml -f compose-monitoring.yml -f compose-optional.yml down $@
+docker compose -f compose-graphnode.yml -f compose-monitoring.yml -f compose-optional.yml down $@
