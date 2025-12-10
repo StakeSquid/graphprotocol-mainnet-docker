@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 8,
   "links": [],
   "panels": [
     {
@@ -64,6 +64,7 @@
               "type": "symlog"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -79,7 +80,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -110,11 +111,12 @@
           "sortDesc": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "datasource": {
@@ -152,6 +154,9 @@
             "cellOptions": {
               "type": "auto"
             },
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -160,7 +165,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -273,18 +278,10 @@
       "id": 38,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "format": "table",
@@ -342,6 +339,9 @@
               "type": "auto"
             },
             "filterable": true,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -350,7 +350,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -555,7 +555,7 @@
         ]
       },
       "gridPos": {
-        "h": 13,
+        "h": 19,
         "w": 24,
         "x": 0,
         "y": 14
@@ -563,19 +563,11 @@
       "id": 10,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "datasource": {
@@ -587,7 +579,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  subgraph.name || \r\n    CASE \r\n      WHEN subgraph.pending_version = version.id THEN ' (P)'\r\n      WHEN subgraph.current_version = version.id THEN ' (C)'\r\n      ELSE ' (Unknown)' \r\n    END AS subgraph_name,\r\n  deployment.deployment,\r\n  schema.id as schema_id,\r\n  schema.created_at as created,\r\n  shard as shard,\r\n  active as active,\r\n  REPLACE(assignment.node_id, '', '') AS node_id,\r\n  deployment.synced::text AS is_synced,\r\n  network.name AS network_name,\r\n  (network.head_block_number - deployment.latest_ethereum_block_number) AS blocks_behind_network,\r\n  CASE \r\n    WHEN network.name = 'mainnet' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 5)::text\r\n    WHEN network.name = 'rinkeby' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 4)::text\r\n    WHEN network.name = 'kovan' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 15)::text\r\n    WHEN network.name = 'poa-core' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'ropsten' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 2)::text\r\n    WHEN network.name = 'arbitrum-one' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 230)::text\r\n    WHEN network.name = 'arbitrum-sepolia' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 230)::text\r\n    WHEN network.name = 'matic' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'base' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'optimism' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'avalanche' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'fantom' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 40)::text\r\n    WHEN network.name = 'celo' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'gnosis' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'bsc' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 20)::text\r\n    WHEN network.name = 'linea' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'scroll' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 20)::text\r\n    WHEN network.name = 'boba' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'boba-bnb' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 5)::text\r\n    WHEN network.name = 'moonbeam' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 10)::text\r\n    ELSE 'N/A' \r\n  END AS lag\r\nFROM\r\n  subgraphs.subgraph_deployment AS deployment,\r\n  subgraphs.subgraph_deployment_assignment AS assignment,\r\n  subgraphs.subgraph_version AS version,\r\n  subgraphs.subgraph AS subgraph,\r\n  ethereum_networks AS network,\r\n  deployment_schemas AS schema\r\nWHERE\r\n  subgraph.id = version.subgraph\r\n  AND version.id IN (subgraph.pending_version, subgraph.current_version)\r\n  AND assignment.id = schema.id\r\n  AND schema.id = deployment.id\r\n  AND version.deployment = deployment.deployment\r\n  AND NOT deployment.failed\r\n  AND network.name = schema.network\r\n  AND assignment.node_id != 'removed'\r\nORDER BY\r\n  blocks_behind_network DESC,\r\n  subgraph_name;\r\n",
+          "rawSql": "SELECT\r\n  subgraph.name || \r\n    CASE \r\n      WHEN subgraph.pending_version = version.id THEN ' (P)'\r\n      WHEN subgraph.current_version = version.id THEN ' (C)'\r\n      ELSE ' (Unknown)' \r\n    END AS subgraph_name,\r\n  schema.subgraph AS deployment,\r\n  schema.id AS schema_id,\r\n  schema.created_at AS created,\r\n  schema.shard AS shard,\r\n  schema.active AS active,\r\n  REPLACE(assignment.node_id, '', '') AS node_id,\r\n  CASE \r\n    WHEN deployment.synced_at IS NOT NULL THEN 'true'::text\r\n    ELSE 'false'::text \r\n  END AS is_synced,\r\n  network.name AS network_name,\r\n  (network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) AS blocks_behind_network,\r\n  CASE \r\n    WHEN network.name = 'mainnet' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 5)::text\r\n    WHEN network.name = 'rinkeby' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 4)::text\r\n    WHEN network.name = 'kovan' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 15)::text\r\n    WHEN network.name = 'poa-core' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 12)::text\r\n    WHEN network.name = 'ropsten' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 2)::text\r\n    WHEN network.name = 'arbitrum-one' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 230)::text\r\n    WHEN network.name = 'arbitrum-sepolia' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 230)::text\r\n    WHEN network.name = 'matic' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 30)::text\r\n    WHEN network.name = 'base' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 30)::text\r\n    WHEN network.name = 'optimism' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 30)::text\r\n    WHEN network.name = 'avalanche' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 30)::text\r\n    WHEN network.name = 'fantom' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 40)::text\r\n    WHEN network.name = 'celo' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 12)::text\r\n    WHEN network.name = 'gnosis' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 12)::text\r\n    WHEN network.name = 'bsc' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 20)::text\r\n    WHEN network.name = 'linea' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 30)::text\r\n    WHEN network.name = 'scroll' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 20)::text\r\n    WHEN network.name = 'boba' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 30)::text\r\n    WHEN network.name = 'boba-bnb' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 5)::text\r\n    WHEN network.name = 'moonbeam' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 10)::text\r\n    ELSE 'N/A' \r\n  END AS lag\r\nFROM\r\n  deployment_schemas AS schema\r\n  INNER JOIN subgraphs.deployment AS deployment ON deployment.id = schema.id\r\n  INNER JOIN subgraphs.head AS head ON head.id = schema.id\r\n  INNER JOIN subgraphs.subgraph_deployment_assignment AS assignment ON assignment.id = schema.id\r\n  INNER JOIN subgraphs.subgraph_version AS version ON version.deployment = schema.subgraph\r\n  INNER JOIN subgraphs.subgraph ON subgraph.id = version.subgraph\r\n  INNER JOIN ethereum_networks AS network ON network.name = schema.network\r\nWHERE\r\n  (subgraph.pending_version = version.id OR subgraph.current_version = version.id)\r\n  AND NOT deployment.failed\r\n  AND assignment.node_id != 'removed'\r\nORDER BY\r\n  blocks_behind_network DESC,\r\n  subgraph_name;\r\n",
           "refId": "A",
           "select": [
             [
@@ -688,6 +680,9 @@
               "type": "auto"
             },
             "filterable": true,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -696,7 +691,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -904,24 +899,16 @@
         "h": 13,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 33
       },
       "id": 41,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "datasource": {
@@ -933,7 +920,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  subgraph.name || \r\n    CASE \r\n      WHEN subgraph.pending_version = version.id THEN ' (P)'\r\n      WHEN subgraph.current_version = version.id THEN ' (C)'\r\n      ELSE ' (Unknown)' \r\n    END AS subgraph_name,\r\n  deployment.deployment,\r\n  schema.id as schema_id,\r\n  schema.created_at as created,\r\n  shard as shard,\r\n  active as active,\r\n  REPLACE(assignment.node_id, '', '') AS node_id,\r\n  deployment.synced::text AS is_synced,\r\n  network.name AS network_name,\r\n  (network.head_block_number - deployment.latest_ethereum_block_number) AS blocks_behind_network,\r\n  CASE \r\n    WHEN network.name = 'mainnet' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 5)::text\r\n    WHEN network.name = 'rinkeby' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 4)::text\r\n    WHEN network.name = 'kovan' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 15)::text\r\n    WHEN network.name = 'poa-core' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'ropsten' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 2)::text\r\n    WHEN network.name = 'arbitrum-one' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 230)::text\r\n    WHEN network.name = 'arbitrum-sepolia' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 230)::text\r\n    WHEN network.name = 'matic' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'base' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'optimism' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'avalanche' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'fantom' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 40)::text\r\n    WHEN network.name = 'celo' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'gnosis' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'bsc' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 20)::text\r\n    WHEN network.name = 'linea' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'scroll' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 20)::text\r\n    WHEN network.name = 'boba' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'boba-bnb' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 5)::text\r\n    WHEN network.name = 'moonbeam' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 10)::text\r\n    ELSE 'N/A' \r\n  END AS lag\r\nFROM\r\n  subgraphs.subgraph_deployment AS deployment,\r\n  subgraphs.subgraph_deployment_assignment AS assignment,\r\n  subgraphs.subgraph_version AS version,\r\n  subgraphs.subgraph AS subgraph,\r\n  ethereum_networks AS network,\r\n  deployment_schemas AS schema\r\nWHERE\r\n  subgraph.id = version.subgraph\r\n  AND version.id IN (subgraph.pending_version, subgraph.current_version)\r\n  AND assignment.id = schema.id\r\n  AND schema.id = deployment.id\r\n  AND version.deployment = deployment.deployment\r\n  AND NOT deployment.failed\r\n  AND network.name = schema.network\r\n  AND assignment.node_id not like 'index_node_%'\r\nORDER BY\r\n  blocks_behind_network DESC,\r\n  subgraph_name;\r\n",
+          "rawSql": "SELECT\r\n  subgraph.name || \r\n    CASE \r\n      WHEN subgraph.pending_version = version.id THEN ' (P)'\r\n      WHEN subgraph.current_version = version.id THEN ' (C)'\r\n      ELSE ' (Unknown)' \r\n    END AS subgraph_name,\r\n  schema.subgraph AS deployment,\r\n  schema.id AS schema_id,\r\n  schema.created_at AS created,\r\n  schema.shard AS shard,\r\n  schema.active AS active,\r\n  REPLACE(assignment.node_id, '', '') AS node_id,\r\n  CASE \r\n    WHEN deployment.synced_at IS NOT NULL THEN 'true'::text\r\n    ELSE 'false'::text \r\n  END AS is_synced,\r\n  network.name AS network_name,\r\n  (network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) AS blocks_behind_network,\r\n  CASE \r\n    WHEN network.name = 'mainnet' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 5)::text\r\n    WHEN network.name = 'rinkeby' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 4)::text\r\n    WHEN network.name = 'kovan' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 15)::text\r\n    WHEN network.name = 'poa-core' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 12)::text\r\n    WHEN network.name = 'ropsten' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 2)::text\r\n    WHEN network.name = 'arbitrum-one' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 230)::text\r\n    WHEN network.name = 'arbitrum-sepolia' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 230)::text\r\n    WHEN network.name = 'matic' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 30)::text\r\n    WHEN network.name = 'base' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 30)::text\r\n    WHEN network.name = 'optimism' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 30)::text\r\n    WHEN network.name = 'avalanche' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 30)::text\r\n    WHEN network.name = 'fantom' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 40)::text\r\n    WHEN network.name = 'celo' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 12)::text\r\n    WHEN network.name = 'gnosis' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 12)::text\r\n    WHEN network.name = 'bsc' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 20)::text\r\n    WHEN network.name = 'linea' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 30)::text\r\n    WHEN network.name = 'scroll' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 20)::text\r\n    WHEN network.name = 'boba' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 30)::text\r\n    WHEN network.name = 'boba-bnb' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 5)::text\r\n    WHEN network.name = 'moonbeam' THEN ((network.head_block_number - COALESCE(head.block_number, deployment.earliest_block_number)) / 10)::text\r\n    ELSE 'N/A' \r\n  END AS lag\r\nFROM\r\n  deployment_schemas AS schema\r\n  INNER JOIN subgraphs.deployment AS deployment ON deployment.id = schema.id\r\n  INNER JOIN subgraphs.head AS head ON head.id = schema.id\r\n  INNER JOIN subgraphs.subgraph_deployment_assignment AS assignment ON assignment.id = schema.id\r\n  INNER JOIN subgraphs.subgraph_version AS version ON version.deployment = schema.subgraph\r\n  INNER JOIN subgraphs.subgraph ON subgraph.id = version.subgraph\r\n  INNER JOIN ethereum_networks AS network ON network.name = schema.network\r\nWHERE\r\n  (subgraph.pending_version = version.id OR subgraph.current_version = version.id)\r\n  AND NOT deployment.failed\r\n  AND assignment.node_id NOT LIKE 'index_node_%'\r\nORDER BY\r\n  blocks_behind_network DESC,\r\n  subgraph_name;\r\n",
           "refId": "A",
           "select": [
             [
@@ -1031,20 +1018,22 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 40
+        "y": 46
       },
       "id": 36,
       "options": {
         "dedupStrategy": "exact",
+        "enableInfiniteScrolling": false,
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
         "wrapLogMessage": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "datasource": {
@@ -1128,20 +1117,22 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 40
+        "y": 46
       },
       "id": 42,
       "options": {
         "dedupStrategy": "exact",
+        "enableInfiniteScrolling": false,
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
         "wrapLogMessage": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "datasource": {
@@ -1225,20 +1216,22 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 40
+        "y": 46
       },
       "id": 43,
       "options": {
         "dedupStrategy": "exact",
+        "enableInfiniteScrolling": false,
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
         "wrapLogMessage": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "datasource": {
@@ -1325,6 +1318,9 @@
               "type": "auto"
             },
             "filterable": true,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -1333,7 +1329,7 @@
             "steps": [
               {
                 "color": "super-light-blue",
-                "value": null
+                "value": 0
               },
               {
                 "color": "dark-green",
@@ -1599,20 +1595,12 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 54
       },
       "id": 37,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": [
           {
@@ -1621,7 +1609,7 @@
           }
         ]
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "datasource": {
@@ -1633,7 +1621,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT \n    ds.name as deployment_schema,\n    ds.shard as deployment_shard,\n    ds.created_at as deployment_created_at,\n    sg.name as deployment_name,\n    sd.deployment as deployment,\n    substring(sm.repository, 20, 31) as git_repo,\n    sda.node_id as node_id,\n    sd.health as sub_health,\n    sd.failed as sub_failed,\n    sd.synced as sub_sync,\n    sd.latest_ethereum_block_number as last_block,\n    sd.entity_count as sub_entity,\n    size.total_bytes as size_total, \n    size.total_bytes as size_total_bytes, \n    sm.start_block_number as start_block, \n    encode(sm.start_block_hash, 'hex') as start_hash, \n    encode(sd.latest_ethereum_block_hash, 'hex') as last_hash,\n    sd.reorg_count as reorg_count, \n    sd.current_reorg_depth as curr_reorg_count, \n    sd.max_reorg_depth as max_reorg,\n    ds.network as network,\n    -- Removed subgraph_name, is_synced, and network_name\n    (network.head_block_number - sd.latest_ethereum_block_number) AS blocks_behind_network,\n    CASE \n        WHEN network.name = 'mainnet' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 5)::text\n        WHEN network.name = 'rinkeby' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 4)::text\n        WHEN network.name = 'kovan' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 15)::text\n        WHEN network.name = 'poa-core' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 12)::text\n        WHEN network.name = 'ropsten' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 2)::text\n        WHEN network.name = 'arbitrum-one' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 230)::text\n        WHEN network.name = 'arbitrum-sepolia' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 230)::text\n        WHEN network.name = 'matic' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 30)::text\n        WHEN network.name = 'base' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 30)::text\n        WHEN network.name = 'optimism' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 30)::text\n        WHEN network.name = 'avalanche' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 30)::text\n        WHEN network.name = 'fantom' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 40)::text\n        WHEN network.name = 'celo' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 12)::text\n        WHEN network.name = 'gnosis' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 12)::text\n        WHEN network.name = 'bsc' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 20)::text\n        WHEN network.name = 'linea' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 30)::text\n        WHEN network.name = 'scroll' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 20)::text\n        WHEN network.name = 'boba' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 30)::text\n        WHEN network.name = 'boba-bnb' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 5)::text\n        WHEN network.name = 'moonbeam' THEN ((network.head_block_number - sd.latest_ethereum_block_number) / 10)::text\n        ELSE 'N/A' \n    END AS lag\nFROM subgraphs.subgraph_deployment AS sd\nJOIN subgraphs.subgraph_manifest AS sm ON (sm.id = sd.id)\nJOIN public.deployment_schemas AS ds ON (ds.subgraph = sd.deployment)\nJOIN subgraphs.subgraph_version AS sv ON (sv.deployment = sd.deployment)\nJOIN subgraphs.subgraph AS sg ON (sv.id IN (sg.current_version, sg.pending_version)) -- Added subgraph JOIN\nLEFT JOIN subgraphs.subgraph_deployment_assignment AS sda ON (sda.id = sd.id)\nLEFT JOIN info.subgraph_sizes AS size ON (ds.name = size.name)\nJOIN ethereum_networks AS network ON (network.name = ds.network)\nORDER BY sd.id;\n",
+          "rawSql": "SELECT \n    ds.name as deployment_schema,\n    ds.shard as deployment_shard,\n    ds.created_at as deployment_created_at,\n    sg.name as deployment_name,\n    ds.subgraph as deployment,\n    substring(sm.repository, 20, 31) as git_repo,\n    sda.node_id as node_id,\n    sd.health as sub_health,\n    sd.failed as sub_failed,\n    CASE \n        WHEN sd.synced_at IS NOT NULL THEN 'true'\n        ELSE 'false'\n    END as sub_sync,\n    head.block_number as last_block,\n    head.entity_count as sub_entity,\n    size.total_bytes as size_total, \n    size.total_bytes as size_total_bytes, \n    sm.start_block_number as start_block, \n    encode(sm.start_block_hash, 'hex') as start_hash, \n    encode(head.block_hash, 'hex') as last_hash,\n    sd.reorg_count as reorg_count, \n    sd.current_reorg_depth as curr_reorg_count, \n    sd.max_reorg_depth as max_reorg,\n    ds.network as network,\n    (network.head_block_number - head.block_number) AS blocks_behind_network,\n    CASE \n        WHEN network.name = 'mainnet' THEN ((network.head_block_number - head.block_number) / 5)::text\n        WHEN network.name = 'rinkeby' THEN ((network.head_block_number - head.block_number) / 4)::text\n        WHEN network.name = 'kovan' THEN ((network.head_block_number - head.block_number) / 15)::text\n        WHEN network.name = 'poa-core' THEN ((network.head_block_number - head.block_number) / 12)::text\n        WHEN network.name = 'ropsten' THEN ((network.head_block_number - head.block_number) / 2)::text\n        WHEN network.name = 'arbitrum-one' THEN ((network.head_block_number - head.block_number) / 230)::text\n        WHEN network.name = 'arbitrum-sepolia' THEN ((network.head_block_number - head.block_number) / 230)::text\n        WHEN network.name = 'matic' THEN ((network.head_block_number - head.block_number) / 30)::text\n        WHEN network.name = 'base' THEN ((network.head_block_number - head.block_number) / 30)::text\n        WHEN network.name = 'optimism' THEN ((network.head_block_number - head.block_number) / 30)::text\n        WHEN network.name = 'avalanche' THEN ((network.head_block_number - head.block_number) / 30)::text\n        WHEN network.name = 'fantom' THEN ((network.head_block_number - head.block_number) / 40)::text\n        WHEN network.name = 'celo' THEN ((network.head_block_number - head.block_number) / 12)::text\n        WHEN network.name = 'gnosis' THEN ((network.head_block_number - head.block_number) / 12)::text\n        WHEN network.name = 'bsc' THEN ((network.head_block_number - head.block_number) / 20)::text\n        WHEN network.name = 'linea' THEN ((network.head_block_number - head.block_number) / 30)::text\n        WHEN network.name = 'scroll' THEN ((network.head_block_number - head.block_number) / 20)::text\n        WHEN network.name = 'boba' THEN ((network.head_block_number - head.block_number) / 30)::text\n        WHEN network.name = 'boba-bnb' THEN ((network.head_block_number - head.block_number) / 5)::text\n        WHEN network.name = 'moonbeam' THEN ((network.head_block_number - head.block_number) / 10)::text\n        ELSE 'N/A' \n    END AS lag\nFROM subgraphs.deployment AS sd\nJOIN subgraphs.subgraph_manifest AS sm ON (sm.id = sd.id)\nJOIN subgraphs.head AS head ON (head.id = sd.id)\nJOIN public.deployment_schemas AS ds ON (ds.id = sd.id)\nJOIN subgraphs.subgraph_version AS sv ON (sv.deployment = ds.subgraph)\nJOIN subgraphs.subgraph AS sg ON (sv.id IN (sg.current_version, sg.pending_version))\nLEFT JOIN subgraphs.subgraph_deployment_assignment AS sda ON (sda.id = sd.id)\nLEFT JOIN info.subgraph_sizes AS size ON (ds.name = size.name)\nJOIN ethereum_networks AS network ON (network.name = ds.network)\nORDER BY sd.id;\n",
           "refId": "A",
           "select": [
             [
@@ -1764,6 +1752,9 @@
             "cellOptions": {
               "type": "auto"
             },
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -1772,7 +1763,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -1880,23 +1871,15 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 58
+        "y": 64
       },
       "id": 6,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "format": "table",
@@ -1954,6 +1937,9 @@
               "type": "auto"
             },
             "filterable": true,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -1962,7 +1948,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -2208,24 +2194,16 @@
         "h": 13,
         "w": 24,
         "x": 0,
-        "y": 63
+        "y": 69
       },
       "id": 44,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "datasource": {
@@ -2237,7 +2215,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  subgraph.name || \r\n    CASE \r\n      WHEN subgraph.pending_version = version.id THEN ' (P)'\r\n      WHEN subgraph.current_version = version.id THEN ' (C)'\r\n      ELSE ' (Unknown)' \r\n    END AS subgraph_name,\r\n  deployment.deployment,\r\n  schema.id as schema_id,\r\n  schema.created_at as created,\r\n  shard as shard,\r\n  active as active,\r\n  failed as failed,\r\n  REPLACE(assignment.node_id, '', '') AS node_id,\r\n  deployment.synced::text AS is_synced,\r\n  network.name AS network_name,\r\n  (network.head_block_number - deployment.latest_ethereum_block_number) AS blocks_behind_network,\r\n  CASE \r\n    WHEN network.name = 'mainnet' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 5)::text\r\n    WHEN network.name = 'rinkeby' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 4)::text\r\n    WHEN network.name = 'kovan' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 15)::text\r\n    WHEN network.name = 'poa-core' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'ropsten' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 2)::text\r\n    WHEN network.name = 'arbitrum-one' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 230)::text\r\n    WHEN network.name = 'arbitrum-sepolia' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 230)::text\r\n    WHEN network.name = 'matic' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'base' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'optimism' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'avalanche' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'fantom' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 40)::text\r\n    WHEN network.name = 'celo' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'gnosis' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 12)::text\r\n    WHEN network.name = 'bsc' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 20)::text\r\n    WHEN network.name = 'linea' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'scroll' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 20)::text\r\n    WHEN network.name = 'boba' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 30)::text\r\n    WHEN network.name = 'boba-bnb' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 5)::text\r\n    WHEN network.name = 'moonbeam' THEN ((network.head_block_number - deployment.latest_ethereum_block_number) / 10)::text\r\n    ELSE 'N/A' \r\n  END AS lag\r\nFROM\r\n  subgraphs.subgraph_deployment AS deployment,\r\n  subgraphs.subgraph_deployment_assignment AS assignment,\r\n  subgraphs.subgraph_version AS version,\r\n  subgraphs.subgraph AS subgraph,\r\n  ethereum_networks AS network,\r\n  deployment_schemas AS schema\r\nWHERE\r\n  subgraph.id = version.subgraph\r\n  AND version.id IN (subgraph.pending_version, subgraph.current_version)\r\n  AND assignment.id = schema.id\r\n  AND schema.id = deployment.id\r\n  AND version.deployment = deployment.deployment\r\n  AND network.name = schema.network\r\nORDER BY\r\n  blocks_behind_network DESC,\r\n  subgraph_name;\r\n",
+          "rawSql": "SELECT\r\n  subgraph.name || \r\n    CASE \r\n      WHEN subgraph.pending_version = version.id THEN ' (P)'\r\n      WHEN subgraph.current_version = version.id THEN ' (C)'\r\n      ELSE ' (Unknown)' \r\n    END AS subgraph_name,\r\n  schema.subgraph AS deployment,\r\n  schema.id AS schema_id,\r\n  schema.created_at AS created,\r\n  schema.shard AS shard,\r\n  schema.active AS active,\r\n  deployment.failed AS failed,\r\n  REPLACE(assignment.node_id, '', '') AS node_id,\r\n  CASE \r\n    WHEN deployment.synced_at IS NOT NULL THEN 'true'::text\r\n    ELSE 'false'::text \r\n  END AS is_synced,\r\n  network.name AS network_name,\r\n  (network.head_block_number - head.block_number) AS blocks_behind_network,\r\n  CASE \r\n    WHEN network.name = 'mainnet' THEN ((network.head_block_number - head.block_number) / 5)::text\r\n    WHEN network.name = 'rinkeby' THEN ((network.head_block_number - head.block_number) / 4)::text\r\n    WHEN network.name = 'kovan' THEN ((network.head_block_number - head.block_number) / 15)::text\r\n    WHEN network.name = 'poa-core' THEN ((network.head_block_number - head.block_number) / 12)::text\r\n    WHEN network.name = 'ropsten' THEN ((network.head_block_number - head.block_number) / 2)::text\r\n    WHEN network.name = 'arbitrum-one' THEN ((network.head_block_number - head.block_number) / 230)::text\r\n    WHEN network.name = 'arbitrum-sepolia' THEN ((network.head_block_number - head.block_number) / 230)::text\r\n    WHEN network.name = 'matic' THEN ((network.head_block_number - head.block_number) / 30)::text\r\n    WHEN network.name = 'base' THEN ((network.head_block_number - head.block_number) / 30)::text\r\n    WHEN network.name = 'optimism' THEN ((network.head_block_number - head.block_number) / 30)::text\r\n    WHEN network.name = 'avalanche' THEN ((network.head_block_number - head.block_number) / 30)::text\r\n    WHEN network.name = 'fantom' THEN ((network.head_block_number - head.block_number) / 40)::text\r\n    WHEN network.name = 'celo' THEN ((network.head_block_number - head.block_number) / 12)::text\r\n    WHEN network.name = 'gnosis' THEN ((network.head_block_number - head.block_number) / 12)::text\r\n    WHEN network.name = 'bsc' THEN ((network.head_block_number - head.block_number) / 20)::text\r\n    WHEN network.name = 'linea' THEN ((network.head_block_number - head.block_number) / 30)::text\r\n    WHEN network.name = 'scroll' THEN ((network.head_block_number - head.block_number) / 20)::text\r\n    WHEN network.name = 'boba' THEN ((network.head_block_number - head.block_number) / 30)::text\r\n    WHEN network.name = 'boba-bnb' THEN ((network.head_block_number - head.block_number) / 5)::text\r\n    WHEN network.name = 'moonbeam' THEN ((network.head_block_number - head.block_number) / 10)::text\r\n    ELSE 'N/A' \r\n  END AS lag\r\nFROM\r\n  deployment_schemas AS schema\r\n  INNER JOIN subgraphs.deployment AS deployment ON deployment.id = schema.id\r\n  INNER JOIN subgraphs.head AS head ON head.id = schema.id\r\n  INNER JOIN subgraphs.subgraph_deployment_assignment AS assignment ON assignment.id = schema.id\r\n  INNER JOIN subgraphs.subgraph_version AS version ON version.deployment = schema.subgraph\r\n  INNER JOIN subgraphs.subgraph ON subgraph.id = version.subgraph\r\n  INNER JOIN ethereum_networks AS network ON network.name = schema.network\r\nWHERE\r\n  (subgraph.pending_version = version.id OR subgraph.current_version = version.id)\r\nORDER BY\r\n  blocks_behind_network DESC,\r\n  subgraph_name;\r\n",
           "refId": "A",
           "select": [
             [
@@ -2326,7 +2304,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 40,
+  "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": [
@@ -2361,6 +2339,5 @@
   "timezone": "",
   "title": "Indexing Status Overview",
   "uid": "indexing-status-overview",
-  "version": 4,
-  "weekStart": ""
+  "version": 3
 }
