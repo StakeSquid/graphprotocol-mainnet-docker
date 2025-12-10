@@ -24,7 +24,7 @@ services:
       - ./graph-node-configs:/root/graph-node-configs/
     environment:
       GRAPH_NODE_CONFIG: /root/graph-node-configs/config.toml
-      ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com/ipfs/}'
+      ipfs: '${IPFS_ENDPOINT:-https://ipfs.thegraph.com}'
       node_role: index-node
       node_id: index_node_0
       BLOCK_INGESTOR: index_node_0
@@ -62,7 +62,7 @@ services:
       - ./graph-node-configs:/root/graph-node-configs/
     environment:
       GRAPH_NODE_CONFIG: /root/graph-node-configs/config.toml
-      ipfs: '${IPFS_ENDPOINT:-https://ipfs.network.thegraph.com/ipfs/}'
+      ipfs: '${IPFS_ENDPOINT:-https://ipfs.thegraph.com}'
       node_role: query-node
       node_id: query_node_0
       GRAPH_LOG: INFO
