@@ -42,7 +42,7 @@ x-indexer-environment: &indexer-environment
   # INDEXER_SERVICE__FREE_QUERY_AUTH_TOKEN: ${FREE_QUERY_AUTH_TOKEN}
 
   # Horizon
-  INDERXER_HORIZON__ENABLED: true
+  INDEXER_HORIZON__ENABLED: true
 
   # TAP Configuration
   INDEXER_SERVICE__TAP__MAX_RECEIPT_VALUE_GRT: "0.001"
